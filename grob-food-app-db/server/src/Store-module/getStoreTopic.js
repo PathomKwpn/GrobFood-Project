@@ -18,6 +18,7 @@ where o.owner_id = $1;`;
     let param = [data.owner_id];
     let response = await pool.query(sql, param);
     console.log(response);
+
     responseData.success = true;
     responseData.data = response.rows;
     store.query("COMMIT");

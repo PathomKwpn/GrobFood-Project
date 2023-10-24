@@ -8,7 +8,7 @@ const exec = async (req, res) => {
   let responseData = {};
   try {
     let data = req.body;
-    console.log(data);
+    // console.log(data);
     let sqlUser = `select * from owner o
     join restaurants r on o.owner_id  = r.owner_id
     where o.owner_id = $1;`;
@@ -18,11 +18,18 @@ const exec = async (req, res) => {
     let responseUser = await pool.query(sqlUser, paramUser);
     // console.log(responseUser);
 
-    if (responseUser.rowCount > 0) {
+    if (responseUser.rowCount < 0) {
       responseData.success = false;
       responseData.data = "User duplicate";
     } else {
       let restaurant_uuid = uuid();
+      let img_toserver = common.commonService.uploadFileByBase64(
+        data.imageBase64,
+        data.lastnameImage
+      );
+      // let sendimg = common.commonService.pathFileToBaes64(img_toserver);
+      // console.log(sendimg);
+      // console.log(img_toserver);
       let sql = `INSERT INTO public.restaurants
 (restaurant_id, owner_id, restaurant_name, score, address, restaurant_credit, regis_date, update_date, update_by, close_time, open_time, restaurant_catagory)
 VALUES($1, $2, $3, 0, $4, 0, now(), now(), $2, $5, $6, $7);`;
@@ -41,7 +48,7 @@ VALUES($1, $2, $3, 0, $4, 0, now(), now(), $2, $5, $6, $7);`;
 VALUES($1, $2, $3, now(), $4, $5);`;
       let param2 = [
         restaurant_image_id,
-        data.imageBase64,
+        img_toserver,
         restaurant_uuid,
         data.owner_id,
         data.lastnameImage,

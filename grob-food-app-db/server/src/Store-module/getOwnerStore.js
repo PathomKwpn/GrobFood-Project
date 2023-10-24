@@ -12,13 +12,24 @@ const exec = async (req, res) => {
   try {
     let sql = `select * from owner o
         join restaurants r on o.owner_id  = r.owner_id
+        join restaurants_image i on i.restaurants_id = r.restaurant_id
         where o.owner_id ='${owner_id}';`;
     // let tokenObj = { user_id: req._user.user_id };
     let response = await pool.query(sql);
     // console.log(response);
     if (response.rows.length) {
+      console.log(
+        "pathfileLocation -->>",
+        response.rows[0].restaurants_image_url,
+        "<<<<"
+      );
+      const fileImage = common.commonService.pathFileToBaes64(
+        response.rows[0].restaurants_image_url
+      );
       responseData.success = true;
       responseData.data = response.rows;
+      responseData.image = fileImage;
+      console.log(fileImage);
     } else {
       responseData.success = false;
     }

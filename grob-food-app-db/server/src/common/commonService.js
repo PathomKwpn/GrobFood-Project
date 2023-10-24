@@ -41,34 +41,62 @@ const generateToken = async (data) => {
   }
 };
 
-async function uploadFileByBase64(base64, lastnameFile) {
+function uploadFileByBase64(base64, lastnameFile) {
+  // console.log(base64, "base64");
   const fs = require("fs");
   const data = base64; // Remove header    let base64file = data.split(';base64,').pop();    let header = data.split(';base64,');
+  let base64file = data.split(";base64,").pop();
+  // let header = data.split(";base64,");
   const filename = +new Date();
+  console.log(base64file, "base64file");
+  // fs.writeFile(
+  //   "./file_upload/" + filename + "." + lastnameFile,
+  //   base64file,
+  //   function (err) {}
+  // );
   fs.writeFile(
     "./file_upload/" + filename + "." + lastnameFile,
-    base64file,
+    data,
     { encoding: "base64" },
-    function (err) {}
+    function (err) {
+      console.log("File created");
+    }
   );
-  let body = {
-    path_file: "/file_upload" + "/" + filename + "." + lastnameFile,
-    header: header[0] + ";base64,",
-  };
+
+  let body = "/file_upload" + "/" + filename + "." + lastnameFile;
+
   return body;
 }
-async function pathFileToBaes64(pathImage) {
-  const fs = require("fs").promises;
-  return fs
-    .readFile("." + pathImage, { encoding: "base64" })
-    .then((results_base64) => {
-      return results_base64;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  return "error"; // or you may return null or throw the error    });}
-} // or you may return null or throw the error    });} module.exports.pathFileToBaes64 = pathFileToBaes64;
+function pathFileToBaes64(pathImage) {
+  const fs = require("fs");
+  const addFontPathImage = `data:image/png;base64,${pathImage}`;
+  try {
+    const data = fs.readFileSync("." + pathImage).toString();
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+  // const fs = require("fs");
+  // const data = fs.readFile("." + pathImage);
+  // console.log(data);
+  // const fs = require("fs");
+  // const data = fs.readFile("." + pathImage, (err, inputD) => {
+  //   if (err) throw err;
+  //   return inputD.toString();
+  // });
+  //   const base64 = fs.readFile(
+  //     "." + pathImage,
+  //     { encoding: "base64" },
+  //     (err, data) => {
+  //       if (err) {
+  //         console.error(err);
+  //       }
+  //       return data;
+  //     }
+  //   );
+  //   console.log(base64);
+  // }
+}
 module.exports = {
   // ส่งออก service
   commonService: {

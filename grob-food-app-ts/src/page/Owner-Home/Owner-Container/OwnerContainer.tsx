@@ -26,6 +26,8 @@ const OwnerContainer = () => {
   const dataOwner: any = {
     owner_id: owner_id,
   };
+  //RESIMAGE
+  const [imgBase64, setImgBase64] = useState("");
   //API
   useEffect(() => {
     const onLogin = async (data: any) => {
@@ -38,6 +40,8 @@ const OwnerContainer = () => {
       if (response.data.success) {
         console.log("login success");
         setHaveStore(true);
+
+        setImgBase64(response.data.image);
       } else {
         console.log("err");
       }
@@ -45,49 +49,6 @@ const OwnerContainer = () => {
     onLogin(dataOwner);
   }, []);
 
-  // const onLogin = async (data: any) => {
-  //   console.log(data);
-  //   const response = await axios.post(
-  //     `${GROBFOOD_USER_URL}/getownerstore`,
-  //     data
-  //   );
-  //   console.log("response", response);
-  //   if (response.data.success) {
-  //     console.log("login success");
-  //   } else {
-  //     console.log("err");
-  //   }
-  // };
-  // useEffect(() => {
-  //   const fetchData = async (data) => {
-  //     console.log(data);
-
-  //     const result = await axios.get(
-  //       `${GROBFOOD_USER_URL}/getownerstore`,
-  //       data
-  //     );
-
-  //     console.log(result);
-
-  //     if (result.data.success) {
-  //       console.log("have res");
-  //     } else {
-  //       console.log("didnt have");
-  //     }
-  //   };
-  //   console.log(dataOwner);
-
-  //   fetchData({ owner_id });
-  // }, []);
-  // const getRes_INFO = await axios.post(
-  //   `${GROBFOOD_USER_URL}/getownerstore`,
-  //   owner_id
-  // );
-  // if (getRes_INFO.data.success) {
-  //   console.log("have res");
-  // } else {
-  //   console.log("didnt have");
-  // }
   const haddleSubmit = (event: any) => {
     event.preventDefault();
   };
@@ -96,7 +57,12 @@ const OwnerContainer = () => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/addstore`, data);
     console.log("response", response);
     if (response.data.success) {
+      console.log(response.data);
+
       console.log("success");
+      console.log(imageBase64);
+
+      console.log(lastnameImage);
     } else {
     }
   };
@@ -115,6 +81,7 @@ const OwnerContainer = () => {
   const handleUploadImage = (e) => {
     const file = e.target.files[0];
     if (file) {
+      console.log(file);
     } else {
     }
     console.log(file);
@@ -126,13 +93,13 @@ const OwnerContainer = () => {
       setFile(file);
 
       setLastnameImage(file.type.split("/").pop());
+      console.log(reader.result);
+
       setImageBase64(reader.result);
       setImagePreviewUrl(reader.result);
     };
   };
-  console.log(imageBase64);
-
-  console.log(lastnameImage);
+  // console.log(imageBase64);
 
   // React.useEffect(() => {
   //   axios.get(`${GROBFOOD_USER_URL}/getownerstore`).then((response) => {
@@ -153,12 +120,20 @@ const OwnerContainer = () => {
   //   }
   // };
 
+  // const Showimage = `data:image/png;base64,${imgBase64}`;
+  const PreviewImage = ({ data }: any) => (
+    <img src={`data:image/png;base64,${data}`} alt="" />
+  );
   return (
     <div>
       <div className="flex flex-col justify-center items-center mt-[60px]">
         <div className="text-[32px] font-bold text-[#484848] mb-[30px]">
           Your Restaurants
         </div>
+        <div>
+          <PreviewImage data={imgBase64} />
+        </div>
+        <div></div>
         {createState == true && (
           <div className=" absolute w-[95%] h-[auto] bg-[#079F4E] px-[20px] pb-[40px] z-40 rounded-md mt-[50%] md:mt-[25%] lg:mt-[20%] xl:mt-[10%] md:max-w-[800px]">
             <div className="w-full flex justify-end">
@@ -166,7 +141,6 @@ const OwnerContainer = () => {
                 className="flex justify-end text-[24px]"
                 onClick={() => {
                   setCreateState(!createState);
-                  console.log(createState);
                 }}
               >
                 <CloseIcon className="text-[34px] text-[white] font-bold bg-[#bd3030] rounded-[50%] mr-[-30px] mt-[-15px]" />
@@ -278,6 +252,7 @@ const OwnerContainer = () => {
                           imageBase64,
                           lastnameImage,
                         });
+                        console.log(imageBase64);
                       }}
                     >
                       สร้างร้านค้า

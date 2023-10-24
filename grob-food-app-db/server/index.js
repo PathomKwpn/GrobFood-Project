@@ -15,7 +15,7 @@ const addStore = require("./src/Store-module/addStore");
 const updateStore = require("./src/Store-module/updateStore");
 const addStoreTopic = require("./src/Store-module/addStoreTopic");
 const getStoreTopic = require("./src/Store-module/getStoreTopic");
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
 
