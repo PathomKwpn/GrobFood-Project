@@ -7,15 +7,25 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-export default function RestaurantCard({ ResName, ResCatagory, ResDetail }) {
+export default function RestaurantCard({
+  ResName,
+  ResCatagory,
+  ResDetail,
+  ResImage,
+}) {
   const nevigate = useNavigate();
+
+  const PreviewImage = ({ data }: any) => (
+    <CardMedia
+      className="bg-contain"
+      sx={{ height: 140 }}
+      image={`data:image/png;base64,${data}`}
+      title="green iguana"
+    />
+  );
   return (
-    <Card className="max-w-[230px] w-full flex flex-col justify-center shadow-md rounded-xl">
-      <CardMedia
-        sx={{ height: 140 }}
-        image="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/merchants/3-C3DHBBUVKB4AVN/hero/3d9c7600530749b6a571987753ac4570_1646719404689331817.webp"
-        title="green iguana"
-      />
+    <Card className="max-w-[230px] w-full flex flex-col justify-center shadow-md rounded-xl border-2">
+      <PreviewImage data={ResImage} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {ResName}

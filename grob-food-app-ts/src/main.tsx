@@ -5,9 +5,9 @@ import "./index.css";
 import InjectTailwind from "./InjectTailwind.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <>
     <InjectTailwind>
       <App />
     </InjectTailwind>
-  </React.StrictMode>
+  </>
 );

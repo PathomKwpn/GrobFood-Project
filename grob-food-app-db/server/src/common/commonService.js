@@ -56,7 +56,7 @@ function uploadFileByBase64(base64, lastnameFile) {
   // );
   fs.writeFile(
     "./file_upload/" + filename + "." + lastnameFile,
-    data,
+    base64file,
     { encoding: "base64" },
     function (err) {
       console.log("File created");
@@ -71,7 +71,8 @@ function pathFileToBaes64(pathImage) {
   const fs = require("fs");
   const addFontPathImage = `data:image/png;base64,${pathImage}`;
   try {
-    const data = fs.readFileSync("." + pathImage).toString();
+    //  fs.readFile("." + pathImage, { encoding: "base64" });
+    const data = fs.readFileSync("." + pathImage, { encoding: "base64" });
     return data;
   } catch (err) {
     console.error(err);

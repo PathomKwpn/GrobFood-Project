@@ -6,19 +6,11 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
-// import dayjs, { Dayjs } from "dayjs";
-// import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { TimeField } from "@mui/x-date-pickers/TimeField";
-// import DesktopTimePicker from "@mui/lab/DesktopTimePicker";
-// import { colors } from "@mui/material";
-// import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+
 const OwnerContainer = () => {
   const [haveStore, setHaveStore] = useState(false);
   const [createState, setCreateState] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
-
   //OWNER
   const getOwner = localStorage.getItem("user");
   const ownerInfo = JSON.parse(getOwner);
@@ -26,7 +18,7 @@ const OwnerContainer = () => {
   const dataOwner: any = {
     owner_id: owner_id,
   };
-  //RESIMAGE
+  //RES_IMAGE
   const [imgBase64, setImgBase64] = useState("");
   //API
   useEffect(() => {
@@ -99,30 +91,13 @@ const OwnerContainer = () => {
       setImagePreviewUrl(reader.result);
     };
   };
-  // console.log(imageBase64);
 
-  // React.useEffect(() => {
-  //   axios.get(`${GROBFOOD_USER_URL}/getownerstore`).then((response) => {
-  //     console.log("Hi!!", response.data);
-  //   });
-  // }, [owner_id]);
-  // const getStore = async (data) => {
-  //   console.log(data);
-
-  //   console.log(user.id, "SDSD");
-  //   const response = await axios.get(
-  //     `${GROBFOOD_USER_URL}/getownerstore`,
-  //     data
-  //   );
-  //   console.log(response);
-  //   if (response.data.success) {
-  //     console.log(response.data[0].restaurant_name);
-  //   }
-  // };
-
-  // const Showimage = `data:image/png;base64,${imgBase64}`;
   const PreviewImage = ({ data }: any) => (
-    <img src={`data:image/png;base64,${data}`} alt="" />
+    <img
+      src={`data:image/png;base64,${data}`}
+      className=" bg-cover w-[150px] h-[150px]"
+      alt=""
+    />
   );
   return (
     <div>
@@ -130,10 +105,6 @@ const OwnerContainer = () => {
         <div className="text-[32px] font-bold text-[#484848] mb-[30px]">
           Your Restaurants
         </div>
-        <div>
-          <PreviewImage data={imgBase64} />
-        </div>
-        <div></div>
         {createState == true && (
           <div className=" absolute w-[95%] h-[auto] bg-[#079F4E] px-[20px] pb-[40px] z-40 rounded-md mt-[50%] md:mt-[25%] lg:mt-[20%] xl:mt-[10%] md:max-w-[800px]">
             <div className="w-full flex justify-end">
@@ -152,6 +123,7 @@ const OwnerContainer = () => {
                 Create Store
               </div>
               <div className="flex flex-col justify-center items-center">
+                <PreviewImage className="bg-cover" data={imgBase64} />
                 <img
                   src={
                     imagePreviewUrl
@@ -295,6 +267,7 @@ const OwnerContainer = () => {
                   ResName={"KFC"}
                   ResCatagory={"ไก่ทอด"}
                   ResDetail={"เปิด-ปิด: 8.00-19.00"}
+                  ResImage={imgBase64}
                 />
               </div>
             </div>

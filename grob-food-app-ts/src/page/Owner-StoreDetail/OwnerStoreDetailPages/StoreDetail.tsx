@@ -8,6 +8,7 @@ const StoreDetail = () => {
   const [page, setPage] = useState("detail");
   const [state, setState] = useState("detail");
   const [addMenuState, setAddMenuState] = useState(false);
+  const [addTopicState, setAddTopicState] = useState(false);
   const [onStore, setOnStore] = useState("contrast-100 text-[#009C49]");
   const [onMenus, setOnMenus] = useState("contrast-50 text-[#676767]");
 
@@ -53,6 +54,8 @@ const StoreDetail = () => {
   const [restaurant_topic_name, setRestaurant_topic_name] = useState("");
   //GET TOPIC
   const [resTopicArray, setResTopicArray] = useState([]);
+  //GET MENUS
+  const [resMenus, setResMenus] = useState([]);
   useEffect(() => {
     const getStoreDetail = async (data: any) => {
       const response = await axios.post(
@@ -86,9 +89,23 @@ const StoreDetail = () => {
     getStoreTopic(dataOwner);
   }, []);
 
-  console.log(resTopicArray);
-  const arrayDataItems = resTopicArray.map((course) => <li>{course}</li>);
-  console.log(arrayDataItems);
+  useEffect(() => {
+    const getMenus = async (data: any) => {
+      const response = await axios.post(
+        `${GROBFOOD_USER_URL}/getstoretopic`,
+        data
+      );
+      if (response.data.success) {
+        setResMenus(response.data.data);
+      } else {
+        console.log("err");
+      }
+    };
+    getMenus(dataOwner);
+  }, []);
+  // console.log(resTopicArray);
+  // const arrayDataItems = resTopicArray.map((course) => <li>{course}</li>);
+  // console.log(arrayDataItems);
 
   return (
     <div className="flex flex-col justify-center items-center mx-6 mt-7 rounded-lg">
@@ -312,7 +329,7 @@ const StoreDetail = () => {
           <div className="flex justify-center mb-[40px] mt-[20px] text-[20px] font-bold">
             เมนู
           </div>
-          {addMenuState == true && (
+          {addTopicState == true && (
             <div className="absolute w-[95%] md:w-[400px] h-[200px] bg-[white] left-[50%] translate-x-[-50%] drop-shadow-xl shadow-2xl border-2 rounded-lg z-10">
               <div className="flex justify-center font-bold text-[18px] mt-[15px]">
                 เพิ่มรายการหมวดหมู่
@@ -337,7 +354,7 @@ const StoreDetail = () => {
                   className="bg-[#01B14F] md:min-w-[100px] max-w-[200px] focus:bg-[#01b14f] hover:bg-[#01B14F] mx-[10px]"
                   onClick={() => {
                     addNewTopic({ restaurant_id, restaurant_topic_name });
-                    setAddMenuState(false);
+                    setAddTopicState(false);
                     setRestaurant_topic_name("");
                   }}
                 >
@@ -346,7 +363,7 @@ const StoreDetail = () => {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    setAddMenuState(false);
+                    setAddTopicState(false);
                   }}
                   className="bg-[#01B14F] md:min-w-[100px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] mx-[10px]"
                 >
@@ -360,19 +377,23 @@ const StoreDetail = () => {
               variant="contained"
               className="bg-[#01B14F] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0"
               onClick={() => {
-                setAddMenuState(true);
+                setAddTopicState(true);
               }}
             >
               เพิ่มหมวดหมู่
               <AddIcon className="text-[18px]" />
             </Button>
           </div>
-          <div className="">
+          <div>
             {resTopicArray?.map((item) => {
               return (
-                <div className="flex justify-between p-[20px] border-2 rounded-lg mb-[10px]">
+                <div
+                  className="flex justify-between p-[20px] border-2 rounded-lg mb-[10px]"
+                  key={item.restaurant_topic_name}
+                >
                   <div className="flex justify-center items-center font-bold text-[18px]">
                     {item.restaurant_topic_name}
+                    <div></div>
                   </div>
                   <div>
                     <Button

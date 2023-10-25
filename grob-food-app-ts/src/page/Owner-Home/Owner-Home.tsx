@@ -10,9 +10,9 @@ const OwnerHome = ({ clearToken, token, user }) => {
     return <Login />;
   }
   return (
-    <div className="bg-[#d6d6d6] h-[auto] md:h-[100vh]">
+    <div className="bg-[#d6d6d6] h-[auto] min-h-[100vh] md:h-[100vh]">
       <NavbarOwnerAuth clearToken={clearToken} token={token} user={user} />
-      <OwnerContainer user={user} />
+      <OwnerContainer />
     </div>
   );
 };
