@@ -123,7 +123,6 @@ const OwnerContainer = () => {
                 Create Store
               </div>
               <div className="flex flex-col justify-center items-center">
-                <PreviewImage className="bg-cover" data={imgBase64} />
                 <img
                   src={
                     imagePreviewUrl

@@ -21,7 +21,17 @@ VALUES($1, $2, $3, $4, $5, now(), now(), $6);`;
       data.menu_catagory,
       data.owner_id,
     ];
+    let img_toserver = common.commonService.uploadFileByBase64(
+      data.imageBase64,
+      data.lastnameImage
+    );
+    let menu_image_uuid = uuid();
+    let sql2 = `INSERT INTO public.menu_image
+(menu_image_id, menu_image_url, menu_id, create_date, create_by)
+VALUES($1, $2, $3, now(), $4);`;
+    let param2 = [menu_image_uuid, img_toserver, menu_uuid, data.owner_id];
     let response = await pool.query(sql, param);
+    let response2 = await pool.query(sql2, param2);
     console.log(response);
     responseData.success = true;
     responseData.data = "Create New Menu Succesful";

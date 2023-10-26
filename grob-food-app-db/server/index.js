@@ -16,6 +16,7 @@ const updateStore = require("./src/Store-module/updateStore");
 const addStoreTopic = require("./src/Store-module/addStoreTopic");
 const getStoreTopic = require("./src/Store-module/getStoreTopic");
 const addMenu = require("./src/Store-module/addMenu");
+const getMenu = require("./src/Store-module/getMenu");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -82,4 +83,7 @@ app.post("/getstoretopic", async (req, res) => {
 //OWNER_ADDMENU
 app.post("/addmenu", async (req, res) => {
   addMenu(req, res);
+});
+app.post("/getmenu", async (req, res) => {
+  getMenu(req, res);
 });

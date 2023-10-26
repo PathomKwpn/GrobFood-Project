@@ -2,13 +2,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
 import Button from "@mui/material/Button";
+
+import MenuList from "./MenuList";
 import { TextField } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+
 const StoreDetail = () => {
   const [page, setPage] = useState("detail");
   const [state, setState] = useState("detail");
-  const [addMenuState, setAddMenuState] = useState(false);
-  const [addTopicState, setAddTopicState] = useState(false);
+
   const [onStore, setOnStore] = useState("contrast-100 text-[#009C49]");
   const [onMenus, setOnMenus] = useState("contrast-50 text-[#676767]");
 
@@ -33,16 +34,7 @@ const StoreDetail = () => {
     }
   };
   //ADD NEW TOPIC
-  const addNewTopic = async (data: any) => {
-    const response = await axios.post(`${GROBFOOD_USER_URL}/addtopic`, data);
-    if (response.data.success) {
-      console.log(response.data.success, "new");
 
-      console.log("Add new topic already");
-    } else {
-      console.log("Errorr");
-    }
-  };
   //STORE DETAIL
   const [restaurant_id, setRestaurantID] = useState("");
   const [restaurant_name, setRestaurant_name] = useState("");
@@ -50,12 +42,7 @@ const StoreDetail = () => {
   const [restaurant_catagory, setRestaurant_catagory] = useState("");
   const [open_time, setRestaurant_openTime] = useState("");
   const [close_time, setRestaurant_closeTime] = useState("");
-  //SEND TOPIC
-  const [restaurant_topic_name, setRestaurant_topic_name] = useState("");
-  //GET TOPIC
-  const [resTopicArray, setResTopicArray] = useState([]);
-  //GET MENUS
-  const [resMenus, setResMenus] = useState([]);
+
   useEffect(() => {
     const getStoreDetail = async (data: any) => {
       const response = await axios.post(
@@ -73,36 +60,6 @@ const StoreDetail = () => {
   }, []);
   console.log(storeDetail);
 
-  useEffect(() => {
-    const getStoreTopic = async (data: any) => {
-      const response = await axios.post(
-        `${GROBFOOD_USER_URL}/getstoretopic`,
-        data
-      );
-
-      if (response.data.success) {
-        setResTopicArray(response.data.data);
-      } else {
-        console.log("err");
-      }
-    };
-    getStoreTopic(dataOwner);
-  }, []);
-
-  useEffect(() => {
-    const getMenus = async (data: any) => {
-      const response = await axios.post(
-        `${GROBFOOD_USER_URL}/getstoretopic`,
-        data
-      );
-      if (response.data.success) {
-        setResMenus(response.data.data);
-      } else {
-        console.log("err");
-      }
-    };
-    getMenus(dataOwner);
-  }, []);
   // console.log(resTopicArray);
   // const arrayDataItems = resTopicArray.map((course) => <li>{course}</li>);
   // console.log(arrayDataItems);
@@ -324,91 +281,7 @@ const StoreDetail = () => {
           </div>
         </div>
       )}
-      {page == "menus" && (
-        <div className="bg-white w-[95%] lg:max-w-[1000px] px-[5%] rounded-lg shadow-xl">
-          <div className="flex justify-center mb-[40px] mt-[20px] text-[20px] font-bold">
-            เมนู
-          </div>
-          {addTopicState == true && (
-            <div className="absolute w-[95%] md:w-[400px] h-[200px] bg-[white] left-[50%] translate-x-[-50%] drop-shadow-xl shadow-2xl border-2 rounded-lg z-10">
-              <div className="flex justify-center font-bold text-[18px] mt-[15px]">
-                เพิ่มรายการหมวดหมู่
-              </div>
-              <div className="flex justify-center flex-col items-center my-[20px]">
-                <div className="text-[16px] font-semibold">ชื่อหมวดหมู่</div>
-                <TextField
-                  label=""
-                  color="success"
-                  className=" bg-slate-200 w-[80%] h-[40px]"
-                  focused
-                  size="small"
-                  value={restaurant_topic_name}
-                  onChange={(v) => {
-                    setRestaurant_topic_name(v.target.value);
-                  }}
-                />
-              </div>
-              <div className="flex w-[100%] justify-center">
-                <Button
-                  variant="contained"
-                  className="bg-[#01B14F] md:min-w-[100px] max-w-[200px] focus:bg-[#01b14f] hover:bg-[#01B14F] mx-[10px]"
-                  onClick={() => {
-                    addNewTopic({ restaurant_id, restaurant_topic_name });
-                    setAddTopicState(false);
-                    setRestaurant_topic_name("");
-                  }}
-                >
-                  ยืนยัน
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setAddTopicState(false);
-                  }}
-                  className="bg-[#01B14F] md:min-w-[100px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] mx-[10px]"
-                >
-                  ยกเลิก
-                </Button>
-              </div>
-            </div>
-          )}
-          <div className="flex justify-start my-[20px]">
-            <Button
-              variant="contained"
-              className="bg-[#01B14F] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0"
-              onClick={() => {
-                setAddTopicState(true);
-              }}
-            >
-              เพิ่มหมวดหมู่
-              <AddIcon className="text-[18px]" />
-            </Button>
-          </div>
-          <div>
-            {resTopicArray?.map((item) => {
-              return (
-                <div
-                  className="flex justify-between p-[20px] border-2 rounded-lg mb-[10px]"
-                  key={item.restaurant_topic_name}
-                >
-                  <div className="flex justify-center items-center font-bold text-[18px]">
-                    {item.restaurant_topic_name}
-                    <div></div>
-                  </div>
-                  <div>
-                    <Button
-                      variant="contained"
-                      className="bg-[#01B14F] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F]"
-                    >
-                      เพิ่มเมนู
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      {page == "menus" && <MenuList restaurant_id={restaurant_id} />}
     </div>
   );
 };
