@@ -311,9 +311,13 @@ const MenuList = ({ restaurant_id }) => {
             </div>
           </div>
         )}
-        <div>
+        <div className="flex flex-row flex-wrap justify-center">
           {resTopicArray?.map((item) => {
-            return <div>{item.restaurant_topic_name}</div>;
+            return (
+              <div className="flex justify-center items-center min-w-[100px] py-[5px] border-x-[1px] border-b-[1px]">
+                {item.restaurant_topic_name}
+              </div>
+            );
           })}
         </div>
         {/* {resTopicArray?.map((item) => {

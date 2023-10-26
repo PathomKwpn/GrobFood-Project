@@ -34,7 +34,7 @@ const decrypted = async (data) => {
 const generateToken = async (data) => {
   try {
     let key = "pathomgrobfood123";
-    let token = jwt.sign({ data: data }, key, { expiresIn: "30m" });
+    let token = jwt.sign({ data: data }, key, { expiresIn: "60m" });
     return token;
   } catch (error) {
     console.log(error);
