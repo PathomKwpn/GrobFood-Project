@@ -8,17 +8,20 @@ const exec = async (req, res) => {
   let responseData = {};
   try {
     let data = req.body;
+    console.log(data);
+    let sql = `DELETE FROM public.menu_image
+WHERE menu_image_id=$1;`;
 
-    let sql = `SELECT restaurant_topic_id, restaurant_topic_name, t.restaurant_id,o.owner_id 
-FROM public.restaurant_topic t
-join restaurants r on t.restaurant_id = r.restaurant_id
-join "owner" o on r.owner_id = o.owner_id 
-where o.owner_id = $1;`;
-    let param = [data.owner_id];
+    let param = [data.menu_image_id];
+    let sql2 = `DELETE FROM public.menus
+WHERE menu_id=$1;`;
+    let param2 = [data.menu_id];
     let response = await pool.query(sql, param);
-
+    let response2 = await pool.query(sql2, param2);
+    console.log(response);
+    console.log(response2);
     responseData.success = true;
-    responseData.data = response.rows;
+    responseData.data = "Create New Menu Succesful";
     store.query("COMMIT");
   } catch (error) {
     store.query("ROLLBACK");

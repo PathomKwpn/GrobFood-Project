@@ -1,5 +1,11 @@
 import React from "react";
-import { Catagory, Header, Navbarauth, Promotion } from "../../page/Home/components/";
+import {
+  Catagory,
+  DetailQuestion,
+  Header,
+  Navbarauth,
+  Promotion,
+} from "../../page/Home/components/";
 
 const Home = ({ clearToken, token, user }) => {
   return (
@@ -8,6 +14,7 @@ const Home = ({ clearToken, token, user }) => {
       <Header />
       <Promotion />
       <Catagory />
+      <DetailQuestion />
     </>
   );
 };

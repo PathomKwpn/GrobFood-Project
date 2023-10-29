@@ -23,7 +23,9 @@ const MenuList = ({ restaurant_id }) => {
   //STATE
   const [addMenuState, setAddMenuState] = useState(false);
   const [addTopicState, setAddTopicState] = useState(false);
-
+  //SHOW DATA
+  const [showTopic, setShowTopic] = useState("Topic");
+  const [resTopic, setResTopic] = useState("");
   //GET TOPIC
   const [resTopicArray, setResTopicArray] = useState([]);
   //GET MENUS
@@ -51,25 +53,21 @@ const MenuList = ({ restaurant_id }) => {
 
     reader.onloadend = () => {
       setLastnameImage(file.type.split("/").pop());
-      console.log(reader.result);
+      // console.log(reader.result);
 
       setImageBase64(reader.result);
       setImagePreviewUrl(reader.result);
-      console.log(imageBase64);
+      // console.log(imageBase64);
     };
   };
-  const addMunu = async (data: any) => {
+  const addMenu = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/addmenu`, data);
-    console.log("response", response);
-    if (response.data.success) {
-      console.log(response.data);
-
-      console.log("success");
-      console.log(imageBase64);
-
-      console.log(lastnameImage);
-    } else {
-    }
+    const topic_id = {
+      restaurant_topic_id: resTopic,
+    };
+    getMenus(topic_id);
+    console.log(response);
+    console.log(response.data.data);
   };
   const addNewTopic = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/addtopic`, data);
@@ -81,20 +79,19 @@ const MenuList = ({ restaurant_id }) => {
       console.log("Errorr");
     }
   };
+  const getStoreTopic = async (data: any) => {
+    const response = await axios.post(
+      `${GROBFOOD_USER_URL}/getstoretopic`,
+      data
+    );
 
+    if (response.data.success) {
+      setResTopicArray(response.data.data);
+    } else {
+      console.log("err");
+    }
+  };
   useEffect(() => {
-    const getStoreTopic = async (data: any) => {
-      const response = await axios.post(
-        `${GROBFOOD_USER_URL}/getstoretopic`,
-        data
-      );
-
-      if (response.data.success) {
-        setResTopicArray(response.data.data);
-      } else {
-        console.log("err");
-      }
-    };
     getStoreTopic(dataOwner);
   }, []);
 
@@ -103,16 +100,26 @@ const MenuList = ({ restaurant_id }) => {
 
     const response = await axios.post(`${GROBFOOD_USER_URL}/getmenu`, data);
     if (response.data.success) {
+      setResTopic(restaurant_topic_id);
       setResMenus(response.data.data);
       console.log(response.data.data);
     } else {
       console.log("err");
     }
   };
+  const deleteMenu = async (data: any) => {
+    const response = await axios.post(`${GROBFOOD_USER_URL}/deletemenu`, data);
+    const topic_id = {
+      restaurant_topic_id: resTopic,
+    };
+    getMenus(topic_id);
+    console.log(response);
+    console.log(response.data.data);
+  };
   const [restaurant_topic_name, setRestaurant_topic_name] = useState("");
   return (
-    <div className="bg-white w-[95%] lg:max-w-[1000px] px-[5%] rounded-lg shadow-xl">
-      <div className="flex justify-center mb-[40px] mt-[20px] text-[20px] font-bold">
+    <div className="bg-white w-[100%] lg:max-w-[1000px] rounded-lg shadow-xl">
+      <div className="flex justify-center mb-[40px] mt-[20px] text-[28px] font-bold">
         เมนู
       </div>
       {addTopicState == true && (
@@ -158,7 +165,7 @@ const MenuList = ({ restaurant_id }) => {
           </div>
         </div>
       )}
-      <div className="flex justify-start my-[20px]">
+      <div className="flex justify-center my-[20px]">
         <Button
           variant="contained"
           className="bg-[#01B14F] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0"
@@ -276,9 +283,17 @@ const MenuList = ({ restaurant_id }) => {
               <div className="flex flex-row gap-[15px]">
                 <Button
                   variant="contained"
-                  className="bg-[#01B14F] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px]"
+                  className="bg-[#01B14F] md:min-w-[100px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px]"
                   onClick={() => {
-                    addMunu({
+                    console.log({
+                      menu_name,
+                      menu_price,
+                      menu_catagory,
+                      restaurant_topic_id,
+                      owner_id,
+                    });
+
+                    addMenu({
                       menu_name,
                       menu_price,
                       menu_catagory,
@@ -291,13 +306,16 @@ const MenuList = ({ restaurant_id }) => {
                     setMenu_Price("");
                     setMenu_Catagory("");
                     setAddMenuState(false);
+                    setImagePreviewUrl(
+                      "https://d1sag4ddilekf6.cloudfront.net/compressed_webp/merchants/3-CYWDRU6BKEMXLN/hero/ed785010be5c4d7084d95932bc4f85af_1696785901964057899.webp"
+                    );
                   }}
                 >
                   เพิ่มเมนู
                 </Button>
                 <Button
                   variant="contained"
-                  className="bg-[#01B14F] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px]"
+                  className="bg-[#01B14F] md:min-w-[100px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px]"
                   onClick={() => {
                     setMenu_Name("");
                     setMenu_Price("");
@@ -311,11 +329,91 @@ const MenuList = ({ restaurant_id }) => {
             </div>
           </div>
         )}
-        <div className="flex flex-row flex-wrap justify-center">
+        <div className="flex flex-row flex-wrap justify-center bg-slate-300">
           {resTopicArray?.map((item) => {
             return (
-              <div className="flex justify-center items-center min-w-[100px] py-[5px] border-x-[1px] border-b-[1px]">
+              <Button
+                variant="contained"
+                className="bg-[#205f3c] md:min-w-[80px] max-w-[400px] focus:bg-[#01B14F] hover:bg-[#01B14F] z-0 my-[10px] mr-[10px]"
+                onClick={() => {
+                  const data = {
+                    restaurant_topic_id: item.restaurant_topic_id,
+                  };
+                  console.log(data);
+                  setRestaurant_topic_id(item.restaurant_topic_id);
+                  getMenus(data);
+                }}
+              >
                 {item.restaurant_topic_name}
+              </Button>
+            );
+          })}
+        </div>
+        <div>
+          <div className="w-full">
+            <div className=" bg-[white] h-[80px] grid grid-cols-5 mx-[10px] items-center justify-items-center">
+              <div className="w-full flex justify-center items-center h-[100%]">
+                รูปอาหาร
+              </div>
+              <div className="w-full flex justify-center items-center border-x-2 h-[100%]">
+                ชื่ออาหาร
+              </div>
+              <div className="w-full flex justify-center items-center h-[100%]">
+                ราคา
+              </div>
+              <div className="w-full flex justify-center items-center border-x-2 h-[100%]">
+                ประเภทอาหาร
+              </div>
+              <Button
+                variant="contained"
+                className="bg-[#01B14F] md:min-w-[80px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px] mr-[10px]"
+                onClick={() => {
+                  if (restaurant_topic_id == "") {
+                    console.log("NOOO");
+                  } else {
+                    setAddMenuState(true);
+                  }
+                }}
+              >
+                เพิ่มเมนู
+                <AddIcon className="text-[18px]" />
+              </Button>
+            </div>
+          </div>
+          {resMenus?.map((item) => {
+            return (
+              <div className=" grid grid-cols-5 gap-1 items-center justify-items-center mx-[10px]">
+                <div className="w-full bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] rounded-l-lg">
+                  <img
+                    className="p-[10px] max-w-[100px] max-h-[100px] bg-cover"
+                    src={`data:image/png;base64,${item.menu_image_url}`}
+                    alt="menu-image"
+                  />
+                </div>
+                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] ">
+                  {item.menu_name}
+                </div>
+                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px]">
+                  {item.price}
+                </div>
+                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] rounded-r-lg">
+                  {item.food_catagory}
+                </div>
+                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex flex-col items-center justify-center mb-[4px] rounded-r-lg">
+                  <Button
+                    variant="contained"
+                    className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
+                    onClick={() => {
+                      const data = {
+                        menu_image_id: item.menu_image_id,
+                        menu_id: item.menu_id,
+                      };
+                      deleteMenu(data);
+                    }}
+                  >
+                    ลบ
+                  </Button>
+                </div>
               </div>
             );
           })}

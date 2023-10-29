@@ -17,6 +17,7 @@ const addStoreTopic = require("./src/Store-module/addStoreTopic");
 const getStoreTopic = require("./src/Store-module/getStoreTopic");
 const addMenu = require("./src/Store-module/addMenu");
 const getMenu = require("./src/Store-module/getMenu");
+const deleteMenu = require("./src/Store-module/deleteMenu");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -84,6 +85,11 @@ app.post("/getstoretopic", async (req, res) => {
 app.post("/addmenu", async (req, res) => {
   addMenu(req, res);
 });
+//GET_MENU
 app.post("/getmenu", async (req, res) => {
   getMenu(req, res);
+});
+//DELETE_MENU
+app.post("/deletemenu", async (req, res) => {
+  deleteMenu(req, res);
 });
