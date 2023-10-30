@@ -11,7 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
-
+import DeleteIcon from "@mui/icons-material/Delete";
 const MenuList = ({ restaurant_id }) => {
   //OWNER
   const getOwner: any = localStorage.getItem("user");
@@ -65,6 +65,8 @@ const MenuList = ({ restaurant_id }) => {
     const topic_id = {
       restaurant_topic_id: resTopic,
     };
+    console.log(topic_id, "topic");
+
     getMenus(topic_id);
     console.log(response);
     console.log(response.data.data);
@@ -96,13 +98,12 @@ const MenuList = ({ restaurant_id }) => {
   }, []);
 
   const getMenus = async (data: any) => {
-    console.log(restaurant_topic_id);
+    console.log(data);
 
     const response = await axios.post(`${GROBFOOD_USER_URL}/getmenu`, data);
     if (response.data.success) {
       setResTopic(restaurant_topic_id);
       setResMenus(response.data.data);
-      console.log(response.data.data);
     } else {
       console.log("err");
     }
@@ -112,9 +113,20 @@ const MenuList = ({ restaurant_id }) => {
     const topic_id = {
       restaurant_topic_id: resTopic,
     };
-    getMenus(topic_id);
-    console.log(response);
-    console.log(response.data.data);
+    if (response.data.success) {
+      getMenus(topic_id);
+    } else {
+      console.log("ERROR");
+    }
+  };
+  const deleteTopic = async (data: any) => {
+    const response = await axios.post(`${GROBFOOD_USER_URL}/deletetopic`, data);
+
+    if (response.data.success) {
+      getStoreTopic(dataOwner);
+    } else {
+      console.log("ERROR");
+    }
   };
   const [restaurant_topic_name, setRestaurant_topic_name] = useState("");
   return (
@@ -336,11 +348,16 @@ const MenuList = ({ restaurant_id }) => {
                 variant="contained"
                 className="bg-[#205f3c] md:min-w-[80px] max-w-[400px] focus:bg-[#01B14F] hover:bg-[#01B14F] z-0 my-[10px] mr-[10px]"
                 onClick={() => {
+                  console.log(item.restaurant_topic_id);
+
+                  setRestaurant_topic_id(item.restaurant_topic_id);
                   const data = {
                     restaurant_topic_id: item.restaurant_topic_id,
                   };
                   console.log(data);
-                  setRestaurant_topic_id(item.restaurant_topic_id);
+
+                  console.log(restaurant_topic_id);
+
                   getMenus(data);
                 }}
               >
@@ -370,8 +387,10 @@ const MenuList = ({ restaurant_id }) => {
                 onClick={() => {
                   if (restaurant_topic_id == "") {
                     console.log("NOOO");
+                    console.log(restaurant_topic_id);
                   } else {
                     setAddMenuState(true);
+                    console.log(restaurant_topic_id);
                   }
                 }}
               >
@@ -417,6 +436,28 @@ const MenuList = ({ restaurant_id }) => {
               </div>
             );
           })}
+          {restaurant_topic_id !== "" && (
+            <div className="flex justify-center">
+              <Button
+                variant="contained"
+                className="bg-[#01B14F] md:min-w-[80px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px] mr-[10px]"
+                onClick={() => {
+                  if (restaurant_topic_id == "") {
+                    console.log(restaurant_topic_id);
+                  } else {
+                    const data = {
+                      restaurant_topic_id: restaurant_topic_id,
+                    };
+                    deleteTopic(data);
+                  }
+                  setRestaurant_topic_id("");
+                }}
+              >
+                ลบหมวดหมู่นี้
+                <DeleteIcon className="text-[18px]" />
+              </Button>
+            </div>
+          )}
         </div>
         {/* {resTopicArray?.map((item) => {
           //   console.log(item.restaurant_topic_id);

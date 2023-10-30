@@ -77,6 +77,7 @@ function pathFileToBaes64(pathImage) {
   } catch (err) {
     console.error(err);
   }
+
   // const fs = require("fs");
   // const data = fs.readFile("." + pathImage);
   // console.log(data);
@@ -98,11 +99,22 @@ function pathFileToBaes64(pathImage) {
   //   console.log(base64);
   // }
 }
+function deleteFile(pathImage) {
+  const fs = require("fs");
+  fs.unlinkSync("." + pathImage, (err) => {
+    if (err) {
+      console.log(`An error occurred ${err.message}`);
+    } else {
+      console.log(`Deleted the file under ${pathImage}`);
+    }
+  });
+}
 module.exports = {
   // ส่งออก service
   commonService: {
     encrypted,
     decrypted,
+    deleteFile,
     generateToken,
     uploadFileByBase64,
     pathFileToBaes64,

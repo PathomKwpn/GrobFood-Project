@@ -9,19 +9,22 @@ const exec = async (req, res) => {
   try {
     let data = req.body;
     console.log(data);
+    let getPathImage = `select menu_image_url from menu_image mi 
+where menu_id = $1;`;
     let sql = `DELETE FROM public.menu_image
 WHERE menu_image_id=$1;`;
-
-    let param = [data.menu_image_id];
     let sql2 = `DELETE FROM public.menus
 WHERE menu_id=$1;`;
+    let param = [data.menu_image_id];
     let param2 = [data.menu_id];
+    let PathImage = await pool.query(getPathImage, param2);
+    console.log(PathImage.rows[0].menu_image_url);
+    common.commonService.deleteFile(PathImage.rows[0].menu_image_url);
     let response = await pool.query(sql, param);
     let response2 = await pool.query(sql2, param2);
-    console.log(response);
-    console.log(response2);
+
     responseData.success = true;
-    responseData.data = "Create New Menu Succesful";
+    responseData.data = "Delete Menu Successful";
     store.query("COMMIT");
   } catch (error) {
     store.query("ROLLBACK");
