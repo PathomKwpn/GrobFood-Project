@@ -47,14 +47,11 @@ const MenuList = ({ restaurant_id }) => {
     } else {
     }
     console.log(file);
-
     const reader = new FileReader();
     reader.readAsDataURL(file);
-
     reader.onloadend = () => {
       setLastnameImage(file.type.split("/").pop());
       // console.log(reader.result);
-
       setImageBase64(reader.result);
       setImagePreviewUrl(reader.result);
       // console.log(imageBase64);
@@ -66,7 +63,6 @@ const MenuList = ({ restaurant_id }) => {
       restaurant_topic_id: resTopic,
     };
     console.log(topic_id, "topic");
-
     getMenus(topic_id);
     console.log(response);
     console.log(response.data.data);
@@ -75,7 +71,6 @@ const MenuList = ({ restaurant_id }) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/addtopic`, data);
     if (response.data.success) {
       console.log(response.data.success, "new");
-
       console.log("Add new topic already");
     } else {
       console.log("Errorr");
@@ -99,10 +94,10 @@ const MenuList = ({ restaurant_id }) => {
 
   const getMenus = async (data: any) => {
     console.log(data);
-
     const response = await axios.post(`${GROBFOOD_USER_URL}/getmenu`, data);
     if (response.data.success) {
-      setResTopic(restaurant_topic_id);
+      console.log(response.data);
+      console.log(restaurant_topic_id, "before getMenus");
       setResMenus(response.data.data);
     } else {
       console.log("err");
@@ -183,6 +178,7 @@ const MenuList = ({ restaurant_id }) => {
           className="bg-[#01B14F] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0"
           onClick={() => {
             setAddTopicState(true);
+            console.log(restaurant_id);
           }}
         >
           เพิ่มหมวดหมู่
@@ -314,6 +310,8 @@ const MenuList = ({ restaurant_id }) => {
                       imageBase64,
                       lastnameImage,
                     });
+                    console.log(restaurant_topic_id);
+
                     setMenu_Name("");
                     setMenu_Price("");
                     setMenu_Catagory("");
@@ -348,15 +346,16 @@ const MenuList = ({ restaurant_id }) => {
                 variant="contained"
                 className="bg-[#205f3c] md:min-w-[80px] max-w-[400px] focus:bg-[#01B14F] hover:bg-[#01B14F] z-0 my-[10px] mr-[10px]"
                 onClick={() => {
-                  console.log(item.restaurant_topic_id);
-
-                  setRestaurant_topic_id(item.restaurant_topic_id);
                   const data = {
                     restaurant_topic_id: item.restaurant_topic_id,
                   };
                   console.log(data);
-
+                  const newData = data.restaurant_topic_id;
+                  console.log(newData, "newData  ");
+                  setRestaurant_topic_id(item.restaurant_topic_id);
+                  setResTopic(item.restaurant_topic_id);
                   console.log(restaurant_topic_id);
+                  console.log(resTopic);
 
                   getMenus(data);
                 }}
@@ -451,6 +450,8 @@ const MenuList = ({ restaurant_id }) => {
                     deleteTopic(data);
                   }
                   setRestaurant_topic_id("");
+                  setResTopic("");
+                  getMenus(resTopic);
                 }}
               >
                 ลบหมวดหมู่นี้

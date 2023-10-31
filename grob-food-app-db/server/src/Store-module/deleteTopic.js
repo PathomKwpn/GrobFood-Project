@@ -6,17 +6,17 @@ const exec = async (req, res) => {
   let store = await pool.connect();
   await store.query("BEGIN");
   let responseData = {};
+  let data = req.body;
+  console.log(data, "data");
+  let param = [data.restaurant_topic_id];
   try {
-    let data = req.body;
-    console.log(data, "data");
-    let param = [data.restaurant_topic_id];
     let sql_check_topic_havemenu = `select menu_id from menus m
 where restaurant_topic_id = $1;`;
     let response = await pool.query(sql_check_topic_havemenu, param);
     console.log(response.rowCount);
     let sql3 = `delete from restaurant_topic 
 where restaurant_topic_id = $1;`;
-    if (response.rowCount !== 0) {
+    async function deleteMenu() {
       let sql_getMenu_id = `select m.menu_id,mi.menu_image_id, mi.menu_image_url from menus m
     join menu_image mi on m.menu_id = mi.menu_id
     where restaurant_topic_id = $1;`;
@@ -40,6 +40,9 @@ where restaurant_topic_id = $1;`;
 
         common.commonService.deleteFile(item.menu_image_url);
       });
+    }
+    if (response.rowCount !== 0) {
+      deleteMenu();
     }
     let del_topic = await pool.query(sql3, param);
     //     let sql = `delete from menu_image
