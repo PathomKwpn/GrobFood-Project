@@ -72,6 +72,7 @@ const MenuList = ({ restaurant_id }) => {
     if (response.data.success) {
       console.log(response.data.success, "new");
       console.log("Add new topic already");
+      getStoreTopic(dataOwner);
     } else {
       console.log("Errorr");
     }
@@ -231,6 +232,7 @@ const MenuList = ({ restaurant_id }) => {
                 color="success"
                 className=" bg-[#F0F0F0] w-[90%] h-[56px] my-[10px]"
                 focused
+                type="number"
                 value={menu_price}
                 onChange={(v) => {
                   setMenu_Price(v.target.value);

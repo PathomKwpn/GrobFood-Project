@@ -6,9 +6,25 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
+import {
+  Alert,
+  AlertTitle,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const OwnerContainer = () => {
+  const nevigate = useNavigate();
   const [haveStore, setHaveStore] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [createState, setCreateState] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   //OWNER
@@ -18,26 +34,38 @@ const OwnerContainer = () => {
   const dataOwner: any = {
     owner_id: owner_id,
   };
+  //RES_DATA
+  const [resName, setResName] = useState("");
+  const [resCatagory, setResCatagory] = useState("");
+  const [resDetail, setResDetail] = useState("");
+
   //RES_IMAGE
   const [imgBase64, setImgBase64] = useState("");
   //API
-  useEffect(() => {
-    const onLogin = async (data: any) => {
-      console.log(data);
-      const response = await axios.post(
-        `${GROBFOOD_USER_URL}/getownerstore`,
-        data
+  const onLogin = async (data: any) => {
+    console.log(data);
+    const response = await axios.post(
+      `${GROBFOOD_USER_URL}/getownerstore`,
+      data
+    );
+    console.log("response", response);
+    if (response.data.success) {
+      setHaveStore(true);
+      console.log(response.data.data[0]);
+      setResName(response.data.data[0].restaurant_name);
+      setResCatagory(response.data.data[0].restaurant_catagory);
+      setResDetail(
+        "เปิด " +
+          response.data.data[0].open_time +
+          "- ปิด" +
+          response.data.data[0].close_time
       );
-      console.log("response", response);
-      if (response.data.success) {
-        console.log("login success");
-        setHaveStore(true);
-
-        setImgBase64(response.data.image);
-      } else {
-        console.log("err");
-      }
-    };
+      setImgBase64(response.data.image);
+    } else {
+      console.log("err");
+    }
+  };
+  useEffect(() => {
     onLogin(dataOwner);
   }, []);
 
@@ -50,11 +78,8 @@ const OwnerContainer = () => {
     console.log("response", response);
     if (response.data.success) {
       console.log(response.data);
-
+      onLogin(dataOwner);
       console.log("success");
-      console.log(imageBase64);
-
-      console.log(lastnameImage);
     } else {
     }
   };
@@ -73,32 +98,40 @@ const OwnerContainer = () => {
   const handleUploadImage = (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log(file);
     } else {
     }
-    console.log(file);
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
     reader.onloadend = () => {
       setFile(file);
-
       setLastnameImage(file.type.split("/").pop());
-      console.log(reader.result);
-
       setImageBase64(reader.result);
       setImagePreviewUrl(reader.result);
     };
   };
-
+  const handleChange = (event: any) => {
+    setRestaurant_catagory(event.target.value);
+  };
   const PreviewImage = ({ data }: any) => (
-    <img
-      src={`data:image/png;base64,${data}`}
-      className=" bg-cover w-[150px] h-[150px]"
-      alt=""
+    <CardMedia
+      className="bg-contain"
+      sx={{ height: 140 }}
+      image={`data:image/png;base64,${data}`}
+      title="green iguana"
     />
   );
+  const deleteStore = async (data: any) => {
+    const response = await axios.post(`${GROBFOOD_USER_URL}/deletestore`, data);
+    console.log("response", response);
+    if (response.data.success) {
+      console.log("Delete Successfull");
+      onLogin(dataOwner);
+    } else {
+      console.log("ERROR");
+    }
+  };
   return (
     <div>
       <div className="flex flex-col justify-center items-center mt-[60px]">
@@ -123,6 +156,7 @@ const OwnerContainer = () => {
                 Create Store
               </div>
               <div className="flex flex-col justify-center items-center">
+                รูปโปรไฟล์ร้านของคุณ
                 <img
                   src={
                     imagePreviewUrl
@@ -166,18 +200,58 @@ const OwnerContainer = () => {
                       }}
                     />
 
-                    <TextField
-                      label="ประเภทของร้านของคุณ"
+                    <FormControl
                       variant="filled"
-                      color="success"
                       focused
-                      size="small"
-                      value={restaurant_catagory}
-                      className="bg-[white] rounded-lg"
-                      onChange={(v) => {
-                        setRestaurant_catagory(v.target.value);
-                      }}
-                    />
+                      color="success"
+                      sx={{ minWidth: 200 }}
+                      className="w-[100%] focus:text-[green] rounded-lg border-2"
+                    >
+                      <InputLabel
+                        focused
+                        className="focus:text-[green] hover:text-[green] "
+                      >
+                        ประเภทของอาหาร
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-filled-label"
+                        id="demo-simple-select-filled"
+                        value={restaurant_catagory}
+                        onChange={handleChange}
+                        className="focus:text-[green]"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={"อาหารตามสั่ง"}>อาหารตามสั่ง</MenuItem>
+                        <MenuItem value={"อาหารอีสาน"}>อาหารอีสาน</MenuItem>
+                        <MenuItem value={"อาหารเส้น"}>อาหารเส้น</MenuItem>
+                        <MenuItem value={"พิซซ่า"}>พิซซ่า</MenuItem>
+                        <MenuItem value={"ฟาสต์ฟู๊ด"}>ฟาสต์ฟู๊ด</MenuItem>
+                        <MenuItem value={"ไก่ทอด"}>ไก่ทอด</MenuItem>
+                        <MenuItem value={"ชา กาแฟ"}>ชา กาแฟ</MenuItem>
+                        <MenuItem value={"ชานมไข่มุก"}>ชานมไข่มุก</MenuItem>
+                        <MenuItem value={"ทานเล่น/ขนมขบเคี้ยว"}>
+                          ทานเล่น/ขนมขบเคี้ยว
+                        </MenuItem>
+                        <MenuItem value={"ข้าวหน้า"}>ข้าวหน้า</MenuItem>
+                        <MenuItem value={"เบเกอรี่"}>เบเกอรี่</MenuItem>
+                        <MenuItem value={"ยำ"}>ยำ</MenuItem>
+                        <MenuItem value={"ผลไม้"}>ผลไม้</MenuItem>
+                        <MenuItem value={"ปิ้งย่าง/บาร์บีคิว"}>
+                          ปิ้งย่าง/บาร์บีคิว
+                        </MenuItem>
+                        <MenuItem value={"ข้าวมันไก่"}>ข้าวมันไก่</MenuItem>
+                        <MenuItem value={"โยเกิร์ต/ไอศกรีม"}>
+                          โยเกิร์ต/ไอศกรีม
+                        </MenuItem>
+                        <MenuItem value={"น้ำผลไม้/สมูทตี้"}>
+                          น้ำผลไม้/สมูทตี้
+                        </MenuItem>
+                        <MenuItem value={"สเต็ก"}>สเต็ก</MenuItem>
+                        <MenuItem value={"อาหารสุขภาพ"}>อาหารสุขภาพ</MenuItem>
+                      </Select>
+                    </FormControl>
                     <TextField
                       id="time"
                       label="เวลาเปิดร้าน"
@@ -223,7 +297,13 @@ const OwnerContainer = () => {
                           imageBase64,
                           lastnameImage,
                         });
-                        console.log(imageBase64);
+                        setRestaurant_name("");
+                        setRestaurant_address("");
+                        setRestaurant_openTime("");
+                        setRestaurant_closeTime("");
+                        setRestaurant_catagory("");
+                        setImagePreviewUrl(null);
+                        setCreateState(!createState);
                       }}
                     >
                       สร้างร้านค้า
@@ -232,6 +312,38 @@ const OwnerContainer = () => {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+        {confirmDelete == true && (
+          <div className=" absolute top-[200px]">
+            <Alert severity="error">
+              <AlertTitle className="text-[18px] mr-[30px]">
+                คุณยืนยันใช่ไหมที่จะลบร้านนี้
+              </AlertTitle>
+              <div className="flex justify-center mr-[30px]">
+                <Button
+                  variant="contained"
+                  className="bg-[#01B14F] md:min-w-[100px] max-w-[400px] focus:bg-[#01B14F] hover:bg-[#01B14F] "
+                  onClick={() => {
+                    deleteStore(dataOwner);
+                    setConfirmDelete(false);
+                    setHaveStore(false);
+                  }}
+                >
+                  ยืนยัน
+                </Button>
+                <Button
+                  variant="contained"
+                  className="bg-[#01B14F] md:min-w-[100px] max-w-[200px] focus:bg-[#01B14F] hover:bg-[#01B14F] ml-[10px]"
+                  onClick={() => {
+                    onLogin(dataOwner);
+                    setConfirmDelete(false);
+                  }}
+                >
+                  ยกเลิก
+                </Button>
+              </div>
+            </Alert>
           </div>
         )}
         {!haveStore == true && (
@@ -262,12 +374,40 @@ const OwnerContainer = () => {
             <div className="flex flex-col  p-[40px] justify-center items-center m-[10px] gap-6 w-full">
               {/* md:grid md:grid-cols-2 lg:grid-cols-3 */}
               <div className="flex justify-center w-full">
-                <RestaurantCard
-                  ResName={"KFC"}
-                  ResCatagory={"ไก่ทอด"}
-                  ResDetail={"เปิด-ปิด: 8.00-19.00"}
-                  ResImage={imgBase64}
-                />
+                <Card className="max-w-[230px] w-full flex flex-col justify-center shadow-md rounded-xl border-2">
+                  <PreviewImage data={imgBase64} />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {resName}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {resCatagory}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {resDetail}
+                    </Typography>
+                  </CardContent>
+                  <CardActions className="flex justify-center">
+                    <Button
+                      className=" bg-[#009C49] text-[white] border-[1px] border-solid border-gray-400 shadow-md"
+                      size="small"
+                      onClick={() => {
+                        nevigate("/ownerstore-detail");
+                      }}
+                    >
+                      ดูข้อมูล
+                    </Button>
+                    <Button
+                      className=" bg-[#c63333] text-[white] border-[1px] border-solid border-gray-400 shadow-md"
+                      size="small"
+                      onClick={() => {
+                        setConfirmDelete(true);
+                      }}
+                    >
+                      ลบ
+                    </Button>
+                  </CardActions>
+                </Card>
               </div>
             </div>
 

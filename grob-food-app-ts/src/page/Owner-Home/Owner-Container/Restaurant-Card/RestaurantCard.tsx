@@ -6,15 +6,17 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { GROBFOOD_USER_URL } from "../../../../util/constants/constant";
 
 export default function RestaurantCard({
   ResName,
   ResCatagory,
   ResDetail,
   ResImage,
+  ResOwner_id,
 }) {
   const nevigate = useNavigate();
-
   const PreviewImage = ({ data }: any) => (
     <CardMedia
       className="bg-contain"
@@ -23,6 +25,18 @@ export default function RestaurantCard({
       title="green iguana"
     />
   );
+  //GET STORE
+  //API DELETE STORE
+  const deleteStore = async (data: any) => {
+    const response = await axios.post(`${GROBFOOD_USER_URL}/deletestore`, data);
+    console.log("response", response);
+    if (response.data.success) {
+      console.log("Delete Successfull");
+    } else {
+      console.log("ERROR");
+    }
+  };
+
   return (
     <Card className="max-w-[230px] w-full flex flex-col justify-center shadow-md rounded-xl border-2">
       <PreviewImage data={ResImage} />
@@ -50,6 +64,9 @@ export default function RestaurantCard({
         <Button
           className=" bg-[#c63333] text-[white] border-[1px] border-solid border-gray-400 shadow-md"
           size="small"
+          onClick={() => {
+            deleteStore(ResOwner_id);
+          }}
         >
           ลบ
         </Button>

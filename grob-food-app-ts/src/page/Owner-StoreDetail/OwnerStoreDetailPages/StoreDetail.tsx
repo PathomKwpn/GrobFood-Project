@@ -4,7 +4,13 @@ import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
 import Button from "@mui/material/Button";
 
 import MenuList from "./MenuList";
-import { TextField } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 const StoreDetail = () => {
   const [page, setPage] = useState("detail");
@@ -22,12 +28,25 @@ const StoreDetail = () => {
   const dataOwner: any = {
     owner_id: owner_id,
   };
+  const getStoreDetail = async (data: any) => {
+    const response = await axios.post(
+      `${GROBFOOD_USER_URL}/getownerstore`,
+      data
+    );
+    if (response.data.success) {
+      setStoreDetail(response.data.data[0]);
+      setRestaurantID(response.data.data[0].restaurant_id);
+      console.log(storeDetail);
+    } else {
+      console.log("err");
+    }
+  };
   //SET STORE DETAILS
   const setNewStoreDetail = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/updatestore`, data);
     if (response.data.success) {
       console.log(response.data.success, "new");
-
+      getStoreDetail(dataOwner);
       console.log("Update already");
     } else {
       console.log("Error");
@@ -43,19 +62,10 @@ const StoreDetail = () => {
   const [open_time, setRestaurant_openTime] = useState("");
   const [close_time, setRestaurant_closeTime] = useState("");
 
+  const handleChange = (event: any) => {
+    setRestaurant_catagory(event.target.value);
+  };
   useEffect(() => {
-    const getStoreDetail = async (data: any) => {
-      const response = await axios.post(
-        `${GROBFOOD_USER_URL}/getownerstore`,
-        data
-      );
-      if (response.data.success) {
-        setStoreDetail(response.data.data[0]);
-        setRestaurantID(response.data.data[0].restaurant_id);
-      } else {
-        console.log("err");
-      }
-    };
     getStoreDetail(dataOwner);
   }, []);
   console.log(storeDetail);
@@ -157,17 +167,58 @@ const StoreDetail = () => {
                   </div>
                 )}
                 {state == "edit" && (
-                  <TextField
-                    label=""
-                    color="success"
-                    className=" bg-slate-200 w-full h-[40px]"
+                  <FormControl
+                    variant="filled"
                     focused
-                    size="small"
-                    value={restaurant_catagory}
-                    onChange={(v) => {
-                      setRestaurant_catagory(v.target.value);
-                    }}
-                  />
+                    color="success"
+                    sx={{ minWidth: 200 }}
+                    className="w-[100%] focus:text-[green] rounded-lg border-2"
+                  >
+                    <InputLabel
+                      focused
+                      className="focus:text-[green] hover:text-[green] "
+                    >
+                      ประเภทของอาหาร
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-filled-label"
+                      id="demo-simple-select-filled"
+                      value={restaurant_catagory}
+                      onChange={handleChange}
+                      className="focus:text-[green]"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={"อาหารตามสั่ง"}>อาหารตามสั่ง</MenuItem>
+                      <MenuItem value={"อาหารอีสาน"}>อาหารอีสาน</MenuItem>
+                      <MenuItem value={"อาหารเส้น"}>อาหารเส้น</MenuItem>
+                      <MenuItem value={"พิซซ่า"}>พิซซ่า</MenuItem>
+                      <MenuItem value={"ฟาสต์ฟู๊ด"}>ฟาสต์ฟู๊ด</MenuItem>
+                      <MenuItem value={"ไก่ทอด"}>ไก่ทอด</MenuItem>
+                      <MenuItem value={"ชา กาแฟ"}>ชา กาแฟ</MenuItem>
+                      <MenuItem value={"ชานมไข่มุก"}>ชานมไข่มุก</MenuItem>
+                      <MenuItem value={"ทานเล่น/ขนมขบเคี้ยว"}>
+                        ทานเล่น/ขนมขบเคี้ยว
+                      </MenuItem>
+                      <MenuItem value={"ข้าวหน้า"}>ข้าวหน้า</MenuItem>
+                      <MenuItem value={"เบเกอรี่"}>เบเกอรี่</MenuItem>
+                      <MenuItem value={"ยำ"}>ยำ</MenuItem>
+                      <MenuItem value={"ผลไม้"}>ผลไม้</MenuItem>
+                      <MenuItem value={"ปิ้งย่าง/บาร์บีคิว"}>
+                        ปิ้งย่าง/บาร์บีคิว
+                      </MenuItem>
+                      <MenuItem value={"ข้าวมันไก่"}>ข้าวมันไก่</MenuItem>
+                      <MenuItem value={"โยเกิร์ต/ไอศกรีม"}>
+                        โยเกิร์ต/ไอศกรีม
+                      </MenuItem>
+                      <MenuItem value={"น้ำผลไม้/สมูทตี้"}>
+                        น้ำผลไม้/สมูทตี้
+                      </MenuItem>
+                      <MenuItem value={"สเต็ก"}>สเต็ก</MenuItem>
+                      <MenuItem value={"อาหารสุขภาพ"}>อาหารสุขภาพ</MenuItem>
+                    </Select>
+                  </FormControl>
                 )}
               </div>
               <div className="mb-[20px]">

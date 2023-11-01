@@ -14,14 +14,14 @@ const NavbarOwnerAuth = ({ clearToken, token, user }) => {
         <div className="w-[100%] px-[12px] md:px-[36px]">
           <div className="flex justify-between">
             <div className="w-[90px] h-[auto] md:w-[140px] p-1">
-              <Link to={"/"}>
+              <Link to={"/ownerhome"}>
                 <img src="./image/logo-grabfood/logo-GrobFood.png" alt="" />
               </Link>
             </div>
             <div className="flex ">
               <div className="flex justify-center items-center border min-w-[100px] md:min-w-[150px] border-[#e1e1e1] mx-[6px] rounded-[4px] shadow-sm hover:bg-[#009C49] hover:text-[#ffffff]">
                 <Link
-                  to={"/register"}
+                  to={""}
                   className="flex justify-center items-center text-[12px] px-[8px] font-[500] text-[#676767] hover:text-[#ffffff] h-[28px] md:h-[40px] md:text-[14px] w-full"
                 >
                   {ownerInfo.firstname}

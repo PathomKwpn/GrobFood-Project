@@ -22,7 +22,6 @@ WHERE menu_id=$1;`;
     common.commonService.deleteFile(PathImage.rows[0].menu_image_url);
     let response = await pool.query(sql, param);
     let response2 = await pool.query(sql2, param2);
-
     responseData.success = true;
     responseData.data = "Delete Menu Successful";
     store.query("COMMIT");
