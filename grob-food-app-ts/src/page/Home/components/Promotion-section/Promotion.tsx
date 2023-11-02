@@ -48,6 +48,7 @@ const Promotion = () => {
       <button className="w-full h-[48px] border border-[#676767] rounded-[6px] text-[#676767] mt-[20px] font-semibold">
         See all promotion
       </button>
+      <div></div>
     </div>
   );
 };

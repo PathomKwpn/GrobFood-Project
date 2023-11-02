@@ -40,20 +40,14 @@ const generateToken = async (data) => {
     console.log(error);
   }
 };
-
 function uploadFileByBase64(base64, lastnameFile) {
-  // console.log(base64, "base64");
   const fs = require("fs");
   const data = base64; // Remove header    let base64file = data.split(';base64,').pop();    let header = data.split(';base64,');
   let base64file = data.split(";base64,").pop();
-  // let header = data.split(";base64,");
+
   const filename = +new Date();
   console.log(base64file, "base64file");
-  // fs.writeFile(
-  //   "./file_upload/" + filename + "." + lastnameFile,
-  //   base64file,
-  //   function (err) {}
-  // );
+
   fs.writeFile(
     "./file_upload/" + filename + "." + lastnameFile,
     base64file,

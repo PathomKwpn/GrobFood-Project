@@ -9,6 +9,7 @@ import OwnerHome from "./page/Owner-Home/Owner-Home";
 import RegisterPage from "./page/Register-pages/Register";
 import LoginPage from "./page/Login-pages/Login";
 import OwnerStoreDetail from "./page/Owner-StoreDetail/OwnerStoreDetail";
+import UserProfile from "./page/UserProfile/UserProfile";
 import { useToken } from "./util/token/token";
 const theme = createTheme({
   typography: {
@@ -55,6 +56,10 @@ function App() {
     {
       path: "/login",
       element: <LoginPage />,
+    },
+    {
+      path: "/userprofile",
+      element: <UserProfile />,
     },
     {
       path: "/ownerhome",

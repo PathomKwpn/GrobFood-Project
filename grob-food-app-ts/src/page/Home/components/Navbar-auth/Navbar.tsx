@@ -3,19 +3,20 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { useToken } from "../../../../util/token/token";
 const Navbarauth = ({ clearToken, token, user }) => {
   const nevigate = useNavigate();
   const user_name: any = localStorage.getItem("user");
   let user_firstname = JSON.parse(user_name);
   console.log(user_name);
-
+  const { updateToken } = useToken();
   return (
     <>
       <div className="flex justify-center items-center h-[48px] md:h-[88px] sticky bg-white shadow-sm">
         <div className="w-[100%] px-[12px] md:px-[36px]">
           <div className="flex justify-between">
             <div className="w-[90px] h-[auto] md:w-[140px] p-1">
-              <Link to={"/"}>
+              <Link to={"/home"}>
                 <img src="./image/logo-grabfood/logo-GrobFood.png" alt="" />
               </Link>
             </div>
@@ -25,8 +26,12 @@ const Navbarauth = ({ clearToken, token, user }) => {
               </div>
               <div className="flex justify-center items-center border border-[#f0efef] mx-[6px] rounded-[4px]">
                 <Link
-                  to={"/register"}
+                  to={""}
                   className="flex justify-center items-center text-[12px] px-[8px] font-[500] text-[#676767] h-[28px] md:h-[40px]"
+                  onClick={() => {
+                    updateToken();
+                    nevigate("/userprofile");
+                  }}
                 >
                   {user_firstname.firstname}
                 </Link>

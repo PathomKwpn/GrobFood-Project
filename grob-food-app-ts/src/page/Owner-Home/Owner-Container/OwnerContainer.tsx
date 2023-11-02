@@ -57,7 +57,7 @@ const OwnerContainer = () => {
       setResDetail(
         "เปิด " +
           response.data.data[0].open_time +
-          "- ปิด" +
+          " - ปิด " +
           response.data.data[0].close_time
       );
       setImgBase64(response.data.image);
@@ -116,7 +116,7 @@ const OwnerContainer = () => {
   };
   const PreviewImage = ({ data }: any) => (
     <CardMedia
-      className="bg-contain"
+      className="bg-cover"
       sx={{ height: 140 }}
       image={`data:image/png;base64,${data}`}
       title="green iguana"

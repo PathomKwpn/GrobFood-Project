@@ -20,6 +20,7 @@ const getMenu = require("./src/Store-module/getMenu");
 const deleteMenu = require("./src/Store-module/deleteMenu");
 const deleteTopic = require("./src/Store-module/deleteTopic");
 const deleteStore = require("./src/Store-module/deleteStore");
+const updateToken = require("./src/updateToken/updateToken");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -101,4 +102,7 @@ app.post("/deletetopic", async (req, res) => {
 });
 app.post("/deletestore", async (req, res) => {
   deleteStore(req, res);
+});
+app.get("/updatetoken", async (req, res) => {
+  updateToken(req, res);
 });
