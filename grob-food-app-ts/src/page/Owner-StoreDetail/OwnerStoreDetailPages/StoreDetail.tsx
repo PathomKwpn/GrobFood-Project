@@ -106,7 +106,7 @@ const StoreDetail = () => {
       </div>
       {page == "detail" && (
         <div className="bg-white w-[95%] lg:max-w-[800px] px-[10%] rounded-lg shadow-xl">
-          <div className="flex justify-center mb-[40px] mt-[20px] text-[20px] font-bold">
+          <div className="flex justify-center mb-[40px] mt-[20px] text-[20px] font-bold ">
             ข้อมูลร้านค้า
           </div>
           <div>

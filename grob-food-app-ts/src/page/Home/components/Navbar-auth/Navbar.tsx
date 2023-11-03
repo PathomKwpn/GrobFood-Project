@@ -4,12 +4,12 @@ import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useToken } from "../../../../util/token/token";
-const Navbarauth = ({ clearToken, token, user }) => {
+const Navbarauth = ({ token, user }) => {
   const nevigate = useNavigate();
   const user_name: any = localStorage.getItem("user");
   let user_firstname = JSON.parse(user_name);
   console.log(user_name);
-  const { updateToken } = useToken();
+  const { updateToken, clearToken } = useToken();
   return (
     <>
       <div className="flex justify-center items-center h-[48px] md:h-[88px] sticky bg-white shadow-sm">

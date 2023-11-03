@@ -10,25 +10,21 @@ const exec = async (req, res) => {
   try {
     let data = req.body;
     console.log("data", data);
-    let sql = `UPDATE public.restaurants
-SET restaurant_name=$2, address=$3,  update_date=now(), update_by=$1, close_time=$4, open_time=$5, restaurant_catagory=$6
-WHERE restaurant_id=$7;`;
+    let sql = `UPDATE public."user"
+SET user_firstname=$1, user_lastname=$2, user_age=$3, user_phone=$4, update_date=now(), update_by=$5
+WHERE user_id=$5;`;
     let param = [
-      data.owner_id,
-      data.restaurant_name,
-      data.address,
-      data.close_time,
-      data.open_time,
-      data.restaurant_catagory,
-      data.restaurant_id,
+      data.user_firstname,
+      data.user_lastname,
+      data.user_age,
+      data.user_phone,
+      data.user_id,
     ];
-
     let response = await pool.query(sql, param);
     console.log(response);
     responseData.success = true;
     responseData.data = "Register Succesful";
     store.query("COMMIT");
-    // }
   } catch (error) {
     store.query("ROLLBACK");
     responseData.success = false;

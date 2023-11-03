@@ -13,6 +13,7 @@ const driverLogin = require("./src/Login-module/driverLogin");
 const getOwnerStore = require("./src/Store-module/getOwnerStore");
 const addStore = require("./src/Store-module/addStore");
 const updateStore = require("./src/Store-module/updateStore");
+const updateUser = require("./src/User-module/updateUserInfo");
 const addStoreTopic = require("./src/Store-module/addStoreTopic");
 const getStoreTopic = require("./src/Store-module/getStoreTopic");
 const addMenu = require("./src/Store-module/addMenu");
@@ -21,6 +22,7 @@ const deleteMenu = require("./src/Store-module/deleteMenu");
 const deleteTopic = require("./src/Store-module/deleteTopic");
 const deleteStore = require("./src/Store-module/deleteStore");
 const updateToken = require("./src/updateToken/updateToken");
+const getUserDetail = require("./src/User-module/getUserDetail");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -73,7 +75,9 @@ app.post("/addstore", async (req, res) => {
 app.post("/updatestore", async (req, res) => {
   updateStore(req, res);
 });
-
+app.post("/updateuser", async (req, res) => {
+  updateUser(req, res);
+});
 //OWNER_STOREADDTOPIC
 app.post("/addtopic", async (req, res) => {
   addStoreTopic(req, res);
@@ -105,4 +109,7 @@ app.post("/deletestore", async (req, res) => {
 });
 app.get("/updatetoken", async (req, res) => {
   updateToken(req, res);
+});
+app.post("/getuserdetail", async (req, res) => {
+  getUserDetail(req, res);
 });
