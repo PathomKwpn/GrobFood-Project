@@ -10,6 +10,7 @@ import RegisterPage from "./page/Register-pages/Register";
 import LoginPage from "./page/Login-pages/Login";
 import OwnerStoreDetail from "./page/Owner-StoreDetail/OwnerStoreDetail";
 import UserProfile from "./page/UserProfile/UserProfile";
+import StoreListHome from "./page/StoreList-page/StoreList-Home";
 import { useToken } from "./util/token/token";
 const theme = createTheme({
   typography: {
@@ -59,7 +60,9 @@ function App() {
     },
     {
       path: "/userprofile",
-      element: <UserProfile />,
+      element: (
+        <UserProfile clearToken={clearToken} token={token} user={user} />
+      ),
     },
     {
       path: "/ownerhome",
@@ -70,6 +73,10 @@ function App() {
       element: (
         <OwnerStoreDetail clearToken={clearToken} token={token} user={user} />
       ),
+    },
+    {
+      path: "/allstore",
+      element: <StoreListHome clearToken={clearToken} />,
     },
   ]);
   // if (!token) {

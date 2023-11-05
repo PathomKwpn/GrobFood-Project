@@ -18,18 +18,18 @@ const exec = async (req, res) => {
     let response = await pool.query(sql);
     // console.log(response);
     if (response.rows.length) {
-      console.log(
-        "pathfileLocation -->>",
-        response.rows[0].restaurants_image_url,
-        "<<<<"
-      );
+      // console.log(
+      //   "pathfileLocation -->>",
+      //   response.rows[0].restaurants_image_url,
+      //   "<<<<"
+      // );
       const fileImage = common.commonService.pathFileToBaes64(
         response.rows[0].restaurants_image_url
       );
       responseData.success = true;
       responseData.data = response.rows;
       responseData.image = fileImage;
-      console.log(fileImage);
+      // console.log(fileImage);
     } else {
       responseData.success = false;
     }

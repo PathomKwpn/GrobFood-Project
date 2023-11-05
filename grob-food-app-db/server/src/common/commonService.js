@@ -65,8 +65,10 @@ function pathFileToBaes64(pathImage) {
   const fs = require("fs");
   const addFontPathImage = `data:image/png;base64,${pathImage}`;
   try {
+    console.log(pathImage, "path");
     //  fs.readFile("." + pathImage, { encoding: "base64" });
     const data = fs.readFileSync("." + pathImage, { encoding: "base64" });
+    console.log(data);
     return data;
   } catch (err) {
     console.error(err);

@@ -11,20 +11,19 @@ const exec = async (req, res) => {
     console.log(data);
     let restaurant_topic_uuid = uuid();
 
-    let sql = `SELECT m.menu_id, menu_name, price, m.restaurant_topic_id, food_catagory,mi.menu_image_url ,mi.menu_image_id 
-FROM public.menus m
-join menu_image mi on m.menu_id = mi.menu_id
-join restaurant_topic rt on m.restaurant_topic_id = rt.restaurant_topic_id
-where m.restaurant_topic_id = '${data.restaurant_topic_id}';`;
+    let sql = `select r.restaurant_id,ri.restaurants_image_url,restaurant_name ,restaurant_catagory ,close_time ,open_time  from restaurants r 
+join restaurants_image ri on r.restaurant_id = ri.restaurants_id ;`;
     let param = [data.owner_id];
     let response = await pool.query(sql);
     console.log(response);
 
     response.rows.map((item) => {
+      console.log(item.restaurants_image_url);
       const fileImage = common.commonService.pathFileToBaes64(
-        item.menu_image_url
+        item.restaurants_image_url
       );
-      console.log(item);
+      console.log(fileImage);
+      item.restaurants_image_url = fileImage;
     });
     responseData.success = true;
     responseData.data = response.rows;

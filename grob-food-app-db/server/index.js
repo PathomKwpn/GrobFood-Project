@@ -23,6 +23,7 @@ const deleteTopic = require("./src/Store-module/deleteTopic");
 const deleteStore = require("./src/Store-module/deleteStore");
 const updateToken = require("./src/updateToken/updateToken");
 const getUserDetail = require("./src/User-module/getUserDetail");
+const getAllStoreList = require("./src/Front-store-module/getAllStoreList");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -112,4 +113,7 @@ app.get("/updatetoken", async (req, res) => {
 });
 app.post("/getuserdetail", async (req, res) => {
   getUserDetail(req, res);
+});
+app.post("/getallstorelist", async (req, res) => {
+  getAllStoreList(req, res);
 });
