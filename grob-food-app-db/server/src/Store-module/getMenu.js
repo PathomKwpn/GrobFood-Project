@@ -24,6 +24,7 @@ where m.restaurant_topic_id = '${data.restaurant_topic_id}';`;
       const fileImage = common.commonService.pathFileToBaes64(
         item.menu_image_url
       );
+      item.menu_image_url = fileImage;
       console.log(item);
     });
     responseData.success = true;

@@ -2,6 +2,7 @@ import SearchStoreBar from "./SearchStorebar";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useEffect, useState } from "react";
 import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
+import StarIcon from "@mui/icons-material/Star";
 import axios from "axios";
 const StoreList_container = () => {
   const [allstoreList, setAllStoreList] = useState([]);
@@ -44,10 +45,10 @@ const StoreList_container = () => {
                 key={item.restaurant_id}
                 className="flex gap-1 items-center justify-items-center mx-[10px] mb-[20px]"
               >
-                <div className="w-full  mx-[3px] flex   mb-[4px] rounded-lg max-h-[100px] overflow-hidden gap-[15px]">
-                  <div className=" w-[100px] h-[100px] flex justify-center items-center bg-cover">
+                <div className="w-full h-[auto] mx-[3px] flex items-center mb-[4px] rounded-lg  gap-[15px]">
+                  <div className=" w-[120px] h-[120px] flex justify-center items-center bg-cover">
                     <img
-                      className="bg-cover h-full bg-center rounded-lg max-h-[100px]"
+                      className="object-cover h-full bg-center rounded-lg max-h-[120px] max-w-[120px]"
                       src={`data:image/png;base64,${item.restaurants_image_url}`}
                       alt="menu-image"
                       onClick={() => {
@@ -56,15 +57,20 @@ const StoreList_container = () => {
                       }}
                     />
                   </div>
-                  <div className="flex flex-col">
-                    <div className="font-semibold mb-[10px] text-[16px]">
+                  <div className="flex flex-col h-[auto]">
+                    <div className="font-semibold mb-[10px] text-[14px]">
                       {item.restaurant_name}
                     </div>
-                    <div className="text-[12px] text-[#7a7a7a]">
+                    <div className="text-[12px] text-[#505050] font-semibold">
+                      เวลาให้บริการ : {item.open_time} - {item.close_time}
+                    </div>
+                    <div className="text-[12px] text-[#7a7a7a] mb-[5px]">
                       {item.restaurant_catagory}
                     </div>
-                    <div className="text-[14px] text-[#000000]">
-                      เปิด: {item.open_time} ปิด: {item.close_time}
+
+                    <div className="text-[12px] text-[#505050] font-semibold">
+                      <StarIcon className="text-[20px] text-[#F7C942]" />{" "}
+                      {item.score}
                     </div>
                   </div>
                 </div>

@@ -286,6 +286,8 @@ const MenuList = ({ restaurant_id }) => {
                   <MenuItem value={"น้ำผลไม้/สมูทตี้"}>
                     น้ำผลไม้/สมูทตี้
                   </MenuItem>
+                  <MenuItem value={"เครื่องดื่ม"}>เครื่องดื่ม</MenuItem>
+                  <MenuItem value={"เครื่องดื่ม"}>ท๊อปปิ้ง</MenuItem>
                   <MenuItem value={"สเต็ก"}>สเต็ก</MenuItem>
                   <MenuItem value={"อาหารสุขภาพ"}>อาหารสุขภาพ</MenuItem>
                 </Select>
