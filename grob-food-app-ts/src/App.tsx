@@ -11,6 +11,7 @@ import LoginPage from "./page/Login-pages/Login";
 import OwnerStoreDetail from "./page/Owner-StoreDetail/OwnerStoreDetail";
 import UserProfile from "./page/UserProfile/UserProfile";
 import StoreListHome from "./page/StoreList-page/StoreList-Home";
+import StorePage from "./page/StoreDetailPage/StorePage";
 import { useToken } from "./util/token/token";
 const theme = createTheme({
   typography: {
@@ -77,6 +78,10 @@ function App() {
     {
       path: "/allstore",
       element: <StoreListHome clearToken={clearToken} />,
+    },
+    {
+      path: "/allstore/:resid",
+      element: <StorePage />,
     },
   ]);
   // if (!token) {

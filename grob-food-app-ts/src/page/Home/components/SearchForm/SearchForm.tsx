@@ -3,8 +3,10 @@ import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import Button from "@mui/material/Button";
 import { green, orange } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 const SearchForm = () => {
+  const nevigate = useNavigate();
   return (
     <div className="w-[100%] my-[50px] px-[5%] md:max-w-[360px] md:absolute md:z-99 md:top-[10vh] bg-[#FFFFFF] md:pt-[50px] md:pb-[90px] md:px-[20px] md:rounded-lg md:ml-[40px] mt-[150px] md:mt-[100px]">
       <div className="mb-[24px]">
@@ -38,6 +40,9 @@ const SearchForm = () => {
         variant="contained"
         style={{
           backgroundColor: "#00b14f",
+        }}
+        onClick={() => {
+          nevigate("/allstore");
         }}
         className="w-full h-[48px] font-semibold text-[16px]"
       >
