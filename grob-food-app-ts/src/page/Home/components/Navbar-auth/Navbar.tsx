@@ -17,7 +17,7 @@ const Navbarauth = ({ token, user }) => {
           <div className="flex justify-between">
             <div className="w-[90px] h-[auto] md:w-[140px] p-1">
               <Link to={"/home"}>
-                <img src="./image/logo-grabfood/logo-GrobFood.png" alt="" />
+                <img src="../image/logo-grabfood/logo-GrobFood.png" alt="" />
               </Link>
             </div>
             <div className="flex ">

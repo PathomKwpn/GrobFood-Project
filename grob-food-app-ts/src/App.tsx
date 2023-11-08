@@ -81,7 +81,7 @@ function App() {
     },
     {
       path: "/allstore/:resid",
-      element: <StorePage />,
+      element: <StorePage clearToken={clearToken} />,
     },
   ]);
   // if (!token) {
