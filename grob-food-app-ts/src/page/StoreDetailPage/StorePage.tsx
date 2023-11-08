@@ -111,7 +111,7 @@ const StorePage = ({ clearToken }) => {
                           >
                             <div className="w-[97px] h-[97px] md:w-[130px] md:h-[130px]  rounded-md flex-0.5">
                               <img
-                                className="bg-cover w-full"
+                                className="bg-cover w-full rounded-md"
                                 src={`data:image/png;base64,${item.menu_image_url}`}
                                 alt="menu-image"
                               />
