@@ -7,7 +7,7 @@ import {
   Promotion,
 } from "../../page/Home/components/";
 import Login from "../Login-pages/Login";
-
+import Footer from "../Footer/Footer";
 const Home = ({ clearToken, token, user }) => {
   const getOwner = localStorage.getItem("user");
   if (!getOwner) {
@@ -20,6 +20,7 @@ const Home = ({ clearToken, token, user }) => {
       <Promotion />
       <Catagory />
       <DetailQuestion />
+      <Footer />
     </>
   );
 };

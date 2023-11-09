@@ -22,10 +22,11 @@ function App() {
   // const [tokenStatus, setTokenStatus] = useState(false);
   const {
     token,
-    saveTokentoLocalStorage,
     clearToken,
     user,
+    saveTokentoLocalStorage,
     saveUsertoLacalStorage,
+    createCarttoLocalStorage,
   } = useToken();
 
   const router = createBrowserRouter([
@@ -81,7 +82,12 @@ function App() {
     },
     {
       path: "/allstore/:resid",
-      element: <StorePage clearToken={clearToken} />,
+      element: (
+        <StorePage
+          clearToken={clearToken}
+          createCart={createCarttoLocalStorage}
+        />
+      ),
     },
   ]);
   // if (!token) {

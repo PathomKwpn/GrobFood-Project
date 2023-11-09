@@ -4,11 +4,9 @@ import { Link } from "react-router-dom";
 import { useToken } from "../../util/token/token";
 const Login = () => {
   const {
-    token,
-    saveTokentoLocalStorage,
-    clearToken,
-    user,
     saveUsertoLacalStorage,
+    saveTokentoLocalStorage,
+    createCarttoLocalStorage,
   } = useToken();
   const [state, setState] = useState("user");
   const [contrastUser, setContrastUser] = useState(
@@ -79,6 +77,7 @@ const Login = () => {
           <LoginUser
             setUser={saveUsertoLacalStorage}
             setToken={saveTokentoLocalStorage}
+            createCart={createCarttoLocalStorage}
           />
         )}
         {state === "partner" && (

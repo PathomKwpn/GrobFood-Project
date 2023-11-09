@@ -6,7 +6,7 @@ import {
   Navbar,
   Promotion,
 } from "../../page/Home/components/";
-
+import Footer from "../Footer/Footer";
 const Home = ({ clearToken, token, user }) => {
   return (
     <>
@@ -15,6 +15,7 @@ const Home = ({ clearToken, token, user }) => {
       <Promotion />
       <Catagory />
       <DetailQuestion />
+      <Footer />
     </>
   );
 };

@@ -9,7 +9,8 @@ import { Navbarauth } from "../Home/components";
 import axios from "axios";
 import Login from "../Login-pages/Login";
 import Footer from "../Footer/Footer";
-const StorePage = ({ clearToken }) => {
+import { Alert, AlertTitle, Button } from "@mui/material";
+const StorePage = ({ clearToken, createCart }) => {
   //CHECK LOGIN
   const getOwner = localStorage.getItem("user");
   if (!getOwner) {
@@ -19,7 +20,10 @@ const StorePage = ({ clearToken }) => {
   const restaurant_id = { restaurant_id: resid };
   const [storeDetail, setStoreDetail] = useState([]);
   const [storeTopic, setStoreTopic] = useState([]);
-  const [menus, setMenus] = useState([]);
+  const [addmenuStateCheck, setAddmenuStateCheck] = useState(false);
+  const [changeStore, setChangeStore] = useState(false);
+  const cart: any = localStorage.getItem("cart");
+  let user_cart = JSON.parse(cart);
   const getStoreDetailAPI = async () => {
     console.log();
     const response = await axios.post(
@@ -45,11 +49,59 @@ const StorePage = ({ clearToken }) => {
   return (
     <div className=" bg-[#F7F7F7]">
       <Navbarauth clearToken={clearToken} />
-
+      {addmenuStateCheck == true && (
+        <div className="fixed top-[80px] left-[50%] translate-x-[-50%]">
+          <Alert severity="error" className="mb-[40px]  shadow-xl">
+            <AlertTitle>กรุณาเข้าสู่ระบบก่อนทำการสั่งอาหาร</AlertTitle>
+            <div className="mt-[20px] flex justify-center">
+              <Button
+                variant="contained"
+                className="bg-[#01B14F] md:min-w-[80px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px] mr-[10px]"
+              >
+                ยืนยัน
+              </Button>
+              <Button
+                variant="contained"
+                className="bg-[#ff4040] md:min-w-[80px] max-w-[400px] focus:bg-[#ff4040] hover:bg-[#ff4040] z-0 my-[10px] mr-[10px]"
+              >
+                ยกเลิก
+              </Button>
+            </div>
+          </Alert>
+        </div>
+      )}
+      {changeStore == true && (
+        <div className=" fixed top-[80px] left-[50%] translate-x-[-50%]">
+          <Alert severity="error" className="mb-[40px]  shadow-xl">
+            <AlertTitle>คุณยืนยันที่จะเปลี่ยนร้านใช่หรือไม่</AlertTitle>
+            <div className="mt-[20px] flex justify-center">
+              <Button
+                variant="contained"
+                className="bg-[#01B14F] md:min-w-[80px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px] mr-[10px]"
+                onClick={() => {
+                  createCart([]);
+                  setChangeStore(false);
+                }}
+              >
+                ยืนยัน
+              </Button>
+              <Button
+                variant="contained"
+                className="bg-[#ff4040] md:min-w-[80px] max-w-[400px] focus:bg-[#ff4040] hover:bg-[#ff4040] z-0 my-[10px] mr-[10px]"
+                onClick={() => {
+                  setChangeStore(false);
+                }}
+              >
+                ยกเลิก
+              </Button>
+            </div>
+          </Alert>
+        </div>
+      )}
       {storeDetail.length !== 0 && (
         <div className="">
           {/* Detail */}
-          <div className=" bg-white lg:pt-[20px] lg:px-[10%] ">
+          <div className=" bg-white md:pt-[10px] lg:pt-[20px] lg:px-[10%] ">
             <div className="w-full flex items-center justify-center mb-[4px] rounded-l-lg md:hidden">
               <img
                 className="bg-cover w-full"
@@ -124,7 +176,44 @@ const StorePage = ({ clearToken }) => {
                                 <div className="text-[18px] text-[#1c1c1c] font-[500]">
                                   {item.price}
                                 </div>
-                                <div className="w-[32px] h-[32px] rounded-[50%] bg-[#00B14F] flex justify-center items-center">
+                                <div
+                                  className="w-[32px] h-[32px] rounded-[50%] bg-[#00B14F] flex justify-center items-center"
+                                  onClick={() => {
+                                    if (!getOwner) {
+                                      setAddmenuStateCheck(true);
+                                    } else {
+                                      if (user_cart.length == 0) {
+                                        user_cart.push({
+                                          restaurant_id:
+                                            storeDetail[0].restaurant_id,
+                                          menu_name: item.menu_name,
+                                          menu_price: item.price,
+                                        });
+                                        createCart(user_cart);
+                                      } else {
+                                        if (
+                                          user_cart[0].restaurant_id !=
+                                          storeDetail[0].restaurant_id
+                                        ) {
+                                          console.log("คนละร้าน");
+                                          setChangeStore(true);
+                                          console.log(
+                                            user_cart[0].restaurant_id,
+                                            storeDetail[0].restaurant_id
+                                          );
+                                        } else {
+                                          user_cart.push({
+                                            restaurant_id:
+                                              storeDetail[0].restaurant_id,
+                                            menu_name: item.menu_name,
+                                            menu_price: item.price,
+                                          });
+                                          createCart(user_cart);
+                                        }
+                                      }
+                                    }
+                                  }}
+                                >
                                   <AddIcon className="text-[white]" />
                                 </div>
                               </div>

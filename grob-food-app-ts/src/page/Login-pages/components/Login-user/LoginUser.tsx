@@ -13,7 +13,7 @@ import { AlertTitle } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import FilledInput from "@mui/material/FilledInput";
 import { Link, useNavigate } from "react-router-dom";
-const LoginUser = ({ setUser, setToken }) => {
+const LoginUser = ({ setUser, setToken, createCart }) => {
   const [user_username, setUser_Username] = useState<string>("");
   const [user_password, setUser_Password] = useState<string>("");
   const [loginStatus, setLoginStatus] = useState(false);
@@ -47,6 +47,7 @@ const LoginUser = ({ setUser, setToken }) => {
       console.log(response.data._token);
       setUser(response.data.data[0]);
       setToken(response.data._token);
+      createCart([]);
       setAlertStatus({
         title: "",
         data: "LOGIN SUCCESSFUL",
