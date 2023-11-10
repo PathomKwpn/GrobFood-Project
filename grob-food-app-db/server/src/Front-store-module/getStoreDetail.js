@@ -8,7 +8,7 @@ const exec = async (req, res) => {
   try {
     let data = req.body;
     console.log(data);
-    let sql_to_getStoreDetail = `select r.restaurant_id,r.score,restaurant_name,ri.restaurants_image_url ,restaurant_catagory ,close_time ,open_time,rt.restaurant_topic_name ,mi.menu_image_url ,m.menu_name ,m.price,m.menu_id from restaurants r 
+    let sql_to_getStoreDetail = `select r.restaurant_id,r.score,restaurant_name,ri.restaurants_image_url ,restaurant_catagory ,close_time ,open_time,rt.restaurant_topic_name ,mi.menu_image_url ,m.menu_name ,m.price from restaurants r 
 join restaurants_image ri on r.restaurant_id = ri.restaurants_id 
 join restaurant_topic rt on r.restaurant_id =rt.restaurant_id 
 join menus m on m.restaurant_topic_id = rt.restaurant_topic_id
