@@ -180,18 +180,24 @@ const StorePage = ({ clearToken, createCart }) => {
                                   className="w-[32px] h-[32px] rounded-[50%] bg-[#00B14F] flex justify-center items-center"
                                   onClick={() => {
                                     if (!getOwner) {
+                                      //ดูว่า loing หรือยัง ถ้ายังให้ user ไป login
                                       setAddmenuStateCheck(true);
                                     } else {
                                       if (user_cart.length == 0) {
+                                        //ดูว่ามี สินค้าในตะกร้าหรือยังถ้ายังก็เพิ่ม
                                         user_cart.push({
                                           restaurant_id:
                                             storeDetail[0].restaurant_id,
                                           menu_name: item.menu_name,
                                           menu_price: item.price,
+                                          menu_id: item.menu_id,
+                                          amount: 1,
                                         });
                                         createCart(user_cart);
                                       } else {
+                                        //ถ้ามีแล้วก็ตรวจสอบว่าสินค้าที่เพิ่มเข้ามาใหม่ มี restaurant_id เดียวกับรายการก่อนหน้าหรือไม่
                                         if (
+                                          //ถ้าไม่เหมือน
                                           user_cart[0].restaurant_id !=
                                           storeDetail[0].restaurant_id
                                         ) {
@@ -202,11 +208,21 @@ const StorePage = ({ clearToken, createCart }) => {
                                             storeDetail[0].restaurant_id
                                           );
                                         } else {
+                                          //ถ้าเหมือน
+                                          // user_cart.forEach((i) => {
+                                          //   console.log(i.menu_id, "ITEM");
+                                          //   if (i.menu_id == item.menu_id) {
+                                          //     console.log("ซ้ำ");
+                                          //   }
+                                          // });
+
                                           user_cart.push({
                                             restaurant_id:
                                               storeDetail[0].restaurant_id,
                                             menu_name: item.menu_name,
                                             menu_price: item.price,
+                                            menu_id: item.menu_id,
+                                            amount: 1,
                                           });
                                           createCart(user_cart);
                                         }
