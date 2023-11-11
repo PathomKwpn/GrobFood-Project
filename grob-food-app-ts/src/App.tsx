@@ -13,6 +13,7 @@ import UserProfile from "./page/UserProfile/UserProfile";
 import StoreListHome from "./page/StoreList-page/StoreList-Home";
 import StorePage from "./page/StoreDetailPage/StorePage";
 import { useToken } from "./util/token/token";
+import Box from "@mui/material/Box";
 const theme = createTheme({
   typography: {
     fontFamily: ["Kanit", "sans-serif"].join(","),

@@ -22,6 +22,7 @@ const StorePage = ({ clearToken, createCart }) => {
   const [storeTopic, setStoreTopic] = useState([]);
   const [addmenuStateCheck, setAddmenuStateCheck] = useState(false);
   const [changeStore, setChangeStore] = useState(false);
+  const [doubleMenu, setDoubleMenu] = useState(false);
   const cart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(cart);
   const getStoreDetailAPI = async () => {
@@ -49,6 +50,11 @@ const StorePage = ({ clearToken, createCart }) => {
   return (
     <div className=" bg-[#F7F7F7]">
       <Navbarauth clearToken={clearToken} />
+      {doubleMenu == true && (
+        <div className=" absolute top-[80px] left-[50%] translate-x-[-50%] rounded-md shadow-md">
+          <Alert severity="error">คุณมีสินค้านี้อยู่ในตะกร้าแล้ว</Alert>
+        </div>
+      )}
       {addmenuStateCheck == true && (
         <div className="fixed top-[80px] left-[50%] translate-x-[-50%]">
           <Alert severity="error" className="mb-[40px]  shadow-xl">
@@ -99,7 +105,7 @@ const StorePage = ({ clearToken, createCart }) => {
         </div>
       )}
       {storeDetail.length !== 0 && (
-        <div className="">
+        <div className="mt-[100px]">
           {/* Detail */}
           <div className=" bg-white md:pt-[10px] lg:pt-[20px] lg:px-[10%] ">
             <div className="w-full flex items-center justify-center mb-[4px] rounded-l-lg md:hidden">
@@ -191,6 +197,7 @@ const StorePage = ({ clearToken, createCart }) => {
                                           menu_name: item.menu_name,
                                           menu_price: item.price,
                                           menu_id: item.menu_id,
+                                          menu_image_url: item.menu_image_url,
                                           amount: 1,
                                         });
                                         createCart(user_cart);
@@ -209,22 +216,48 @@ const StorePage = ({ clearToken, createCart }) => {
                                           );
                                         } else {
                                           //ถ้าเหมือน
+                                          let result = user_cart.find(
+                                            //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
+                                            (list) => {
+                                              return (
+                                                list.menu_id == item.menu_id
+                                              );
+                                            }
+                                          );
+                                          console.log(result);
+
+                                          if (result == undefined) {
+                                            user_cart.push({
+                                              restaurant_id:
+                                                storeDetail[0].restaurant_id,
+                                              menu_name: item.menu_name,
+                                              menu_price: item.price,
+                                              menu_id: item.menu_id,
+                                              menu_image_url:
+                                                item.menu_image_url,
+                                              amount: 1,
+                                            });
+                                            createCart(user_cart);
+                                          } else {
+                                            console.log("ซ้ำ");
+                                            let countdown = 3;
+                                            setDoubleMenu(true);
+                                            let timer = setInterval(() => {
+                                              countdown--;
+                                              console.log(countdown);
+
+                                              if (countdown == 0) {
+                                                setDoubleMenu(false);
+                                                clearInterval(timer);
+                                              }
+                                            }, 1000);
+                                          }
                                           // user_cart.forEach((i) => {
                                           //   console.log(i.menu_id, "ITEM");
                                           //   if (i.menu_id == item.menu_id) {
                                           //     console.log("ซ้ำ");
                                           //   }
                                           // });
-
-                                          user_cart.push({
-                                            restaurant_id:
-                                              storeDetail[0].restaurant_id,
-                                            menu_name: item.menu_name,
-                                            menu_price: item.price,
-                                            menu_id: item.menu_id,
-                                            amount: 1,
-                                          });
-                                          createCart(user_cart);
                                         }
                                       }
                                     }

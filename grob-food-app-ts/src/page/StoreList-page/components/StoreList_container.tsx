@@ -35,7 +35,7 @@ const StoreList_container = () => {
     getStore();
   }, []);
   return (
-    <div className="mx-[10px]">
+    <div className="mx-[10px] mt-[100px]">
       <SearchStoreBar />
       <div>
         <div>ร้านค้าโปรโมชั่น</div>
