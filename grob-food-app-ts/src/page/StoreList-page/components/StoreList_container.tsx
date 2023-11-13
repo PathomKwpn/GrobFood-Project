@@ -85,9 +85,13 @@ const StoreList_container = () => {
 
       <div className="bg-white px-[10px] md:px-[30px] pt-[50px]  ">
         <div className="md:pl-[24px] lg:px-[30px] xl:px-[120px]">
-          <span className="text-[#4ca3b3]">บ้าน</span>{" "}
+          <Link to={"/home"}>
+            <span className="text-[#4ca3b3] cursor-pointer">บ้าน</span>
+          </Link>
           <ArrowForwardIosIcon className="text-[16px]" />{" "}
-          <span>ร้านทั้งหมด</span>
+          <Link to={"/allstore"}>
+            <span className="text-[black]">ร้านทั้งหมด</span>
+          </Link>
         </div>
         <div className="mb-[20px] text-[20px] font-[500] md:text-[36px] md:pl-[24px] lg:px-[30px] xl:px-[120px]">
           ร้านค้าทั้งหมด

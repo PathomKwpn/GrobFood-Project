@@ -117,7 +117,9 @@ const StorePage = ({ clearToken, createCart }) => {
             </div>
             <div className="mx-[12px] mt-[24px]">
               <div>
-                <span className="text-[#4ca3b3]">บ้าน</span>{" "}
+                <Link to={"/home"}>
+                  <span className="text-[#4ca3b3] cursor-pointer">บ้าน</span>
+                </Link>
                 <ArrowForwardIosIcon className="text-[16px]" />{" "}
                 <Link to={"/allstore"}>
                   <span className="text-[#4ca3b3]">ร้านทั้งหมด</span>
@@ -196,7 +198,8 @@ const StorePage = ({ clearToken, createCart }) => {
                                             storeDetail[0].restaurant_id,
                                           menu_name: item.menu_name,
                                           menu_price: item.price,
-
+                                          restaurant_name:
+                                            storeDetail[0].restaurant_name,
                                           menu_id: item.menu_id,
                                           menu_image_url: item.menu_image_url,
                                           amount: 1,
@@ -233,6 +236,8 @@ const StorePage = ({ clearToken, createCart }) => {
                                             user_cart.push({
                                               restaurant_id:
                                                 storeDetail[0].restaurant_id,
+                                              restaurant_name:
+                                                storeDetail[0].restaurant_name,
                                               menu_name: item.menu_name,
                                               menu_price: item.price,
                                               menu_id: item.menu_id,
