@@ -137,6 +137,7 @@ const Navbarauth = ({ token, user }) => {
                 className="flex relative justify-center items-center text-[6px] font-semibold text-[#676767] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] md:px-[10px]"
                 onClick={() => {
                   setCartState("open");
+                  updateToken();
                 }}
               >
                 <ShoppingBagOutlinedIcon className="text-[#676767] text-[20px]" />
