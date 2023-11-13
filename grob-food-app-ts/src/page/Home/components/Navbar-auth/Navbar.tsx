@@ -14,11 +14,19 @@ const Navbarauth = ({ token, user }) => {
   const user_name: any = localStorage.getItem("user");
   const cart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(cart);
-  console.log(user_cart);
+
   const [cartState, setCartState] = useState<"open" | "close">("close");
   let user_firstname = JSON.parse(user_name);
-  console.log(user_name);
+
   const { updateToken, clearToken, createCarttoLocalStorage } = useToken();
+  console.log(user_cart[0]);
+  let totalprice = 0;
+  for (let i = 0; i < user_cart.length; i++) {
+    console.log(user_cart[i].menu_totalprice);
+    totalprice += Number(user_cart[i].menu_totalprice);
+  }
+  console.log(totalprice);
+
   return (
     <>
       <div className="flex  justify-center items-center h-[48px] md:h-[88px] fixed top-0 bg-white shadow-sm w-full">
@@ -56,7 +64,29 @@ const Navbarauth = ({ token, user }) => {
                             <span className="mx-[5px] md:mx-[10px]">
                               {item.amount}
                             </span>
-                            <AddIcon className="text-[16px] md:text-[24px] text-[#00A5CF]" />
+                            <AddIcon
+                              className="text-[16px] md:text-[24px] text-[#00A5CF]"
+                              onClick={() => {
+                                let result = user_cart.find(
+                                  //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
+                                  (list) => {
+                                    return list.menu_id == item.menu_id;
+                                  }
+                                );
+                                if (result != undefined) {
+                                  item.amount++;
+                                  item.menu_totalprice =
+                                    Number(item.menu_price) *
+                                    Number(item.amount);
+                                  console.log(item.menu_price);
+
+                                  let newCart = user_cart;
+
+                                  window.localStorage.removeItem("cart");
+                                  createCarttoLocalStorage(newCart);
+                                }
+                              }}
+                            />
                           </div>
                           <div className="hidden md:flex">
                             <img
@@ -70,7 +100,7 @@ const Navbarauth = ({ token, user }) => {
                             {item.menu_name}
                           </div>
                           <div className="w-[20%] flex justify-center">
-                            {item.menu_price}
+                            {item.menu_totalprice}
                           </div>
                         </div>
                       </div>
@@ -81,7 +111,7 @@ const Navbarauth = ({ token, user }) => {
               <div className="h-[150px] flex justify-center flex-col items-center shadow-[40px_35px_60px_10px_rgba(0.3,0.3,0.3,0.2)]">
                 <div className="w-full flex justify-between px-[30px]">
                   <span className="text-[20px] font-[300]">รวมทั้งหมด</span>
-                  <span className="text-[20px] font-[500]">ฺ$500 </span>
+                  <span className="text-[20px] font-[500]">${totalprice} </span>
                 </div>
                 <div className="w-full px-[30px] mt-[16px]">
                   <Button

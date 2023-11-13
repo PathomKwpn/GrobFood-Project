@@ -183,7 +183,7 @@ const StorePage = ({ clearToken, createCart }) => {
                                   {item.price}
                                 </div>
                                 <div
-                                  className="w-[32px] h-[32px] rounded-[50%] bg-[#00B14F] flex justify-center items-center"
+                                  className="w-[32px] h-[32px] rounded-[50%] bg-[#00B14F] flex justify-center items-center cursor-pointer"
                                   onClick={() => {
                                     if (!getOwner) {
                                       //ดูว่า loing หรือยัง ถ้ายังให้ user ไป login
@@ -196,9 +196,12 @@ const StorePage = ({ clearToken, createCart }) => {
                                             storeDetail[0].restaurant_id,
                                           menu_name: item.menu_name,
                                           menu_price: item.price,
+
                                           menu_id: item.menu_id,
                                           menu_image_url: item.menu_image_url,
                                           amount: 1,
+                                          menu_totalprice:
+                                            Number(item.price) * 1,
                                         });
                                         createCart(user_cart);
                                       } else {
@@ -236,6 +239,8 @@ const StorePage = ({ clearToken, createCart }) => {
                                               menu_image_url:
                                                 item.menu_image_url,
                                               amount: 1,
+                                              menu_totalprice:
+                                                Number(item.price) * 1,
                                             });
                                             createCart(user_cart);
                                           } else {
