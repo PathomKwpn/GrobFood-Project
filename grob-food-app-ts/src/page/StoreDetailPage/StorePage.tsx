@@ -51,8 +51,10 @@ const StorePage = ({ clearToken, createCart }) => {
     <div className=" bg-[#F7F7F7]">
       <Navbarauth clearToken={clearToken} />
       {doubleMenu == true && (
-        <div className=" absolute top-[80px] left-[50%] translate-x-[-50%] rounded-md shadow-md">
-          <Alert severity="error">คุณมีสินค้านี้อยู่ในตะกร้าแล้ว</Alert>
+        <div className=" fixed top-[10%] md:w-[400px] w-[250px]  left-[50%] translate-x-[-50%] rounded-md shadow-md">
+          <Alert className="md:text-[20px]" severity="error">
+            คุณมีสินค้านี้อยู่ในตะกร้าแล้ว
+          </Alert>
         </div>
       )}
       {addmenuStateCheck == true && (

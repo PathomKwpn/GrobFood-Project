@@ -10,7 +10,7 @@ const UserProfile = ({ clearToken, token, user }) => {
     return <Login />;
   }
   return (
-    <div className=" bg-[green] w-full min-h-[100vh] h-[auto] pt-[100px]">
+    <div className=" bg-[green] w-full min-h-[100vh] h-[auto] pt-[100px] ">
       <Navbarauth clearToken={clearToken} token={token} user={user} />
       <Container />
     </div>

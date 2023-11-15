@@ -40,7 +40,7 @@ const StoreList_container = () => {
     getStore();
   }, []);
   return (
-    <div className="mt-[100px]">
+    <div className="mt-[0px]">
       <div className="bg-white mb-[10px] py-[10px] px-[10px] lg:px-[80px] xl:px-[120px]">
         <div className=" flex items-center bg-[#F7F7F7] rounded-[24px] h-[40px] pl-[24px] mb-[16px]">
           <SearchIcon className="text-[#676767]" />

@@ -8,37 +8,34 @@ import { useToken } from "../../../../util/token/token";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 const Navbarauth = ({ token, user }) => {
   const nevigate = useNavigate();
   const user_name: any = localStorage.getItem("user");
   const cart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(cart);
-
+  const [alertNoMenu, setAlertNoMenu] = useState<"active" | "close">("close");
   const [cartState, setCartState] = useState<"open" | "close">("close");
   let user_firstname = JSON.parse(user_name);
 
   const { updateToken, clearToken, createCarttoLocalStorage } = useToken();
-  console.log(user_cart[0]);
   let totalprice = 0;
   for (let i = 0; i < user_cart.length; i++) {
-    console.log(user_cart[i].menu_totalprice);
     totalprice += Number(user_cart[i].menu_totalprice);
   }
-  console.log(totalprice);
 
   return (
     <>
-      <div className="flex  justify-center items-center h-[48px] md:h-[88px] fixed top-0 bg-white shadow-sm w-full">
+      <div className="flex fixed z-[1000] justify-center items-center h-[48px] md:h-[88px]  top-0 bg-white shadow-sm w-full">
         {cartState == "open" && (
-          <div>
+          <div className=" relative">
             <div
-              className="bg-black w-[100vw] h-[300vh] fixed opacity-40 top-0"
+              className="bg-black w-[100vw]  h-[300vh] z-40 fixed opacity-40 top-0"
               onClick={() => {
                 setCartState("close");
               }}
             ></div>
-            <div className=" fixed w-[100%] min-h-[100vh] translate-y-[0%] top-0 bg-white z-20 max-w-[600px] opacity-100 flex justify-between flex-col">
+            <div className=" fixed  min-h-[100vh] translate-y-[0%] top-0 bg-white z-50  w-[100%] max-w-[600px] opacity-100 flex justify-between flex-col">
               <div className="max-h-[100%]">
                 <div
                   className="h-[60px] flex items-center border-b-[1px]"
@@ -52,10 +49,13 @@ const Navbarauth = ({ token, user }) => {
                     <span>เวลาจัดส่ง</span>
                   </div>
                 </div>
+                {alertNoMenu == "active" && (
+                  <Alert className="md:text-[20px]" severity="error">
+                    คุณไม่มีสินค้านี้ในตะกร้า
+                  </Alert>
+                )}
                 <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
                   {user_cart.map((item) => {
-                    console.log(item);
-
                     return (
                       <div>
                         <div className="flex min-h-[80px] border-b-[1px] py-[10px]">
@@ -78,7 +78,6 @@ const Navbarauth = ({ token, user }) => {
                                   item.menu_totalprice =
                                     Number(item.menu_price) *
                                     Number(item.amount);
-                                  console.log(item.menu_price);
 
                                   let newCart = user_cart;
 
@@ -111,12 +110,29 @@ const Navbarauth = ({ token, user }) => {
               <div className="h-[150px] flex justify-center flex-col items-center shadow-[40px_35px_60px_10px_rgba(0.3,0.3,0.3,0.2)]">
                 <div className="w-full flex justify-between px-[30px]">
                   <span className="text-[20px] font-[300]">รวมทั้งหมด</span>
-                  <span className="text-[20px] font-[500]">${totalprice} </span>
+                  <span className="text-[20px] font-[500]">฿{totalprice} </span>
                 </div>
                 <div className="w-full px-[30px] mt-[16px]">
                   <Button
                     variant="contained"
                     className="bg-[#01B14F] w-full h-[48px] rounded-md focus:bg-[#01B14F] hover:bg-[#01B14F]"
+                    onClick={() => {
+                      if (user_cart.length == 0) {
+                        let countdown = 3;
+                        setAlertNoMenu("active");
+                        let timer = setInterval(() => {
+                          countdown--;
+                          console.log(countdown);
+
+                          if (countdown == 0) {
+                            setAlertNoMenu("close");
+                            clearInterval(timer);
+                          }
+                        }, 1000);
+                      } else {
+                        nevigate("/confirmpage");
+                      }
+                    }}
                   >
                     ยืนยันรายการสั่งซื้อ
                   </Button>
@@ -164,7 +180,6 @@ const Navbarauth = ({ token, user }) => {
                 onClick={() => {
                   clearToken();
                   nevigate("/login");
-                  console.log("logout");
                 }}
               >
                 <ExitToAppIcon />
