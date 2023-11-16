@@ -95,7 +95,12 @@ function App() {
     },
     {
       path: "/confirmpage",
-      element: <ConfirmPage />,
+      element: (
+        <ConfirmPage
+          saveLocation={saveLocationtoLocalStorage}
+          clearToken={clearToken}
+        />
+      ),
     },
   ]);
   // if (!token) {

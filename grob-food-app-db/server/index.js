@@ -25,6 +25,7 @@ const updateToken = require("./src/updateToken/updateToken");
 const getUserDetail = require("./src/User-module/getUserDetail");
 const getAllStoreList = require("./src/Front-store-module/getAllStoreList");
 const getStoreDetail = require("./src/Front-store-module/getStoreDetail");
+const getStoreAddres = require("./src/Front-store-module/getStoreAddress");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -125,4 +126,7 @@ app.post("/getallstorelist", async (req, res) => {
 //GET STORE DETAIL
 app.post("/getstoredetail", async (req, res) => {
   getStoreDetail(req, res);
+});
+app.post("/getstoreaddress", async (req, res) => {
+  getStoreAddres(req, res);
 });
