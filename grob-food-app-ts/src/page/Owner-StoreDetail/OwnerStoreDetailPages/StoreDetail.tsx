@@ -38,6 +38,7 @@ const StoreDetail = () => {
     if (response.data.success) {
       setStoreDetail(response.data.data[0]);
       setRestaurantID(response.data.data[0].restaurant_id);
+
       console.log(storeDetail);
     } else {
       console.log("err");
@@ -63,7 +64,8 @@ const StoreDetail = () => {
   const [restaurant_catagory, setRestaurant_catagory] = useState("");
   const [open_time, setRestaurant_openTime] = useState("");
   const [close_time, setRestaurant_closeTime] = useState("");
-
+  const [latitude, setlatitude] = useState("");
+  const [longitude, setlongitude] = useState("");
   const handleChange = (event: any) => {
     setRestaurant_catagory(event.target.value);
   };
@@ -161,6 +163,52 @@ const StoreDetail = () => {
               </div>
               <div className="mb-[20px]">
                 <div className="text-[18px] font-semibold mb-[5px]">
+                  latitude
+                </div>
+                {state == "detail" && (
+                  <div className="border-[#0DA152] border-2 rounded-md px-[14px] py-[8.5px] h-[40px] flex items-center">
+                    {storeDetail.latitude}
+                  </div>
+                )}
+                {state == "edit" && (
+                  <TextField
+                    label=""
+                    color="success"
+                    className=" bg-slate-200 w-full h-[40px]"
+                    focused
+                    size="small"
+                    value={latitude}
+                    onChange={(v) => {
+                      setlatitude(v.target.value);
+                    }}
+                  />
+                )}
+              </div>
+              <div className="mb-[20px]">
+                <div className="text-[18px] font-semibold mb-[5px]">
+                  longitude
+                </div>
+                {state == "detail" && (
+                  <div className="border-[#0DA152] border-2 rounded-md px-[14px] py-[8.5px] h-[40px] flex items-center">
+                    {storeDetail.longitude}
+                  </div>
+                )}
+                {state == "edit" && (
+                  <TextField
+                    label=""
+                    color="success"
+                    className=" bg-slate-200 w-full h-[40px]"
+                    focused
+                    size="small"
+                    value={longitude}
+                    onChange={(v) => {
+                      setlongitude(v.target.value);
+                    }}
+                  />
+                )}
+              </div>
+              <div className="mb-[20px]">
+                <div className="text-[18px] font-semibold mb-[5px]">
                   ประเภทของร้านของคุณ
                 </div>
                 {state == "detail" && (
@@ -200,6 +248,7 @@ const StoreDetail = () => {
                       <MenuItem value={"ไก่ทอด"}>ไก่ทอด</MenuItem>
                       <MenuItem value={"ชา กาแฟ"}>ชา กาแฟ</MenuItem>
                       <MenuItem value={"ชานมไข่มุก"}>ชานมไข่มุก</MenuItem>
+                      <MenuItem value={"อาหารทะเล"}>อาหารทะเล</MenuItem>
                       <MenuItem value={"ทานเล่น/ขนมขบเคี้ยว"}>
                         ทานเล่น/ขนมขบเคี้ยว
                       </MenuItem>
@@ -309,6 +358,8 @@ const StoreDetail = () => {
                       close_time,
                       restaurant_catagory,
                       restaurant_id,
+                      latitude,
+                      longitude,
                     });
                     setState("detail");
                   }}

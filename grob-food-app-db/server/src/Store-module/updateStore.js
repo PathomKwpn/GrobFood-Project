@@ -11,7 +11,7 @@ const exec = async (req, res) => {
     let data = req.body;
     console.log("data", data);
     let sql = `UPDATE public.restaurants
-SET restaurant_name=$2, address=$3,  update_date=now(), update_by=$1, close_time=$4, open_time=$5, restaurant_catagory=$6
+SET restaurant_name=$2, address=$3,  update_date=now(), update_by=$1, close_time=$4, open_time=$5, restaurant_catagory=$6,latitude =$8,longitude=$9
 WHERE restaurant_id=$7;`;
     let param = [
       data.owner_id,
@@ -21,6 +21,8 @@ WHERE restaurant_id=$7;`;
       data.open_time,
       data.restaurant_catagory,
       data.restaurant_id,
+      data.latitude,
+      data.longitude,
     ];
 
     let response = await pool.query(sql, param);

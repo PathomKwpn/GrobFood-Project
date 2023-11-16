@@ -94,6 +94,8 @@ const OwnerContainer = () => {
   const [close_time, setRestaurant_closeTime] = useState("");
   const [imageBase64, setImageBase64] = useState("");
   const [lastnameImage, setLastnameImage] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   //IMAGE UPLOAD
   const handleUploadImage = (e) => {
     const file = e.target.files[0];
@@ -187,7 +189,6 @@ const OwnerContainer = () => {
                       }}
                     />
                     <TextField
-                      id="partner_lastname"
                       label="ที่อยู่ร้านของคุณ"
                       variant="filled"
                       color="success"
@@ -197,6 +198,32 @@ const OwnerContainer = () => {
                       className="bg-[white] rounded-lg"
                       onChange={(v) => {
                         setRestaurant_address(v.target.value);
+                      }}
+                    />
+                    <TextField
+                      label="latitude ของร้านคุณ"
+                      placeholder="(เช่น 13.756331)"
+                      variant="filled"
+                      color="success"
+                      focused
+                      size="small"
+                      value={latitude}
+                      className="bg-[white] rounded-lg"
+                      onChange={(v) => {
+                        setLatitude(v.target.value);
+                      }}
+                    />
+                    <TextField
+                      label="longtitude ของร้านคุณ"
+                      placeholder="(เช่น 100.501762)"
+                      variant="filled"
+                      color="success"
+                      focused
+                      size="small"
+                      value={longitude}
+                      className="bg-[white] rounded-lg"
+                      onChange={(v) => {
+                        setLongitude(v.target.value);
                       }}
                     />
 
@@ -231,6 +258,7 @@ const OwnerContainer = () => {
                         <MenuItem value={"ไก่ทอด"}>ไก่ทอด</MenuItem>
                         <MenuItem value={"ชา กาแฟ"}>ชา กาแฟ</MenuItem>
                         <MenuItem value={"ชานมไข่มุก"}>ชานมไข่มุก</MenuItem>
+                        <MenuItem value={"อาหารทะเล"}>อาหารทะเล</MenuItem>
                         <MenuItem value={"ทานเล่น/ขนมขบเคี้ยว"}>
                           ทานเล่น/ขนมขบเคี้ยว
                         </MenuItem>
@@ -296,12 +324,16 @@ const OwnerContainer = () => {
                           restaurant_catagory,
                           imageBase64,
                           lastnameImage,
+                          latitude,
+                          longitude,
                         });
                         setRestaurant_name("");
                         setRestaurant_address("");
                         setRestaurant_openTime("");
                         setRestaurant_closeTime("");
                         setRestaurant_catagory("");
+                        setLatitude("");
+                        setLongitude("");
                         setImagePreviewUrl(null);
                         setCreateState(!createState);
                       }}

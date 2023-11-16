@@ -15,13 +15,19 @@ function useToken() {
     window.localStorage.setItem("cart", JSON.stringify(cart));
     setCart(cart);
   };
+  const saveLocationtoLocalStorage = (location: object) => {
+    window.localStorage.setItem("location", JSON.stringify(location));
+    setLocation(location);
+  };
   const getToken = () => {
     let tokenString: any = window.localStorage.getItem("token");
     let userString: any = window.localStorage.getItem("user");
     let cartString: any = window.localStorage.getItem("cart");
+    let locationString: any = window.localStorage.getItem("location");
     let userToken = JSON.parse(tokenString);
     let userData = JSON.parse(userString);
     let userCart = JSON.parse(cartString);
+    let userLocation = JSON.parse(locationString);
     if (userToken) {
       let decode = jwt_decode(userToken);
       let currentTiem = Math.floor(new Date().getTime() / 1000);
@@ -30,11 +36,12 @@ function useToken() {
         window.localStorage.removeItem("token");
         window.localStorage.removeItem("user");
         window.localStorage.removeItem("cart");
-        return { userToken: "", userData: "", userCart: "" };
+        window.localStorage.removeItem("location");
+        return { userToken: "", userData: "", userCart: "", userLocation: "" };
       }
-      return { userToken, userData, userCart };
+      return { userToken, userData, userCart, userLocation };
     } else {
-      return { userToken: "", userData: "", userCart: "" };
+      return { userToken: "", userData: "", userCart: "", userLocation: "" };
     }
   };
 
@@ -57,22 +64,27 @@ function useToken() {
     window.localStorage.removeItem("token");
     window.localStorage.removeItem("user");
     window.localStorage.removeItem("cart");
+    window.localStorage.removeItem("location");
     setToken("");
     setUser("");
     setCart("");
+    setLocation("");
   };
 
   const [token, setToken] = useState(getToken().userToken);
   const [user, setUser] = useState(getToken().userData);
   const [cart, setCart] = useState(getToken().userCart);
+  const [location, setLocation] = useState(getToken().userCart);
   return {
     token,
     user,
     cart,
+    location,
     updateToken,
     saveTokentoLocalStorage,
     createCarttoLocalStorage,
     saveUsertoLacalStorage,
+    saveLocationtoLocalStorage,
     clearToken,
   };
 }

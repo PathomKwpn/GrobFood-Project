@@ -28,6 +28,7 @@ function App() {
     user,
     saveTokentoLocalStorage,
     saveUsertoLacalStorage,
+    saveLocationtoLocalStorage,
     createCarttoLocalStorage,
   } = useToken();
 
@@ -50,6 +51,7 @@ function App() {
           clearToken={clearToken}
           token={token}
           user={user}
+          saveLocation={saveLocationtoLocalStorage}
           // tokenstatus={tokenStatus}
         />
       ),

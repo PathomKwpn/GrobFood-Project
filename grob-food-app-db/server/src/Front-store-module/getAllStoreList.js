@@ -11,7 +11,7 @@ const exec = async (req, res) => {
     console.log(data);
     let restaurant_topic_uuid = uuid();
 
-    let sql = `select r.restaurant_id,ri.restaurants_image_url,restaurant_name ,restaurant_catagory ,close_time ,open_time,r.score  from restaurants r 
+    let sql = `select r.restaurant_id,ri.restaurants_image_url,restaurant_name ,restaurant_catagory ,close_time ,open_time,r.score, r.latitude,r.longitude  from restaurants r 
 join restaurants_image ri on r.restaurant_id = ri.restaurants_id ;`;
     let param = [data.owner_id];
     let response = await pool.query(sql);

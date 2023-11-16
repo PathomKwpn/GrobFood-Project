@@ -275,6 +275,8 @@ const MenuList = ({ restaurant_id }) => {
                   </MenuItem>
                   <MenuItem value={"ข้าวหน้า"}>ข้าวหน้า</MenuItem>
                   <MenuItem value={"เบเกอรี่"}>เบเกอรี่</MenuItem>
+                  <MenuItem value={"อาหารทะเล"}>อาหารทะเล</MenuItem>
+                  <MenuItem value={"ซูชิ"}>ซูชิ</MenuItem>
                   <MenuItem value={"ยำ"}>ยำ</MenuItem>
                   <MenuItem value={"ผลไม้"}>ผลไม้</MenuItem>
                   <MenuItem value={"ปิ้งย่าง/บาร์บีคิว"}>
@@ -288,7 +290,7 @@ const MenuList = ({ restaurant_id }) => {
                     น้ำผลไม้/สมูทตี้
                   </MenuItem>
                   <MenuItem value={"เครื่องดื่ม"}>เครื่องดื่ม</MenuItem>
-                  <MenuItem value={"เครื่องดื่ม"}>ท๊อปปิ้ง</MenuItem>
+                  <MenuItem value={"ท๊อปปิ้ง"}>ท๊อปปิ้ง</MenuItem>
                   <MenuItem value={"สเต็ก"}>สเต็ก</MenuItem>
                   <MenuItem value={"อาหารสุขภาพ"}>อาหารสุขภาพ</MenuItem>
                 </Select>

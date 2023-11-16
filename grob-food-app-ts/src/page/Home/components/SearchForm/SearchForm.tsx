@@ -4,14 +4,22 @@ import MyLocationIcon from "@mui/icons-material/MyLocation";
 import Button from "@mui/material/Button";
 import { green, orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-const SearchForm = () => {
+const SearchForm = ({ saveLocation }) => {
   const nevigate = useNavigate();
   const getUserlocation = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
       console.log("Latitude is :", position.coords.latitude);
       console.log("Longitude is :", position.coords.longitude);
+      const location = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+      saveLocation(location);
     });
   };
+  const getLoaction = localStorage.getItem("location");
+  console.log(getLoaction);
+
   return (
     <div className="w-[100%] my-[50px] px-[5%] md:max-w-[360px] md:absolute md:z-[1px] md:top-[10vh] bg-[#FFFFFF] md:pt-[50px] md:pb-[90px] md:px-[20px] md:rounded-lg md:ml-[40px] mt-[150px] md:mt-[100px]">
       <div className="mb-[24px]">
@@ -39,8 +47,9 @@ const SearchForm = () => {
           </span>
           <input
             type="text"
-            className="w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[48px] py-[6px] text-[14px]"
-            placeholder="กรอกที่อยู่ของคุณ"
+            className="w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[48px] py-[6px] text-[14px] text-[#7a7a7a]"
+            placeholder="ระบุตำแหน่งของคุณ"
+            value={getLoaction ? getLoaction : ""}
           />
         </div>
       </div>

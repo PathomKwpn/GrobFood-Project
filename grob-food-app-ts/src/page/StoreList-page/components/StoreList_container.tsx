@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
 import StarIcon from "@mui/icons-material/Star";
 import SearchIcon from "@mui/icons-material/Search";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import axios from "axios";
 import { Link } from "react-router-dom";
 const StoreList_container = () => {
   const [allstoreList, setAllStoreList] = useState([]);
   const [resMenus, setResMenus] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState(allstoreList);
+  const [userLatitude, setUserLatitude] = useState("");
+  const [userLongitude, setUserLongitude] = useState("");
   const handleFilter = (e) => {
     const value = e.target.value;
     console.log(value);
@@ -21,6 +24,33 @@ const StoreList_container = () => {
 
     setFilteredUsers(filtered);
   };
+  function getDistanceBetweenPointsNew(
+    latitude1,
+    longitude1,
+    latitude2,
+    longitude2,
+    unit = "kilometers"
+  ) {
+    const theta = longitude1 - longitude2;
+    let distance =
+      Math.sin(deg2rad(latitude1)) * Math.sin(deg2rad(latitude2)) +
+      Math.cos(deg2rad(latitude1)) *
+        Math.cos(deg2rad(latitude2)) *
+        Math.cos(deg2rad(theta));
+    distance = Math.acos(distance);
+    distance = rad2deg(distance);
+    distance = distance * 60 * 1.1515;
+    if (unit === "kilometers") {
+      distance *= 1.609344;
+    }
+    return distance.toFixed(1);
+  }
+  function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+  }
+  function rad2deg(rad) {
+    return rad * (180 / Math.PI);
+  }
   const getStore = async () => {
     console.log();
     const response = await axios.post(`${GROBFOOD_USER_URL}/getallstorelist`);
@@ -36,9 +66,25 @@ const StoreList_container = () => {
       console.log("err");
     }
   };
+  const getLoaction = localStorage.getItem("location");
+  let user_location = JSON.parse(getLoaction);
+
+  // const getUserlocation = () => {
+  //   navigator.geolocation.getCurrentPosition(function (position) {
+  //     console.log("Latitude is :", position.coords.latitude);
+  //     setUserLatitude(position.coords.latitude);
+  //     console.log("Longitude is :", position.coords.longitude);
+  //     setUserLongitude(position.coords.longitude);
+  //   });
+  // };
   useEffect(() => {
     getStore();
+    if (user_location) {
+      setUserLatitude(user_location.latitude);
+      setUserLongitude(user_location.longitude);
+    }
   }, []);
+
   return (
     <div className="mt-[0px]">
       <div className="bg-white mb-[10px] py-[10px] px-[10px] lg:px-[80px] xl:px-[120px]">
@@ -98,6 +144,25 @@ const StoreList_container = () => {
         </div>
         <div className="flex flex-col md:flex-row md:flex-wrap md:w-full md:px-[10px]  justify-center lg:px-[30px] xl:px-[120px]">
           {filteredUsers?.map((item) => {
+            let haveLocation = false;
+            let distance;
+            let time;
+            let timeHr;
+            let timeMin;
+            console.log(userLatitude);
+
+            if (item.latitude != null && userLatitude != "") {
+              haveLocation = true;
+              distance = getDistanceBetweenPointsNew(
+                item.latitude,
+                item.longitude,
+                userLatitude,
+                userLongitude
+              );
+              time = distance / 80;
+              timeMin = (10 + time * 60).toFixed(0);
+            }
+
             return (
               <div
                 key={item.restaurant_id}
@@ -132,9 +197,30 @@ const StoreList_container = () => {
                         {item.restaurant_catagory}
                       </div>
 
-                      <div className="text-[12px] text-[#505050] font-semibold">
-                        <StarIcon className="text-[20px] text-[#F7C942]" />{" "}
-                        {item.score}
+                      <div className="flex flex-col md:flex-row">
+                        <div className=" flex  justify-start items-center text-[12px] text-[#505050] font-semibold mr-[12px]">
+                          <StarIcon className="text-[20px] text-[#F7C942]" />{" "}
+                          <span className="flex flex-col content-center item justify-center items-center text-[14px]">
+                            {item.score}
+                          </span>
+                        </div>
+
+                        {haveLocation && (
+                          <div className="flex">
+                            <div className="text-[14px] flex justify-center items-center text-[#7a7a7a]">
+                              <AccessTimeIcon className="text-[20px] mr-[3px] flex justify-center items-center" />
+                              {timeMin} นาที
+                            </div>
+
+                            <div className="text-[14px] flex justify-center items-center text-[#7a7a7a]">
+                              &nbsp;&nbsp;•&nbsp;&nbsp;
+                            </div>
+
+                            <div className="text-[14px] flex justify-center items-center text-[#7a7a7a]">
+                              {distance} km.
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
