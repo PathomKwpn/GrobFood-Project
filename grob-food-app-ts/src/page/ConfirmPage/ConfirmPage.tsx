@@ -16,6 +16,8 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
   let user_cart = JSON.parse(cart);
   const restaurant_id = { restaurant_id: user_cart[0].restaurant_id };
   let totalprice = 0;
+  let deliveryCost = 0;
+  let lastprice = 0;
   for (let i = 0; i < user_cart.length; i++) {
     totalprice += Number(user_cart[i].menu_totalprice);
   }
@@ -79,12 +81,11 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
   useEffect(() => {
     getStoreAddres(restaurant_id);
   }, []);
-  console.log(user_cart);
-  let deliveryCost = 0;
+  console.log(storeLocation[0]);
 
   if (storeLocation.length != null && user_location != null) {
     console.log("H");
-    console.log(storeLocation[0].latitude, "store");
+    console.log(storeLocation.latitude, "store");
     console.log(user_location);
     let distance;
     distance = getDistanceBetweenPointsNew(
@@ -95,6 +96,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
     );
     deliveryCost = distance * 10;
   }
+  lastprice = totalprice + deliveryCost;
   return (
     <div className=" bg-slate-100 flex flex-col items-center">
       <Navbarauth clearToken={clearToken} />
@@ -240,9 +242,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
         <div className="flex justify-between items-center my-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
           <div>
             <div className="text-[18px] font-[300]">รวมทั้งหมด</div>
-            <div className="text-[24px] font-[500]">
-              ฿{totalprice + deliveryCost}
-            </div>
+            <div className="text-[24px] font-[500]">฿{lastprice}</div>
           </div>
           <Button
             variant="contained"
