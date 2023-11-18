@@ -8,14 +8,14 @@ import {
 } from "../../page/Home/components/";
 import Login from "../Login-pages/Login";
 import Footer from "../Footer/Footer";
-const Home = ({ clearToken, token, user, saveLocation }) => {
+const Home = ({ saveLocation }) => {
   const getOwner = localStorage.getItem("user");
   if (!getOwner) {
     return <Login />;
   }
   return (
     <>
-      <Navbarauth clearToken={clearToken} token={token} user={user} />
+      <Navbarauth />
       <Header saveLocation={saveLocation} />
       <Promotion />
       <Catagory />

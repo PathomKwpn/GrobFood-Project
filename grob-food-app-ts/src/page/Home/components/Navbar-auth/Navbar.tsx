@@ -9,7 +9,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Box from "@mui/material/Box";
 import { Alert, Button } from "@mui/material";
-const Navbarauth = ({ token, user }) => {
+const Navbarauth = () => {
   const nevigate = useNavigate();
   const user_name: any = localStorage.getItem("user");
   const cart: any = localStorage.getItem("cart");

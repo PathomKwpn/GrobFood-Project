@@ -7,11 +7,11 @@ import {
   Promotion,
 } from "../../page/Home/components/";
 import Footer from "../Footer/Footer";
-const Home = ({ clearToken, token, user }) => {
+const Home = ({ clearToken, token, user, saveLocation }) => {
   return (
     <>
       <Navbar clearToken={clearToken} token={token} user={user} />
-      <Header />
+      <Header saveLocation={saveLocation} />
       <Promotion />
       <Catagory />
       <DetailQuestion />

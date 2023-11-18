@@ -4,18 +4,24 @@ import MyLocationIcon from "@mui/icons-material/MyLocation";
 import Button from "@mui/material/Button";
 import { green, orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import Login from "../../../Login-pages/Login";
 const SearchForm = ({ saveLocation }) => {
+  const getOwner = localStorage.getItem("user");
   const nevigate = useNavigate();
   const getUserlocation = () => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
-      const location = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      };
-      saveLocation(location);
-    });
+    if (!getOwner) {
+      nevigate("/login");
+    } else {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        console.log("Latitude is :", position.coords.latitude);
+        console.log("Longitude is :", position.coords.longitude);
+        const location = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        saveLocation(location);
+      });
+    }
   };
   const getLoaction = localStorage.getItem("location");
   console.log(getLoaction);
@@ -49,7 +55,7 @@ const SearchForm = ({ saveLocation }) => {
             type="text"
             className="w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[48px] py-[6px] text-[14px] text-[#7a7a7a]"
             placeholder="ระบุตำแหน่งของคุณ"
-            value={getLoaction ? getLoaction : ""}
+            defaultValue={getLoaction ? getLoaction : ""}
           />
         </div>
       </div>
