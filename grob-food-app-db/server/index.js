@@ -7,9 +7,11 @@ const cors = require("cors");
 const userRegister = require("./src/Register-module/userRegister");
 const ownerRegister = require("./src/Register-module/ownerRegister");
 const driverRegister = require("./src/Register-module/driverRegister");
+const adminRegister = require("./src/Register-module/adminRegister");
 const userLogin = require("./src/Login-module/userLogin");
 const ownerLogin = require("./src/Login-module/ownerLogin");
 const driverLogin = require("./src/Login-module/driverLogin");
+const adminLogin = require("./src/Login-module/adminLogin");
 const getOwnerStore = require("./src/Store-module/getOwnerStore");
 const addStore = require("./src/Store-module/addStore");
 const updateStore = require("./src/Store-module/updateStore");
@@ -49,6 +51,11 @@ app.post("/driver-register", async (req, res) => {
   driverRegister(req, res);
 });
 
+//ADMIN REGISTER
+app.post("/admin-register", async (req, res) => {
+  adminRegister(req, res);
+});
+
 //USER_LOGIN
 app.post("/userlogin", async (req, res) => {
   userLogin(req, res);
@@ -62,6 +69,11 @@ app.post("/ownerlogin", async (req, res) => {
 //DRIVER_LOGIN
 app.post("/driverlogin", async (req, res) => {
   driverLogin(req, res);
+});
+
+//ADMIN_LOGIN
+app.post("/adminlogin", async (req, res) => {
+  adminLogin(req, res);
 });
 
 //OWNER_GETSTORE
@@ -127,6 +139,7 @@ app.post("/getallstorelist", async (req, res) => {
 app.post("/getstoredetail", async (req, res) => {
   getStoreDetail(req, res);
 });
+//GET STORE ADDRESS
 app.post("/getstoreaddress", async (req, res) => {
   getStoreAddres(req, res);
 });

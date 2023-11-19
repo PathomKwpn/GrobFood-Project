@@ -43,7 +43,7 @@ const SearchForm = ({ saveLocation }) => {
           </span>
           <span className="absolute top-[50%] translate-y-[-50%] right-[15px] flex justify-center">
             <MyLocationIcon
-              className="text-[12px]"
+              className="text-[12px] cursor-pointer"
               sx={{ color: green[500] }}
               fontSize="small"
               onClick={() => {

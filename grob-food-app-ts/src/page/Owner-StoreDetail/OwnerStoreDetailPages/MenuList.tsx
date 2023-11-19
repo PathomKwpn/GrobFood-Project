@@ -408,7 +408,7 @@ const MenuList = ({ restaurant_id }) => {
           {resMenus?.map((item) => {
             return (
               <div className=" grid grid-cols-5 gap-1 items-center justify-items-center mx-[10px]">
-                <div className="w-full bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] rounded-l-lg">
+                <div className="w-full bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] rounded-l-lg overflow-hidden">
                   <img
                     className="p-[10px] max-w-[100px] max-h-[100px] bg-cover"
                     src={`data:image/png;base64,${item.menu_image_url}`}
@@ -424,7 +424,7 @@ const MenuList = ({ restaurant_id }) => {
                 <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] rounded-r-lg">
                   {item.food_catagory}
                 </div>
-                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex flex-col items-center justify-center mb-[4px] rounded-r-lg">
+                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex flex-col items-center justify-center mb-[4px] rounded-r-lg overflow-hidden">
                   <Button
                     variant="contained"
                     className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"

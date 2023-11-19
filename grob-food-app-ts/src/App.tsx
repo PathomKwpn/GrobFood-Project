@@ -13,7 +13,11 @@ import UserProfile from "./page/UserProfile/UserProfile";
 import StoreListHome from "./page/StoreList-page/StoreList-Home";
 import StorePage from "./page/StoreDetailPage/StorePage";
 import ConfirmPage from "./page/ConfirmPage/ConfirmPage";
+import AdminPage from "./page/Admin/AdminPage";
+import RegisterAdmin from "./page/Admin/RegisterAdmin";
+import LoginAdmin from "./page/Admin/LoginAdmin";
 import { useToken } from "./util/token/token";
+
 import Box from "@mui/material/Box";
 const theme = createTheme({
   typography: {
@@ -38,6 +42,7 @@ function App() {
       element: (
         <Home
           clearToken={clearToken}
+          saveLocation={saveLocationtoLocalStorage}
           token={token}
           user={user}
           // tokenstatus={tokenStatus}
@@ -48,9 +53,6 @@ function App() {
       path: "/home",
       element: (
         <HomeAuth
-          clearToken={clearToken}
-          token={token}
-          user={user}
           saveLocation={saveLocationtoLocalStorage}
           // tokenstatus={tokenStatus}
         />
@@ -99,6 +101,24 @@ function App() {
         <ConfirmPage
           saveLocation={saveLocationtoLocalStorage}
           clearToken={clearToken}
+        />
+      ),
+    },
+    {
+      path: "/adminpage",
+      element: <AdminPage />,
+    },
+    {
+      path: "/registeradmin",
+      element: <RegisterAdmin />,
+    },
+    {
+      path: "/loginadmin",
+      element: (
+        <LoginAdmin
+          setUser={saveUsertoLacalStorage}
+          setToken={saveTokentoLocalStorage}
+          createCart={createCarttoLocalStorage}
         />
       ),
     },
