@@ -14,6 +14,7 @@ const driverLogin = require("./src/Login-module/driverLogin");
 const adminLogin = require("./src/Login-module/adminLogin");
 const getOwnerStore = require("./src/Store-module/getOwnerStore");
 const addStore = require("./src/Store-module/addStore");
+const addCoupon = require("./src/Admin-module/addCoupon");
 const updateStore = require("./src/Store-module/updateStore");
 const updateUser = require("./src/User-module/updateUserInfo");
 const addStoreTopic = require("./src/Store-module/addStoreTopic");
@@ -29,6 +30,7 @@ const getAllStoreList = require("./src/Front-store-module/getAllStoreList");
 const getStoreDetail = require("./src/Front-store-module/getStoreDetail");
 const getStoreAddres = require("./src/Front-store-module/getStoreAddress");
 const getStoreList = require("./src/Admin-module/getStoreList");
+const getCouponList = require("./src/Admin-module/getCouponList");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -147,4 +149,12 @@ app.post("/getstoreaddress", async (req, res) => {
 //GET STORE LIST
 app.get("/getstorelist", async (req, res) => {
   getStoreList(req, res);
+});
+//ADD_NEW_COUPON
+app.post("/addnewcoupon", async (req, res) => {
+  addCoupon(req, res);
+});
+//GET_COUPON
+app.get("/getcouponlist", async (req, res) => {
+  getCouponList(req, res);
 });

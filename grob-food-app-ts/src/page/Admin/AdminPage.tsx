@@ -6,8 +6,6 @@ import { Button } from "@mui/material";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
 import axios from "axios";
 const AdminPage = () => {
-  const [storeList, setStoreList] = useState();
-  const [viewState, setViewState] = useState<"store" | "coupon">("store");
   const {
     saveTokentoLocalStorage,
     saveUsertoLacalStorage,
@@ -26,6 +24,11 @@ const AdminPage = () => {
       />
     );
   }
+
+  const [viewState, setViewState] = useState<"store" | "coupon">("store");
+  const [storeList, setStoreList] = useState([]);
+  const [couponList, setCouponList] = useState([]);
+
   const getStoreList = async () => {
     const response = await axios.get(`${GROBFOOD_USER_URL}/getstorelist`);
     if (response.data.success) {
@@ -35,8 +38,27 @@ const AdminPage = () => {
       console.log("err");
     }
   };
+  const getCouponList = async () => {
+    const response = await axios.get(`${GROBFOOD_USER_URL}/getcouponlist`);
+    if (response.data.success) {
+      console.log(response.data);
+      setCouponList(response.data.data);
+    } else {
+      console.log("err");
+    }
+  };
+  const deleteStore = async (data: any) => {
+    const response = await axios.post(`${GROBFOOD_USER_URL}/deletestore`, data);
+    if (response.data.success) {
+      console.log(response.data);
+      getStoreList();
+    } else {
+      console.log("err");
+    }
+  };
   useEffect(() => {
     getStoreList();
+    getCouponList();
   }, []);
   return (
     <div className=" bg-slate-100 w-full min-h-[100vh] h-[auto]">
@@ -72,28 +94,28 @@ const AdminPage = () => {
             <div className="bg-white w-[600px] h-[800px] overflow-scroll border-2 border-black">
               <div className="max-w-[800px]">
                 <div className="w-full ">
-                  <div className=" bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">
+                  <div className=" w-full bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">
                     <div className=" bg-white  min-w-[100px] flex justify-center items-center h-[100%]">
-                      รูปอาหาร
-                    </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
-                      ชื่ออาหาร
-                    </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
-                      ชื่ออาหาร
-                    </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center  h-[100%]">
-                      ชื่ออาหาร
-                    </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
-                      ราคา
+                      ชื่อร้าน
                     </div>
                     <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
                       ประเภทอาหาร
                     </div>
+
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center  h-[100%]">
+                      คะแนนร้าน
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      เวลาเปิด-ปิด
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      วันที่สร้างร้าน
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]"></div>
                   </div>
                 </div>
-                {storeList?.map((item) => {
+
+                {storeList?.map((item: any) => {
                   return (
                     <div
                       className=" flex flex-nowrap items-center justify-items-center gap-1 "
@@ -106,10 +128,7 @@ const AdminPage = () => {
                         {item.restaurant_catagory}
                       </div>
                       <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
-                        {item.restaurant_catagory}
-                      </div>
-                      <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
-                        {item.restaurant_catagory}
+                        {item.score}
                       </div>
                       <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px]">
                         <span>เปิด :{item.open_time}</span>
@@ -119,6 +138,95 @@ const AdminPage = () => {
                         {item.regis_date}
                       </div>
                       <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
+                        <Button
+                          variant="contained"
+                          className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
+                          onClick={() => {
+                            const owner_id: any = {
+                              owner_id: item.owner_id,
+                            };
+                            deleteStore(owner_id);
+                          }}
+                        >
+                          ลบ
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {viewState == "coupon" && (
+        <div className="h-[auto] max-w-[800px] flex flex-col justify-center m-[auto] p-[16px] rounded-xl shadow-md bg-white">
+          <div className="text-[24px] font-bold flex justify-center my-[30px]">
+            รายการคูปองส่วนลด
+          </div>
+          <div className="flex justify-center">
+            <div className="bg-white w-[600px] h-[800px] overflow-scroll border-2 border-black">
+              <div className="max-w-[800px]">
+                <div className="w-full ">
+                  <div className=" bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">
+                    <div className=" bg-white  min-w-[100px] flex justify-center items-center h-[100%]">
+                      ชื่อคูปอง
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      เริ่มใช้
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      หมดอายุ
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center  h-[100%]">
+                      ส่วนลด
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      รูปแบบ
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      ขั้นต่ำ
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      ลดสูงสุด
+                    </div>
+                  </div>
+                </div>
+                {couponList?.map((item: any) => {
+                  let newDate = new Date();
+                  let time = item.start_date;
+                  console.log(time);
+                  console.log(newDate);
+                  let aga = time - newDate;
+                  console.log(aga);
+
+                  return (
+                    <div
+                      className=" flex flex-nowrap items-center justify-items-center gap-1 "
+                      key={item.coupon_id}
+                    >
+                      <div className=" min-w-[100px] h-[70px] bg-slate-200 text-[12px] px-[5px] flex items-center justify-center mb-[4px] ">
+                        {item.coupon_name}
+                      </div>
+                      <div className=" min-w-[100px] h-[70px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
+                        {item.start_date}
+                      </div>
+                      <div className=" min-w-[100px] h-[70px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
+                        {item.expire_date}
+                      </div>
+                      <div className=" min-w-[100px] h-[70px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
+                        {item.discount_value}
+                      </div>
+                      <div className=" min-w-[100px] h-[70px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px]">
+                        {item.discount_type}
+                      </div>
+                      <div className=" min-w-[100px] h-[70px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
+                        {item.min_totalprice}
+                      </div>
+                      <div className=" min-w-[100px] h-[70px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
+                        {item.max_discount}
+                      </div>
+                      <div className=" min-w-[100px] h-[70px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
                         <Button
                           variant="contained"
                           className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
