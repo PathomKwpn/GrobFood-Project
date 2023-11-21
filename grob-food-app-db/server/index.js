@@ -28,6 +28,7 @@ const getUserDetail = require("./src/User-module/getUserDetail");
 const getAllStoreList = require("./src/Front-store-module/getAllStoreList");
 const getStoreDetail = require("./src/Front-store-module/getStoreDetail");
 const getStoreAddres = require("./src/Front-store-module/getStoreAddress");
+const getStoreList = require("./src/Admin-module/getStoreList");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -142,4 +143,8 @@ app.post("/getstoredetail", async (req, res) => {
 //GET STORE ADDRESS
 app.post("/getstoreaddress", async (req, res) => {
   getStoreAddres(req, res);
+});
+//GET STORE LIST
+app.get("/getstorelist", async (req, res) => {
+  getStoreList(req, res);
 });
