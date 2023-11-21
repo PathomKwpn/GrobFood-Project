@@ -141,7 +141,7 @@ const OwnerContainer = () => {
           Your Restaurants
         </div>
         {createState == true && (
-          <div className=" absolute w-[95%] h-[auto] bg-[#079F4E] px-[20px] pb-[40px] z-40 rounded-md mt-[50%] md:mt-[25%] lg:mt-[20%] xl:mt-[10%] md:max-w-[800px]">
+          <div className=" absolute w-[95%] h-[auto] bg-[#079F4E] px-[20px] pb-[40px] z-40 rounded-md mt-[85%] md:mt-[40%] lg:mt-[20%] xl:mt-[20%] md:max-w-[800px]">
             <div className="w-full flex justify-end">
               <button
                 className="flex justify-end text-[24px]"

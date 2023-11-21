@@ -24,10 +24,11 @@ const AdminPage = () => {
       />
     );
   }
-
+  const [dateTimestamp, setDateTimestamp] = useState(+new Date());
   const [viewState, setViewState] = useState<"store" | "coupon">("store");
   const [storeList, setStoreList] = useState([]);
   const [couponList, setCouponList] = useState([]);
+  console.log(dateTimestamp, "DATETIME");
 
   const getStoreList = async () => {
     const response = await axios.get(`${GROBFOOD_USER_URL}/getstorelist`);
@@ -41,8 +42,13 @@ const AdminPage = () => {
   const getCouponList = async () => {
     const response = await axios.get(`${GROBFOOD_USER_URL}/getcouponlist`);
     if (response.data.success) {
-      console.log(response.data);
-      setCouponList(response.data.data);
+      let data = response.data.data;
+      for (let i = 0; i < data.length; i++) {
+        data[i].expire_timestamp = +new Date(data[i].expire_date);
+        console.log("forloop");
+      }
+      console.log(data);
+      setCouponList(data);
     } else {
       console.log("err");
     }
@@ -61,16 +67,16 @@ const AdminPage = () => {
     getCouponList();
   }, []);
   return (
-    <div className=" bg-slate-100 w-full min-h-[100vh] h-[auto]">
+    <div className=" bg-[#01B14F] w-full min-h-[100vh] h-[auto]">
       <NavbarAdmin />
-      <div className="flex flex-row justify-around my-[24px] mb-[30px] w-[80%] m-auto">
+      <div className="flex flex-row justify-center my-[24px] mb-[30px] w-[80%] m-auto">
         <Button
           variant="contained"
           onClick={() => {
             setViewState("store");
             updateToken();
           }}
-          className="bg-[#01B14F] min-w-[150px] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F]"
+          className="bg-[white] min-w-[150px] md:min-w-[200px] max-w-[400px] focus:bg-[white] hover:bg-[white] text-[black] mx-[16px]"
         >
           รายการร้านค้า
         </Button>
@@ -80,18 +86,18 @@ const AdminPage = () => {
             setViewState("coupon");
             updateToken();
           }}
-          className="bg-[#01B14F] min-w-[150px] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F]"
+          className="bg-[white] min-w-[150px] md:min-w-[200px] max-w-[400px] focus:bg-[white] hover:bg-[white] text-[black] mx-[16px]"
         >
           รายการคูปองส่วนลด
         </Button>
       </div>
       {viewState == "store" && (
         <div className="h-[auto] max-w-[800px] flex flex-col justify-center m-[auto] p-[16px] rounded-xl shadow-md bg-white">
-          <div className="text-[24px] font-bold flex justify-center my-[30px]">
+          <div className="text-[24px] font-bold flex justify-center my-[30px] bg-[#01B14F] max-w-[500px] m-[auto] p-[12px] px-[24px] rounded-lg text-[white]">
             รายการร้านค้า
           </div>
           <div className="flex justify-center">
-            <div className="bg-white w-[600px] h-[800px] overflow-scroll border-2 border-black">
+            <div className="bg-white w-[600px] h-[800px] overflow-scroll border-[1px] border-[#01B14F]">
               <div className="max-w-[800px]">
                 <div className="w-full ">
                   <div className=" w-full bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">
