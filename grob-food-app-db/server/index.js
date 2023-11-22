@@ -31,6 +31,7 @@ const getStoreDetail = require("./src/Front-store-module/getStoreDetail");
 const getStoreAddres = require("./src/Front-store-module/getStoreAddress");
 const getStoreList = require("./src/Admin-module/getStoreList");
 const getCouponList = require("./src/Admin-module/getCouponList");
+const addCartAndBill = require("./src/Cart&bill-module/addCartAndBill");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -157,4 +158,8 @@ app.post("/addnewcoupon", async (req, res) => {
 //GET_COUPON
 app.get("/getcouponlist", async (req, res) => {
   getCouponList(req, res);
+});
+
+app.post("/addcartandbill", async (req, res) => {
+  addCartAndBill(req, res);
 });

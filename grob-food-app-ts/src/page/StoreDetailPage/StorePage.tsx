@@ -13,6 +13,10 @@ import { Alert, AlertTitle, Button } from "@mui/material";
 const StorePage = ({ clearToken, createCart }) => {
   //CHECK LOGIN
   const getOwner = localStorage.getItem("user");
+  const user_info = JSON.parse(getOwner);
+
+  const user_id = user_info.id;
+  console.log(user_id);
   if (!getOwner) {
     return <Login />;
   }
@@ -23,6 +27,8 @@ const StorePage = ({ clearToken, createCart }) => {
   const [addmenuStateCheck, setAddmenuStateCheck] = useState(false);
   const [changeStore, setChangeStore] = useState(false);
   const [doubleMenu, setDoubleMenu] = useState(false);
+  const [userLatitude, setUserLatitude] = useState("");
+  const [userLongitude, setUserLongitude] = useState("");
   const cart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(cart);
   const getStoreDetailAPI = async () => {
@@ -43,10 +49,59 @@ const StorePage = ({ clearToken, createCart }) => {
       console.log("err");
     }
   };
-
+  const getLoaction = localStorage.getItem("location");
+  let user_location = JSON.parse(getLoaction);
   useEffect(() => {
     getStoreDetailAPI();
+    if (user_location) {
+      setUserLatitude(user_location.latitude);
+      setUserLongitude(user_location.longitude);
+    }
   }, []);
+  function getDistanceBetweenPointsNew(
+    latitude1,
+    longitude1,
+    latitude2,
+    longitude2,
+    unit = "kilometers"
+  ) {
+    const theta = longitude1 - longitude2;
+    let distance =
+      Math.sin(deg2rad(latitude1)) * Math.sin(deg2rad(latitude2)) +
+      Math.cos(deg2rad(latitude1)) *
+        Math.cos(deg2rad(latitude2)) *
+        Math.cos(deg2rad(theta));
+    distance = Math.acos(distance);
+    distance = rad2deg(distance);
+    distance = distance * 60 * 1.1515;
+    if (unit === "kilometers") {
+      distance *= 1.609344;
+    }
+    return distance.toFixed(1);
+  }
+  function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+  }
+  function rad2deg(rad) {
+    return rad * (180 / Math.PI);
+  }
+  let haveLocation = false;
+  let distance;
+  let time;
+  let timeMin;
+  console.log(storeDetail);
+
+  if (storeDetail.length != 0 && userLatitude != "") {
+    haveLocation = true;
+    distance = getDistanceBetweenPointsNew(
+      storeDetail[0].latitude,
+      storeDetail[0].longitude,
+      userLatitude,
+      userLongitude
+    );
+    time = distance / 80;
+    timeMin = (10 + time * 60).toFixed(0);
+  }
   return (
     <div className=" bg-[#F7F7F7]">
       <Navbarauth clearToken={clearToken} />
@@ -142,6 +197,16 @@ const StorePage = ({ clearToken, createCart }) => {
                 <span className="text-[14px] font-[300]">
                   {storeDetail[0].score}
                 </span>
+                {haveLocation == true && (
+                  <div className="flex mx-[16px] gap-2">
+                    <div className="text-[16px] text-[#9c9c9c]">
+                      {timeMin} นาที
+                    </div>
+                    <div className="text-[16px] text-[#9c9c9c]">
+                      {distance} km.
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="text-[14px] text-[#505050] font-[400] pb-[10px]">
                 <span className="mr-[36px] font-[500]">
@@ -163,7 +228,7 @@ const StorePage = ({ clearToken, createCart }) => {
                   <span className="text-[20px] lg:text-[28px] font-[500] mb-[24px]">
                     {item.restaurant_topic_name}
                   </span>
-                  <div className="flex flex-col lg:flex-row">
+                  <div className="flex flex-col lg:flex-row flex-wrap">
                     {storeDetail?.map((item) => {
                       if (item.restaurant_topic_name == topic_name) {
                         return (
@@ -189,6 +254,8 @@ const StorePage = ({ clearToken, createCart }) => {
                                 <div
                                   className="w-[32px] h-[32px] rounded-[50%] bg-[#00B14F] flex justify-center items-center cursor-pointer"
                                   onClick={() => {
+                                    if (condition) {
+                                    }
                                     if (!getOwner) {
                                       //ดูว่า loing หรือยัง ถ้ายังให้ user ไป login
                                       setAddmenuStateCheck(true);

@@ -10,6 +10,9 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
 const ConfirmPage = ({ clearToken, saveLocation }) => {
+  const [promotion_id, setPromotion_id] = useState("");
+  const [addressDetail, setAddressDetail] = useState("");
+  const [notetoDriver, setNoteToDriver] = useState("");
   const cart: any = localStorage.getItem("cart");
   const [storeLocation, setStoreLocation] = useState({});
   const { createCarttoLocalStorage } = useToken();
@@ -23,7 +26,10 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
   }
   const getLoaction = localStorage.getItem("location");
   let user_location = JSON.parse(getLoaction);
-
+  const getOwner = localStorage.getItem("user");
+  const user_info = JSON.parse(getOwner);
+  const user_id = user_info.id;
+  console.log(user_id);
   const getUserlocation = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
       console.log("Latitude is :", position.coords.latitude);
@@ -46,6 +52,17 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
 
       console.log(response.data.data, "address");
       console.log("Update already");
+    } else {
+      console.log("Error");
+    }
+  };
+  const createBillAndCart = async (data: any) => {
+    const response = await axios.post(
+      `${GROBFOOD_USER_URL}/addcartandbill`,
+      data
+    );
+    if (response.data.success) {
+      console.log("create already");
     } else {
       console.log("Error");
     }
@@ -81,7 +98,6 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
   useEffect(() => {
     getStoreAddres(restaurant_id);
   }, []);
-  console.log(storeLocation[0]);
 
   if (storeLocation.length != null && user_location != null) {
     console.log("H");
@@ -186,6 +202,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
                           window.localStorage.removeItem("cart");
                           createCarttoLocalStorage(newCart);
                         }
+                        console.log(user_cart);
                       }}
                     />
                   </div>
@@ -247,7 +264,27 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
           <Button
             variant="contained"
             className="bg-[#01B14F] w-full h-[48px] rounded-md focus:bg-[#01B14F] hover:bg-[#01B14F] max-w-[200px]"
-            onClick={() => {}}
+            onClick={() => {
+              let restaurant_id = user_cart[0].restaurant_id;
+              let user_latitude = user_location.latitude;
+              let user_longitude = user_location.longitude;
+              const data = [
+                {
+                  totalprice,
+                  lastprice,
+                  user_id,
+                  promotion_id,
+                  restaurant_id,
+                  deliveryCost,
+                  user_latitude,
+                  user_longitude,
+                  notetoDriver,
+                  addressDetail,
+                },
+                user_cart,
+              ];
+              createBillAndCart(data);
+            }}
           >
             ยืนยันรายการสั่งซื้อ
           </Button>
