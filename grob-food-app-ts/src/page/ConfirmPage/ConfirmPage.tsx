@@ -5,13 +5,15 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import { useToken } from "../../util/token/token";
-import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import { Button } from "@mui/material";
+
 import axios from "axios";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
 const ConfirmPage = ({ clearToken, saveLocation }) => {
+  const [couponList, setCouponList] = useState([]);
   const [promotion_id, setPromotion_id] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
+  const [paymethod, setPaymethod] = useState("เงินสด");
   const [notetoDriver, setNoteToDriver] = useState("");
   const cart: any = localStorage.getItem("cart");
   const [storeLocation, setStoreLocation] = useState({});
@@ -30,6 +32,11 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
   const user_info = JSON.parse(getOwner);
   const user_id = user_info.id;
   console.log(user_id);
+
+  const handleChange = (event: any) => {
+    setPaymethod(event.target.value);
+    console.log(paymethod);
+  };
   const getUserlocation = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
       console.log("Latitude is :", position.coords.latitude);
@@ -52,6 +59,15 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
 
       console.log(response.data.data, "address");
       console.log("Update already");
+    } else {
+      console.log("Error");
+    }
+  };
+  const getCouponList = async () => {
+    const response = await axios.get(`${GROBFOOD_USER_URL}/getcouponlist`);
+    if (response.data.success) {
+      setCouponList(response.data.data);
+      console.log("get COUPON already");
     } else {
       console.log("Error");
     }
@@ -97,11 +113,11 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
 
   useEffect(() => {
     getStoreAddres(restaurant_id);
+    getCouponList();
   }, []);
+  console.log(couponList);
 
   if (storeLocation.length != null && user_location != null) {
-    console.log("H");
-    console.log(storeLocation.latitude, "store");
     console.log(user_location);
     let distance;
     distance = getDistanceBetweenPointsNew(
@@ -157,7 +173,9 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
               type="text"
               className=" w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[24px] py-[6px] text-[14px] text-[#7a7a7a]"
               placeholder="เช่น ชั้น หมายเลขอาคาร"
-              // value={getLoaction ? getLoaction : ""}
+              onChange={(e) => {
+                setAddressDetail(e.target.value);
+              }}
             />
             <div className="mb-[12px] text-[#7a7a7a] my-[12px]">
               หมายเหตุถึงคนขับ
@@ -166,7 +184,9 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
               type="text"
               className=" w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[24px] py-[6px] text-[14px] text-[#7a7a7a]"
               placeholder="เช่น เจอกันที่ล็อบบี้"
-              // value={getLoaction ? getLoaction : ""}
+              onChange={(e) => {
+                setNoteToDriver(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -235,6 +255,51 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
           </div>
         </div>
       </div>
+      <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+        <div className="border-b-[1px] py-[16px]">
+          <span className="text-[24px] font-[500] px-[5%]">
+            รายการคูปองส่วนลด
+          </span>
+        </div>
+        <div className="flex flex-col justify-center content-center items-center w-[full] mt-[30px] mb-[20px]">
+          <label className="w-[90%] mb-[16px]">เลือกใช้</label>
+          {/* <select
+            id="paymethod"
+            className="border-[2px] p-[10px] rounded-lg w-[90%]"
+            onChange={handleChange}
+            defaultValue={"เงินสด"}
+          >
+            {couponList?.map((item) => {
+              return <option value="เงินสด">{item.coupon_name}</option>;
+            })}
+          </select> */}
+          <div className="flex flex-row flex-wrap p-[24px] justify-center">
+            {couponList?.map((item) => {
+              let type = "บาท";
+              if (item.discount_type == "percent") {
+                type = "%";
+              } else {
+                type = "บาท";
+              }
+              return (
+                <div className="flex flex-row w-[200px] h-[70px] shadow-sm border-[1px] rounded-md mx-[16px] my-[8px]">
+                  <div className="flex justify-center flex-col w-full">
+                    <div className="bg-[white] text-black flex text-[18px] font-bold justify-center">
+                      {item.coupon_name}
+                    </div>
+                    <div className="bg-[white] text-black flex justify-center text-[14px]">
+                      ส่วนลด {item.discount_value} {type}
+                    </div>
+                  </div>
+                  <div className="bg-[green] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-r-md">
+                    ใช้
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
       <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%] mb-[150px]">
         <div className="border-b-[1px] py-[16px]">
           <span className="text-[24px] font-[500] px-[5%]">
@@ -246,11 +311,10 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
           <select
             id="paymethod"
             className="border-[2px] p-[10px] rounded-lg w-[90%]"
+            onChange={handleChange}
+            defaultValue={"เงินสด"}
           >
-            <option value="เงินสด">
-              <LocalAtmIcon />
-              เงินสด
-            </option>
+            <option value="เงินสด">เงินสด</option>
             <option value="โอนจ่าย">โอนจ่าย</option>
           </select>
         </div>
@@ -265,25 +329,30 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
             variant="contained"
             className="bg-[#01B14F] w-full h-[48px] rounded-md focus:bg-[#01B14F] hover:bg-[#01B14F] max-w-[200px]"
             onClick={() => {
-              let restaurant_id = user_cart[0].restaurant_id;
-              let user_latitude = user_location.latitude;
-              let user_longitude = user_location.longitude;
-              const data = [
-                {
-                  totalprice,
-                  lastprice,
-                  user_id,
-                  promotion_id,
-                  restaurant_id,
-                  deliveryCost,
-                  user_latitude,
-                  user_longitude,
-                  notetoDriver,
-                  addressDetail,
-                },
-                user_cart,
-              ];
-              createBillAndCart(data);
+              if (user_location != null) {
+                let restaurant_id = user_cart[0].restaurant_id;
+                let user_latitude = user_location.latitude;
+                let user_longitude = user_location.longitude;
+                const data = [
+                  {
+                    totalprice,
+                    lastprice,
+                    user_id,
+                    promotion_id,
+                    restaurant_id,
+                    paymethod,
+                    deliveryCost,
+                    user_latitude,
+                    user_longitude,
+                    notetoDriver,
+                    addressDetail,
+                  },
+                  user_cart,
+                ];
+                createBillAndCart(data);
+              } else {
+                console.log("NEED LOCATION");
+              }
             }}
           >
             ยืนยันรายการสั่งซื้อ

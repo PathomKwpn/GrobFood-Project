@@ -254,8 +254,6 @@ const StorePage = ({ clearToken, createCart }) => {
                                 <div
                                   className="w-[32px] h-[32px] rounded-[50%] bg-[#00B14F] flex justify-center items-center cursor-pointer"
                                   onClick={() => {
-                                    if (condition) {
-                                    }
                                     if (!getOwner) {
                                       //ดูว่า loing หรือยัง ถ้ายังให้ user ไป login
                                       setAddmenuStateCheck(true);

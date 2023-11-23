@@ -8,7 +8,8 @@ const exec = async (req, res) => {
   // console.log(req.body);
   try {
     let data = req.body;
-    console.log(data[1][0]);
+    let bill = data[0];
+    let cart = data[1];
     // console.log(data);
     //UUID
     let bill_uuid = uuid();
@@ -19,24 +20,35 @@ const exec = async (req, res) => {
 VALUES($1, Date(), $2, $3, $4, $5, $6, $7, '', now(), $8, $9, $10, $11, $12, $13);`;
     let sql_cart = `INSERT INTO public.cart
 (cart_id, menu_id, price, create_date, create_by, amount, bill_id)
-VALUES('', '', 0, '', '', 0, '');`;
+VALUES($1, $2, $3, now(), $4, $5, $6);`;
     //PARAM
     let param = [
       bill_uuid,
-      data.totalprice,
-      data.last_price,
+      bill.totalprice,
+      bill.last_price,
       "Find Driver",
-      data.user_id,
-      data.promotion_id,
-      data.restaurant_id,
-      data.paymethod,
-      data.shipping_cost,
-      data.user_latitude,
-      data.user_longitude,
-      data.address_detail,
-      data.note_to_driver,
+      bill.user_id,
+      bill.promotion_id,
+      bill.restaurant_id,
+      bill.paymethod,
+      bill.deliveryCost,
+      bill.user_latitude,
+      bill.user_longitude,
+      bill.address_detail,
+      bill.note_to_driver,
     ];
-    let param_cart = [cart_uuid];
+
+    for (let i = 0; i < cart.length; i++) {
+      let param_cart = [
+        cart_uuid,
+        cart[i].menu_id,
+        cart[i].menu_price,
+        bill.user_id,
+        cart[i].amount,
+        bill_uuid,
+      ];
+      console.log(param_cart);
+    }
     // let response = await pool.query(sql);
     // console.log(param);
 
