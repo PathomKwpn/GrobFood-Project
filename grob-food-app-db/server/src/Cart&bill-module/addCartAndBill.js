@@ -28,7 +28,7 @@ VALUES($1, $2, $3, now(), $4, $5, $6);`;
       bill.last_price,
       "Find Driver",
       bill.user_id,
-      bill.promotion_id,
+      bill.coupon_id,
       bill.restaurant_id,
       bill.paymethod,
       bill.deliveryCost,

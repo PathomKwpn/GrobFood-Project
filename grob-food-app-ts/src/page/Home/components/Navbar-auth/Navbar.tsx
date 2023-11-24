@@ -150,7 +150,7 @@ const Navbarauth = () => {
             </div>
             <div className="flex ">
               <div
-                className="flex relative justify-center items-center text-[6px] font-semibold text-[#676767] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] md:px-[10px]"
+                className="flex relative cursor-pointer justify-center items-center text-[6px] font-semibold text-[#676767] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] md:px-[10px]"
                 onClick={() => {
                   setCartState("open");
                   updateToken();
@@ -176,7 +176,7 @@ const Navbarauth = () => {
                 </Link>
               </div>
               <div
-                className="flex justify-center items-center text-[12px] font-[500] text-[#676767] hover:text-[#ffffff] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] gap-[3px] hover:bg-red-400"
+                className="flex justify-center cursor-pointer items-center text-[12px] font-[500] text-[#676767] hover:text-[#ffffff] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] gap-[3px] hover:bg-red-400"
                 onClick={() => {
                   clearToken();
                   nevigate("/login");

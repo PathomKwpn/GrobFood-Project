@@ -9,12 +9,25 @@ import { Button } from "@mui/material";
 
 import axios from "axios";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
+import Login from "../Login-pages/Login";
 const ConfirmPage = ({ clearToken, saveLocation }) => {
+  const [noLocationPopup, setNoLocationPopup] = useState<"open" | "close">(
+    "close"
+  );
+  //COUPON
   const [couponList, setCouponList] = useState([]);
-  const [promotion_id, setPromotion_id] = useState("");
+  const [couponSelected, setCouponSelected] = useState<boolean>(false);
+  const [coupon_id, setCoupon_id] = useState<string>("");
+  const [coupon_name, setCouponName] = useState<string>("");
+  const [discount_value, setDiscountValue] = useState<string>("");
+  const [discount_value_type, setDiscountValueType] = useState<string>("");
+  const [min_totalprice, setMin_totalprice] = useState<string>("");
+  const [distcount_type, setDiscountType] = useState<string>("");
+  //BILL_DETAIL
   const [addressDetail, setAddressDetail] = useState("");
   const [paymethod, setPaymethod] = useState("เงินสด");
   const [notetoDriver, setNoteToDriver] = useState("");
+
   const cart: any = localStorage.getItem("cart");
   const [storeLocation, setStoreLocation] = useState({});
   const { createCarttoLocalStorage } = useToken();
@@ -29,6 +42,9 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
   const getLoaction = localStorage.getItem("location");
   let user_location = JSON.parse(getLoaction);
   const getOwner = localStorage.getItem("user");
+  if (!getOwner) {
+    return <Login />;
+  }
   const user_info = JSON.parse(getOwner);
   const user_id = user_info.id;
   console.log(user_id);
@@ -128,7 +144,19 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
     );
     deliveryCost = distance * 10;
   }
-  lastprice = totalprice + deliveryCost;
+  let discount;
+  if (couponSelected == false) {
+    lastprice = totalprice + deliveryCost;
+  } else {
+    if (distcount_type == "percent") {
+      discount = (totalprice * Number(discount_value)) / 100;
+      lastprice = totalprice - discount;
+    } else {
+      discount = Number(discount_value);
+      lastprice = totalprice - discount;
+    }
+  }
+
   return (
     <div className=" bg-slate-100 flex flex-col items-center">
       <Navbarauth clearToken={clearToken} />
@@ -191,6 +219,101 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
           </div>
         </div>
       </div>
+      {noLocationPopup == "open" && (
+        <div
+          className=" fixed top-[10%]  bg-red-100 border-l-4 border-red-500 text-red-700 p-4"
+          role="alert"
+        >
+          <p className="font-bold md:text-[24px]">โปรดระบุตำแหน่งของคุณ</p>
+          <p className="md:text-[18px]">
+            กรุณาระบุตำแหน่งของคุณเพื่อให้คนขับทราบ.
+          </p>
+        </div>
+      )}
+
+      <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+        <div className="border-b-[1px] py-[16px]">
+          <span className="text-[24px] font-[500] px-[5%]">
+            รายการคูปองส่วนลด
+          </span>
+        </div>
+        <div className="flex flex-col justify-center content-center items-center w-[full] mt-[30px] mb-[20px]">
+          {/* <select
+            id="paymethod"
+            className="border-[2px] p-[10px] rounded-lg w-[90%]"
+            onChange={handleChange}
+            defaultValue={"เงินสด"}
+          >
+            {couponList?.map((item) => {
+              return <option value="เงินสด">{item.coupon_name}</option>;
+            })}
+          </select> */}
+          <div className="flex flex-row flex-wrap p-[24px] justify-center">
+            {couponList?.map((item) => {
+              let type = "บาท";
+              if (item.discount_type == "percent") {
+                type = "%";
+              } else {
+                type = "บาท";
+              }
+              return (
+                <div className="flex flex-row w-[200px] h-[70px] shadow-md rounded-md mx-[16px] my-[8px]">
+                  <div className="flex bg-[#01B14F] justify-center flex-col w-full border-[1px] border-[green]">
+                    <div className="bg-[#01B14F] text-white flex text-[18px] font-bold justify-center">
+                      {item.coupon_name}
+                    </div>
+                    <div className="bg-white">
+                      <div className="bg-[white] text-black flex justify-center text-[14px]">
+                        ส่วนลด {item.discount_value} {type}
+                      </div>
+                      <div className="bg-[white] text-[#b4b4b4] flex justify-center text-[10px]">
+                        ขั้นต่ำ {item.min_totalprice} บาท
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-md"
+                    onClick={() => {
+                      setCouponName(item.coupon_name);
+                      setDiscountValue(item.discount_value);
+                      setDiscountType(item.discount_type);
+                      setMin_totalprice(item.min_totalprice);
+                      setDiscountValueType(type);
+                      setCoupon_id(item.coupon_id);
+                      setCouponSelected(true);
+                    }}
+                  >
+                    ใช้
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <label className="w-[90%] mb-[16px] bg-slate-0 shadow-sm rounded-md border-2 flex flex-col justify-center items-center">
+            <div className="w-full flex justify-center items-center my-[10px] text-[18px] font-[500]">
+              คูปองที่คุณเลือกใช้
+            </div>
+            {couponSelected == true && (
+              <div className="flex flex-row  h-[70px] shadow-md rounded-md mx-[16px] my-[16px] max-w-[240px]">
+                <div className="flex bg-[#01B14F] justify-center flex-col w-full border-[1px] border-[green]">
+                  <div className="bg-[#01B14F] text-white flex text-[18px] font-bold justify-center">
+                    {coupon_name}
+                  </div>
+                  <div className="bg-white">
+                    <div className="bg-[white] text-black flex justify-center text-[14px]">
+                      ส่วนลด {discount_value} {discount_value_type}
+                    </div>
+                    <div className="bg-[white] text-[#b4b4b4] flex justify-center text-[10px]">
+                      ขั้นต่ำ {min_totalprice} บาท
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-md"></div>
+              </div>
+            )}
+          </label>
+        </div>
+      </div>
       <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
         <div className="border-b-[1px] py-[16px]">
           <span className="text-[24px] font-[500] px-[5%]">สรุปคำสั่งซื้อ</span>
@@ -250,53 +373,11 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
             <span>รวมค่าอาหาร</span> <span>฿{totalprice}</span>
           </div>
           <div className="flex justify-between">
+            <span>ส่วนลด</span> <span>฿{discount}</span>
+          </div>
+          <div className="flex justify-between">
             <span>ค่าส่ง</span>
             <span>{deliveryCost}</span>
-          </div>
-        </div>
-      </div>
-      <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
-        <div className="border-b-[1px] py-[16px]">
-          <span className="text-[24px] font-[500] px-[5%]">
-            รายการคูปองส่วนลด
-          </span>
-        </div>
-        <div className="flex flex-col justify-center content-center items-center w-[full] mt-[30px] mb-[20px]">
-          <label className="w-[90%] mb-[16px]">เลือกใช้</label>
-          {/* <select
-            id="paymethod"
-            className="border-[2px] p-[10px] rounded-lg w-[90%]"
-            onChange={handleChange}
-            defaultValue={"เงินสด"}
-          >
-            {couponList?.map((item) => {
-              return <option value="เงินสด">{item.coupon_name}</option>;
-            })}
-          </select> */}
-          <div className="flex flex-row flex-wrap p-[24px] justify-center">
-            {couponList?.map((item) => {
-              let type = "บาท";
-              if (item.discount_type == "percent") {
-                type = "%";
-              } else {
-                type = "บาท";
-              }
-              return (
-                <div className="flex flex-row w-[200px] h-[70px] shadow-sm border-[1px] rounded-md mx-[16px] my-[8px]">
-                  <div className="flex justify-center flex-col w-full">
-                    <div className="bg-[white] text-black flex text-[18px] font-bold justify-center">
-                      {item.coupon_name}
-                    </div>
-                    <div className="bg-[white] text-black flex justify-center text-[14px]">
-                      ส่วนลด {item.discount_value} {type}
-                    </div>
-                  </div>
-                  <div className="bg-[green] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-r-md">
-                    ใช้
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </div>
@@ -338,7 +419,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
                     totalprice,
                     lastprice,
                     user_id,
-                    promotion_id,
+                    coupon_id,
                     restaurant_id,
                     paymethod,
                     deliveryCost,
@@ -351,6 +432,18 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
                 ];
                 createBillAndCart(data);
               } else {
+                let countdown = 2;
+                setNoLocationPopup("open");
+                let timer = setInterval(() => {
+                  countdown--;
+                  console.log(countdown);
+
+                  if (countdown == 0) {
+                    setNoLocationPopup("close");
+                    clearInterval(timer);
+                  }
+                }, 1000);
+
                 console.log("NEED LOCATION");
               }
             }}
