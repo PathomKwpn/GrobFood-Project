@@ -60,7 +60,33 @@ const Navbarauth = () => {
                       <div>
                         <div className="flex min-h-[80px] border-b-[1px] py-[10px]">
                           <div className="w-[20%] flex justify-center items-center">
-                            <RemoveIcon className="text-[16px] md:text-[24px] text-[#00A5CF]" />
+                            <RemoveIcon
+                              className="text-[16px] md:text-[24px] text-[#00A5CF]"
+                              onClick={() => {
+                                let result = user_cart.find(
+                                  //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
+                                  (list) => {
+                                    return list.menu_id == item.menu_id;
+                                  }
+                                );
+                                if (result != undefined) {
+                                  if (item.amount > 0) {
+                                    item.amount--;
+                                    item.menu_totalprice =
+                                      Number(item.menu_price) *
+                                      Number(item.amount);
+
+                                    let newCart = user_cart;
+
+                                    window.localStorage.removeItem("cart");
+                                    createCarttoLocalStorage(newCart);
+                                  } else {
+                                    console.log("show");
+                                  }
+                                }
+                                console.log(user_cart);
+                              }}
+                            />
                             <span className="mx-[5px] md:mx-[10px]">
                               {item.amount}
                             </span>

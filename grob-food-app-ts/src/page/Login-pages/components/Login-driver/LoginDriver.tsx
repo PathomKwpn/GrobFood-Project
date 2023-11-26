@@ -14,8 +14,8 @@ import Alert from "@mui/material/Alert";
 import FilledInput from "@mui/material/FilledInput";
 import { Link, useNavigate } from "react-router-dom";
 const LoginDriver = ({ setUser, setToken }) => {
-  const [user_username, setUser_Username] = useState<string>("");
-  const [user_password, setUser_Password] = useState<string>("");
+  const [driver_username, setDriver_Username] = useState<string>("");
+  const [driver_password, setDriver_Password] = useState<string>("");
   const navigate = useNavigate();
   const DEFAULT_ALERT = {
     title: "",
@@ -34,7 +34,7 @@ const LoginDriver = ({ setUser, setToken }) => {
 
   const onLogin = async (data: any) => {
     console.log(data);
-    const response = await axios.post(`${GROBFOOD_USER_URL}/userlogin`, data);
+    const response = await axios.post(`${GROBFOOD_USER_URL}/driverlogin`, data);
     console.log("response", response);
     if (response.data.success) {
       console.log(response.data._token);
@@ -45,7 +45,7 @@ const LoginDriver = ({ setUser, setToken }) => {
         data: "LOGIN SUCCESSFUL",
         type: "success",
       });
-      navigate("/home");
+      navigate("/driverhome");
     } else {
       setAlertStatus({
         title: "",
@@ -82,9 +82,9 @@ const LoginDriver = ({ setUser, setToken }) => {
               color="success"
               focused
               size="small"
-              value={user_username}
+              value={driver_username}
               onChange={(v) => {
-                setUser_Username(v.target.value);
+                setDriver_Username(v.target.value);
               }}
             />
             <FormControl
@@ -101,9 +101,9 @@ const LoginDriver = ({ setUser, setToken }) => {
               <FilledInput
                 id="filled-adornment-password"
                 type={showPassword ? "text" : "password"}
-                value={user_password}
+                value={driver_password}
                 onChange={(v) => {
-                  setUser_Password(v.target.value);
+                  setDriver_Password(v.target.value);
                 }}
                 endAdornment={
                   <InputAdornment position="end">
@@ -122,18 +122,18 @@ const LoginDriver = ({ setUser, setToken }) => {
           </div>
           <Button
             onClick={() => {
-  
-
-              // if (user_username)
-              //   onLogin({
-              //     user_username,
-              //     user_password,
-              //   });
-              // if (alertStatus.type == "success") {
-              //   navigate("/");
-              // } else {
-              //   navigate("/");
-              // }
+              if (driver_username) {
+                onLogin({
+                  driver_username,
+                  driver_password,
+                });
+              } else {
+                setAlertStatus({
+                  title: "กรุณาใส่ username หรือ password",
+                  data: "missing",
+                  type: "error",
+                });
+              }
             }}
             variant="contained"
             className="bg-[#01B14F] md:min-w-[200px] max-w-[400px] focus:bg-[red] hover:bg-[#01B14F]"

@@ -16,6 +16,7 @@ import ConfirmPage from "./page/ConfirmPage/ConfirmPage";
 import AdminPage from "./page/Admin/AdminPage";
 import RegisterAdmin from "./page/Admin/RegisterAdmin";
 import LoginAdmin from "./page/Admin/LoginAdmin";
+import DriverHome from "./page/Driver/Driver-Home";
 import { useToken } from "./util/token/token";
 
 import Box from "@mui/material/Box";
@@ -121,6 +122,10 @@ function App() {
           createCart={createCarttoLocalStorage}
         />
       ),
+    },
+    {
+      path: "/driverhome",
+      element: <DriverHome />,
     },
   ]);
   // if (!token) {

@@ -4,6 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useToken } from "../../util/token/token";
 import { Button } from "@mui/material";
 
@@ -27,7 +28,6 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
   const [addressDetail, setAddressDetail] = useState("");
   const [paymethod, setPaymethod] = useState("เงินสด");
   const [notetoDriver, setNoteToDriver] = useState("");
-
   const cart: any = localStorage.getItem("cart");
   const [storeLocation, setStoreLocation] = useState({});
   const { createCarttoLocalStorage } = useToken();
@@ -258,8 +258,8 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
               }
               return (
                 <div className="flex flex-row w-[200px] h-[70px] shadow-md rounded-md mx-[16px] my-[8px]">
-                  <div className="flex bg-[#01B14F] justify-center flex-col w-full border-[1px] border-[green]">
-                    <div className="bg-[#01B14F] text-white flex text-[18px] font-bold justify-center">
+                  <div className="flex bg-[#01B14F] justify-center flex-col rounded-md w-full border-[1px] border-[green]">
+                    <div className="bg-[#01B14F] text-white flex text-[18px] rounded-md font-bold justify-center">
                       {item.coupon_name}
                     </div>
                     <div className="bg-white">
@@ -293,10 +293,20 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
             <div className="w-full flex justify-center items-center my-[10px] text-[18px] font-[500]">
               คูปองที่คุณเลือกใช้
             </div>
-            {couponSelected == true && (
+            {couponSelected == false && (
               <div className="flex flex-row  h-[70px] shadow-md rounded-md mx-[16px] my-[16px] max-w-[240px]">
                 <div className="flex bg-[#01B14F] justify-center flex-col w-full border-[1px] border-[green]">
-                  <div className="bg-[#01B14F] text-white flex text-[18px] font-bold justify-center">
+                  <div className="bg-[#01B14F] px-[16px] text-white flex text-[18px] font-bold justify-center">
+                    ไม่ได้เลือก
+                  </div>
+                </div>
+                <div className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-md"></div>
+              </div>
+            )}
+            {couponSelected == true && (
+              <div className="flex flex-row  h-[70px] shadow-md rounded-md mx-[16px] my-[16px] max-w-[240px]">
+                <div className="flex bg-[#01B14F] justify-center flex-col rounded-md w-full border-[1px] border-[green]">
+                  <div className="bg-[#01B14F] text-white flex text-[18px] rounded-md font-bold justify-center">
                     {coupon_name}
                   </div>
                   <div className="bg-white">
@@ -320,11 +330,41 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
         </div>
         <div className="flex flex-col  mt-[20px] max-w-[700px] bg-white px-[20px] mb-[16px]">
           {user_cart.map((item) => {
+            let deleteItemIcon = "hide";
             return (
               <div className="" key={item.menu_id}>
                 <div className="flex min-h-[80px] border-b-[1px] py-[10px]">
                   <div className="w-[20%] flex justify-center items-center">
-                    <RemoveIcon className="text-[16px] md:text-[24px] text-[#00A5CF]" />
+                    {deleteItemIcon == "show" && <DeleteOutlineIcon />}
+                    {deleteItemIcon == "hide" && (
+                      <RemoveIcon
+                        className="text-[16px] md:text-[24px] text-[#00A5CF]"
+                        onClick={() => {
+                          let result = user_cart.find(
+                            //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
+                            (list) => {
+                              return list.menu_id == item.menu_id;
+                            }
+                          );
+                          if (result != undefined) {
+                            if (item.amount > 0) {
+                              item.amount--;
+                              item.menu_totalprice =
+                                Number(item.menu_price) * Number(item.amount);
+
+                              let newCart = user_cart;
+
+                              window.localStorage.removeItem("cart");
+                              createCarttoLocalStorage(newCart);
+                            } else {
+                              deleteItemIcon = "show";
+                              console.log("show");
+                            }
+                          }
+                          console.log(user_cart);
+                        }}
+                      />
+                    )}
                     <span className="mx-[5px] md:mx-[10px]">{item.amount}</span>
                     <AddIcon
                       className="text-[16px] md:text-[24px] text-[#00A5CF]"
@@ -400,7 +440,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
           </select>
         </div>
       </div>
-      <div className="fixed bottom-0 flex justify-center w-full min-h-[100px] items-center bg-white">
+      <div className="fixed bottom-0 flex justify-center w-full min-h-[100px] items-center bg-white px-[12px]">
         <div className="flex justify-between items-center my-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
           <div>
             <div className="text-[18px] font-[300]">รวมทั้งหมด</div>
@@ -408,7 +448,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
           </div>
           <Button
             variant="contained"
-            className="bg-[#01B14F] w-full h-[48px] rounded-md focus:bg-[#01B14F] hover:bg-[#01B14F] max-w-[200px]"
+            className="bg-[#01B14F] w-full h-[48px] rounded-md focus:bg-[#01B14F] hover:bg-[#01B14F] max-w-[150px] md:max-w-[200px]"
             onClick={() => {
               if (user_location != null) {
                 let restaurant_id = user_cart[0].restaurant_id;
