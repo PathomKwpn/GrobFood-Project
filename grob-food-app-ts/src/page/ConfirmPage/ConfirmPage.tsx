@@ -150,6 +150,9 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
   } else {
     if (distcount_type == "percent") {
       discount = (totalprice * Number(discount_value)) / 100;
+      if (discount > 100) {
+        discount = 100;
+      }
       lastprice = totalprice - discount;
     } else {
       discount = Number(discount_value);
@@ -274,13 +277,26 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
                   <div
                     className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-md"
                     onClick={() => {
-                      setCouponName(item.coupon_name);
-                      setDiscountValue(item.discount_value);
-                      setDiscountType(item.discount_type);
-                      setMin_totalprice(item.min_totalprice);
-                      setDiscountValueType(type);
-                      setCoupon_id(item.coupon_id);
-                      setCouponSelected(true);
+                      let startTimestamp = +new Date(item.start_date);
+                      let expireTimestamp = +new Date(item.expire_date);
+                      // console.log(expireTimestamp, "EXPIRE");
+                      let nowTimestamp = +new Date();
+                      // console.log(nowTimestamp, "NOW");
+                      if (
+                        nowTimestamp > expireTimestamp ||
+                        nowTimestamp < startTimestamp
+                      ) {
+                        alert("ไม่อยู่ในระยะเวลาใช้งานคูปอง");
+                        console.log("ไม่อยู่ในระยะเวลาใช้งานคูปอง");
+                      } else {
+                        setCouponName(item.coupon_name);
+                        setDiscountValue(item.discount_value);
+                        setDiscountType(item.discount_type);
+                        setMin_totalprice(item.min_totalprice);
+                        setDiscountValueType(type);
+                        setCoupon_id(item.coupon_id);
+                        setCouponSelected(true);
+                      }
                     }}
                   >
                     ใช้
