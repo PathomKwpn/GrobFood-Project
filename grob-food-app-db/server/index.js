@@ -31,7 +31,9 @@ const getStoreDetail = require("./src/Front-store-module/getStoreDetail");
 const getStoreAddres = require("./src/Front-store-module/getStoreAddress");
 const getStoreList = require("./src/Admin-module/getStoreList");
 const getCouponList = require("./src/Admin-module/getCouponList");
-const addCartAndBill = require("./src/Cart&bill-module/addCartAndBill");
+const addBill = require("./src/Cart&bill-module/addBill");
+const addCart = require("./src/Cart&bill-module/addCart");
+const updateStatusStore = require("./src/Admin-module/updateStatusStore");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -160,6 +162,14 @@ app.get("/getcouponlist", async (req, res) => {
   getCouponList(req, res);
 });
 
-app.post("/addcartandbill", async (req, res) => {
-  addCartAndBill(req, res);
+app.post("/addbill", async (req, res) => {
+  addBill(req, res);
+});
+app.post("/addcart", async (req, res) => {
+  addCart(req, res);
+});
+
+//UPDATE STATUS STORE
+app.post("/updatestatusstore", async (req, res) => {
+  updateStatusStore(req, res);
 });

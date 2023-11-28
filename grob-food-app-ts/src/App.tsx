@@ -17,6 +17,7 @@ import AdminPage from "./page/Admin/AdminPage";
 import RegisterAdmin from "./page/Admin/RegisterAdmin";
 import LoginAdmin from "./page/Admin/LoginAdmin";
 import DriverHome from "./page/Driver/Driver-Home";
+import DeliveryPage from "./page/DeliveryPage/DeliveryPage";
 import { useToken } from "./util/token/token";
 
 import Box from "@mui/material/Box";
@@ -126,6 +127,10 @@ function App() {
     {
       path: "/driverhome",
       element: <DriverHome />,
+    },
+    {
+      path: "/deliverypage",
+      element: <DeliveryPage />,
     },
   ]);
   // if (!token) {

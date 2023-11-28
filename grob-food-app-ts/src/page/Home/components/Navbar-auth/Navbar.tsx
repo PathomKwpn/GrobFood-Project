@@ -7,8 +7,9 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useToken } from "../../../../util/token/token";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Box from "@mui/material/Box";
 import { Alert, Button } from "@mui/material";
+
+import Cart from "../../../Cart/Cart";
 const Navbarauth = () => {
   const nevigate = useNavigate();
   const user_name: any = localStorage.getItem("user");
@@ -54,7 +55,7 @@ const Navbarauth = () => {
                     คุณไม่มีสินค้านี้ในตะกร้า
                   </Alert>
                 )}
-                <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
+                {/* <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
                   {user_cart.map((item) => {
                     return (
                       <div>
@@ -131,7 +132,8 @@ const Navbarauth = () => {
                       </div>
                     );
                   })}
-                </div>
+                </div> */}
+                <Cart createCarttoLocalStorage={createCarttoLocalStorage} />
               </div>
               <div className="h-[150px] flex justify-center flex-col items-center shadow-[40px_35px_60px_10px_rgba(0.3,0.3,0.3,0.2)]">
                 <div className="w-full flex justify-between px-[30px]">

@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbarauth } from "../Home/components";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useToken } from "../../util/token/token";
 import { Button } from "@mui/material";
 
 import axios from "axios";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
 import Login from "../Login-pages/Login";
+import Cart from "../Cart/Cart";
 const ConfirmPage = ({ clearToken, saveLocation }) => {
   const [noLocationPopup, setNoLocationPopup] = useState<"open" | "close">(
     "close"
@@ -88,11 +87,16 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
       console.log("Error");
     }
   };
-  const createBillAndCart = async (data: any) => {
-    const response = await axios.post(
-      `${GROBFOOD_USER_URL}/addcartandbill`,
-      data
-    );
+  const addBill = async (data: any) => {
+    const response = await axios.post(`${GROBFOOD_USER_URL}/addbill`, data);
+    if (response.data.success) {
+      console.log("create already");
+    } else {
+      console.log("Error");
+    }
+  };
+  const addCart = async (data: any) => {
+    const response = await axios.post(`${GROBFOOD_USER_URL}/addbill`, data);
     if (response.data.success) {
       console.log("create already");
     } else {
@@ -100,10 +104,10 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
     }
   };
   function getDistanceBetweenPointsNew(
-    latitude1,
-    longitude1,
-    latitude2,
-    longitude2,
+    latitude1: any,
+    longitude1: number,
+    latitude2: any,
+    longitude2: number,
     unit = "kilometers"
   ) {
     const theta = longitude1 - longitude2;
@@ -120,10 +124,10 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
     }
     return distance.toFixed(1);
   }
-  function deg2rad(deg) {
+  function deg2rad(deg: number) {
     return deg * (Math.PI / 180);
   }
-  function rad2deg(rad) {
+  function rad2deg(rad: number) {
     return rad * (180 / Math.PI);
   }
 
@@ -266,7 +270,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
                       {item.coupon_name}
                     </div>
                     <div className="bg-white">
-                      <div className="bg-[white] text-black flex justify-center text-[14px]">
+                      <div className="bg-[white] text-black flex justify-center text-[14px] font-[500]">
                         ส่วนลด {item.discount_value} {type}
                       </div>
                       <div className="bg-[white] text-[#b4b4b4] flex justify-center text-[10px]">
@@ -275,7 +279,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
                     </div>
                   </div>
                   <div
-                    className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-md"
+                    className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] font-[500] text-[16px] rounded-md"
                     onClick={() => {
                       let startTimestamp = +new Date(item.start_date);
                       let expireTimestamp = +new Date(item.expire_date);
@@ -344,7 +348,8 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
         <div className="border-b-[1px] py-[16px]">
           <span className="text-[24px] font-[500] px-[5%]">สรุปคำสั่งซื้อ</span>
         </div>
-        <div className="flex flex-col  mt-[20px] max-w-[700px] bg-white px-[20px] mb-[16px]">
+        <Cart createCarttoLocalStorage={createCarttoLocalStorage} />
+        {/* <div className="flex flex-col  mt-[20px] max-w-[700px] bg-white px-[20px] mb-[16px]">
           {user_cart.map((item) => {
             let deleteItemIcon = "hide";
             return (
@@ -423,7 +428,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
               </div>
             );
           })}
-        </div>
+        </div> */}
         <div className="my-[40px] px-[20px]">
           <div className="flex justify-between">
             <span>รวมค่าอาหาร</span> <span>฿{totalprice}</span>
@@ -486,7 +491,7 @@ const ConfirmPage = ({ clearToken, saveLocation }) => {
                   },
                   user_cart,
                 ];
-                createBillAndCart(data);
+                addBill(data);
               } else {
                 let countdown = 2;
                 setNoLocationPopup("open");

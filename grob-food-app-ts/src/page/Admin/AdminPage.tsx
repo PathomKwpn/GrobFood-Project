@@ -117,6 +117,18 @@ const AdminPage = () => {
       console.log("err");
     }
   };
+  const updateStatusStore = async (data: any) => {
+    const response = await axios.post(
+      `${GROBFOOD_USER_URL}/updatestatusstore`,
+      data
+    );
+    if (response.data.success) {
+      console.log(response.data);
+      getStoreList();
+    } else {
+      console.log("err");
+    }
+  };
   const deleteStore = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/deletestore`, data);
     if (response.data.success) {
@@ -193,7 +205,9 @@ const AdminPage = () => {
                     <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
                       วันที่สร้างร้าน
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]"></div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      สถานะร้าน
+                    </div>
                   </div>
                 </div>
 
@@ -224,6 +238,39 @@ const AdminPage = () => {
                         {regisDay}/{regisMonth}/{regisYear}
                       </div>
                       <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
+                        {item.status == "Allow" && (
+                          <Button
+                            variant="contained"
+                            className="bg-[#01B14F] md:min-w-[80px] max-w-[400px] shadow-sm focus:bg-[#01B14F] hover:bg-[#01B14F] z-0 my-[5px]"
+                            onClick={() => {
+                              const data: any = {
+                                restaurant_id: item.restaurant_id,
+                                status: item.status,
+                              };
+                              updateStatusStore(data);
+                            }}
+                          >
+                            อนุญาติ
+                          </Button>
+                        )}
+                        {item.status == "Not allowed" && (
+                          <Button
+                            variant="contained"
+                            className="bg-[#c43232] md:min-w-[80px] max-w-[400px] shadow-sm focus:bg-[#c43232] hover:bg-[#c43232] z-0 my-[5px]"
+                            onClick={() => {
+                              const data: any = {
+                                restaurant_id: item.restaurant_id,
+                                status: item.status,
+                              };
+                              updateStatusStore(data);
+                            }}
+                          >
+                            ถูกปิดกั้น
+                          </Button>
+                        )}
+                      </div>
+
+                      <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
                         <Button
                           variant="contained"
                           className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
@@ -237,6 +284,20 @@ const AdminPage = () => {
                           ลบ
                         </Button>
                       </div>
+                      {/* <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
+                        <Button
+                          variant="contained"
+                          className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
+                          onClick={() => {
+                            const owner_id: any = {
+                              owner_id: item.owner_id,
+                            };
+                            deleteStore(owner_id);
+                          }}
+                        >
+                          ลบ
+                        </Button>
+                      </div> */}
                     </div>
                   );
                 })}
@@ -262,7 +323,7 @@ const AdminPage = () => {
           </div>
           <Button
             variant="contained"
-            className="bg-[#01B14F] md:min-w-[80px] max-w-[200px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px] m-[auto]"
+            className="bg-[#01B14F] md:min-w-[80px] shadow-sm max-w-[200px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0 my-[10px] m-[auto]"
             onClick={() => {
               setCouponState(true);
             }}
@@ -483,7 +544,7 @@ const AdminPage = () => {
                       }
                     }}
                   >
-                    เพิ่มเมนู
+                    เพิ่มคูปอง
                   </Button>
                   <Button
                     variant="contained"
@@ -587,7 +648,9 @@ const AdminPage = () => {
                         <Button
                           variant="contained"
                           className={
-                            " md:min-w-[80px] max-w-[400px] z-0 my-[5px] " +
+                            " md:min-w-[80px] max-w-[400px] cursor-default z-0 my-[5px] " +
+                            bgStatus +
+                            " focus:" +
                             bgStatus
                           }
                           onClick={() => {
