@@ -13,7 +13,11 @@ import { AlertTitle } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import FilledInput from "@mui/material/FilledInput";
 import { Link, useNavigate } from "react-router-dom";
-const LoginOwner = ({ setUser, setToken }) => {
+type LoingOwnerProps = {
+  setUser: React.Dispatch<React.SetStateAction<string>>;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
+};
+const LoginOwner = ({ setUser, setToken }: LoingOwnerProps) => {
   const [owner_username, setOwner_Username] = useState<string>("");
   const [owner_password, setOwner_Password] = useState<string>("");
   const navigate = useNavigate();

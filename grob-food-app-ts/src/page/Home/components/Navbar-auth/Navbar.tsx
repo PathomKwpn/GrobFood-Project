@@ -1,30 +1,47 @@
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useToken } from "../../../../util/token/token";
+
+//ICON
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link, useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { useToken } from "../../../../util/token/token";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import { Alert, Button } from "@mui/material";
 
 import Cart from "../../../Cart/Cart";
 const Navbarauth = () => {
   const nevigate = useNavigate();
+
+  //GET USER FROM LOCALSTORAGE
   const user_name: any = localStorage.getItem("user");
+  let user_firstname = JSON.parse(user_name);
+  //GET CART FROM LOCALSTORAGE
   const cart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(cart);
+
+  //POPUP STATE
   const [alertNoMenu, setAlertNoMenu] = useState<"active" | "close">("close");
   const [cartState, setCartState] = useState<"open" | "close">("close");
-  let user_firstname = JSON.parse(user_name);
 
   const { updateToken, clearToken, createCarttoLocalStorage } = useToken();
+
+  //CALC TOTALPRICE
   let totalprice = 0;
   for (let i = 0; i < user_cart.length; i++) {
     totalprice += Number(user_cart[i].menu_totalprice);
   }
 
+  //CART
+  const [CartList, setCartList] = useState();
+  const getCartLocalStorage = async () => {
+    const cart: any = localStorage.getItem("cart");
+    let user_cart = JSON.parse(cart);
+    setCartList(user_cart);
+  };
   return (
     <>
       <div className="flex fixed z-[1000] justify-center items-center h-[48px] md:h-[88px]  top-0 bg-white shadow-sm w-full">
@@ -55,7 +72,7 @@ const Navbarauth = () => {
                     คุณไม่มีสินค้านี้ในตะกร้า
                   </Alert>
                 )}
-                {/* <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
+                <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
                   {user_cart.map((item) => {
                     return (
                       <div>
@@ -132,8 +149,11 @@ const Navbarauth = () => {
                       </div>
                     );
                   })}
-                </div> */}
-                <Cart createCarttoLocalStorage={createCarttoLocalStorage} />
+                </div>
+                {/* <Cart
+                  createCarttoLocalStorage={createCarttoLocalStorage}
+                  cart={CartList}
+                /> */}
               </div>
               <div className="h-[150px] flex justify-center flex-col items-center shadow-[40px_35px_60px_10px_rgba(0.3,0.3,0.3,0.2)]">
                 <div className="w-full flex justify-between px-[30px]">
@@ -177,10 +197,14 @@ const Navbarauth = () => {
               </Link>
             </div>
             <div className="flex ">
+              {/* <div className="flex relative cursor-pointer justify-center items-center text-[6px] font-semibold text-[#676767] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] md:px-[10px]">
+                <NotificationsActiveIcon />
+              </div> */}
               <div
                 className="flex relative cursor-pointer justify-center items-center text-[6px] font-semibold text-[#676767] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] md:px-[10px]"
                 onClick={() => {
                   setCartState("open");
+                  getCartLocalStorage();
                   updateToken();
                 }}
               >

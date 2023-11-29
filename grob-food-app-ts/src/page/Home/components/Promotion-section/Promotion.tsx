@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // Import Swiper React components
 import { RestaurantsCard } from "..";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { GROBFOOD_USER_URL } from "../../../../util/constants/constant";
 const Promotion = () => {
+  const [storeList, setStoreList] = useState();
+  const getStore = async () => {
+    console.log();
+    const response = await axios.post(`${GROBFOOD_USER_URL}/getallstorelist`);
+    if (response.data.success) {
+      setStoreList(response.data.data);
+    } else {
+      console.log("err");
+    }
+  };
+  useEffect(() => {
+    getStore();
+  }, []);
+  console.log(storeList);
+
   const nevigate = useNavigate();
   return (
     <div className="pt-[48px] px-[5%] max-w-[1300px] mx-[auto]">

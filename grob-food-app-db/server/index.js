@@ -34,6 +34,7 @@ const getCouponList = require("./src/Admin-module/getCouponList");
 const addBill = require("./src/Cart&bill-module/addBill");
 const addCart = require("./src/Cart&bill-module/addCart");
 const updateStatusStore = require("./src/Admin-module/updateStatusStore");
+const getBill = require("./src/Cart&bill-module/getBill");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -172,4 +173,9 @@ app.post("/addcart", async (req, res) => {
 //UPDATE STATUS STORE
 app.post("/updatestatusstore", async (req, res) => {
   updateStatusStore(req, res);
+});
+
+//GET USER BILL
+app.get("/getuserbill", async (req, res) => {
+  getBill(req, res);
 });

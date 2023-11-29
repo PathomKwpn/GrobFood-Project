@@ -20,7 +20,6 @@ import DriverHome from "./page/Driver/Driver-Home";
 import DeliveryPage from "./page/DeliveryPage/DeliveryPage";
 import { useToken } from "./util/token/token";
 
-import Box from "@mui/material/Box";
 const theme = createTheme({
   typography: {
     fontFamily: ["Kanit", "sans-serif"].join(","),
@@ -99,12 +98,7 @@ function App() {
     },
     {
       path: "/confirmpage",
-      element: (
-        <ConfirmPage
-          saveLocation={saveLocationtoLocalStorage}
-          clearToken={clearToken}
-        />
-      ),
+      element: <ConfirmPage saveLocation={saveLocationtoLocalStorage} />,
     },
     {
       path: "/adminpage",

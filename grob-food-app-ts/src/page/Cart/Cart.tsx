@@ -1,12 +1,14 @@
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-const Cart = ({ createCarttoLocalStorage }) => {
+import { useEffect, useState } from "react";
+const Cart = ({ createCarttoLocalStorage, cart }) => {
   const localcart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(localcart);
+  console.log(cart, "CART");
 
   return (
     <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
-      {user_cart.map((item) => {
+      {cart?.map((item) => {
         return (
           <div>
             <div className="flex min-h-[80px] border-b-[1px] py-[10px]">
