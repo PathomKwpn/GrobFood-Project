@@ -35,6 +35,7 @@ const addBill = require("./src/Cart&bill-module/addBill");
 const addCart = require("./src/Cart&bill-module/addCart");
 const updateStatusStore = require("./src/Admin-module/updateStatusStore");
 const getBill = require("./src/Cart&bill-module/getBill");
+const getCartList = require("./src/Cart&bill-module/getCart");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -176,6 +177,10 @@ app.post("/updatestatusstore", async (req, res) => {
 });
 
 //GET USER BILL
-app.get("/getuserbill", async (req, res) => {
+app.post("/getuserbill", async (req, res) => {
   getBill(req, res);
+});
+//GET BILL MENULIST
+app.post("/getbillmenulist", async (req, res) => {
+  getCartList(req, res);
 });

@@ -13,10 +13,12 @@ import Login from "../Login-pages/Login";
 // import Cart from "../Cart/Cart";
 
 import Location from "./components/Location";
+import { useNavigate } from "react-router-dom";
 type ConfirmPageProps = {
   saveLocation: any;
 };
 const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
+  const nevigate = useNavigate();
   const getOwner = localStorage.getItem("user");
   if (!getOwner) {
     return <Login />;
@@ -615,6 +617,7 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
                   },
                   user_cart,
                 ];
+                nevigate("/deliverypage");
                 addBill(data);
               } else {
                 let countdown = 2;

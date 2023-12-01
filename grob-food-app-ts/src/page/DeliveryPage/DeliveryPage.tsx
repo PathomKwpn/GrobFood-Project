@@ -7,7 +7,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useToken } from "../../util/token/token";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Alert, Button } from "@mui/material";
+import { Alert, Button, MenuList } from "@mui/material";
 import gifDriver from "../../../public/image/grab-driver/giphy.gif";
 import axios from "axios";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
@@ -16,7 +16,10 @@ const DeliveryPage = () => {
 
   //GET USER FROM LOCALSTORAGE
   const user_name: any = localStorage.getItem("user");
-  let user_firstname = JSON.parse(user_name);
+  let user_info = JSON.parse(user_name);
+  let user_id = { user_id: user_info.id };
+  console.log(user_id);
+
   //GET CART FROM LOCALSTORAGE
   const cart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(cart);
@@ -24,26 +27,53 @@ const DeliveryPage = () => {
   //POPUP STATE
   const [alertNoMenu, setAlertNoMenu] = useState<"active" | "close">("close");
   const [cartState, setCartState] = useState<"open" | "close">("close");
-
+  const [memuList, setMenuList] = useState();
+  const [billDetail, setBillDetail] = useState([]);
   const { updateToken, clearToken } = useToken();
+  const getBillmenuList = async (data: any) => {
+    const response = await axios.post(
+      `${GROBFOOD_USER_URL}/getbillmenulist`,
+      data
+    );
+    if (response.data.success) {
+      setMenuList(response.data.data);
+      console.log("get cart already");
+      console.log(response.data.data);
+      console.log(memuList);
+    } else {
+      console.log("Error");
+    }
+  };
   const getUserBill = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/getuserbill`, data);
     if (response.data.success) {
-      console.log("create already");
+      setBillDetail(response.data.data);
+      console.log(billDetail);
+      console.log(response.data.data);
+      let getBilmenu = { bill_id: response.data.data[0].bill_id };
+      console.log(getBilmenu);
+
+      getBillmenuList(getBilmenu);
     } else {
       console.log("Error");
-      alert("คุณมีคำสั่งซื้อที่กำลังดำเนินการอยู่");
     }
   };
+
   //CALC TOTALPRICE
   let totalprice = 0;
   for (let i = 0; i < user_cart.length; i++) {
     totalprice += Number(user_cart[i].menu_totalprice);
   }
+  useEffect(() => {
+    console.log(user_id);
+    getUserBill(user_id);
+  }, []);
+  console.log(billDetail[0]);
+  console.log(memuList);
 
   //CART
   return (
-    <div className="bg-slate-500">
+    <div className="bg-slate-500 min-h-[100vh]">
       <nav className="flex fixed z-[1000] justify-center items-center h-[48px] md:h-[88px]  top-0 bg-white shadow-sm w-full">
         <div className="w-[100%] px-[12px] md:px-[36px]">
           <div className="flex justify-between">
@@ -62,7 +92,7 @@ const DeliveryPage = () => {
                     nevigate("/userprofile");
                   }}
                 >
-                  {user_firstname.firstname}
+                  {user_info.firstname}
                 </Link>
               </div>
               <div
@@ -92,24 +122,38 @@ const DeliveryPage = () => {
           เรากำลังหาคนขับให้คุณ..
         </p>
       </header>
-      <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
-        <div className="border-b-[1px] py-[16px]">
-          <span className="text-[24px] font-[500] px-[5%]">สรุปคำสั่งซื้อ</span>
+      {billDetail.length != 0 && (
+        <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+          <div className="border-b-[1px] py-[16px]">
+            <span className="text-[24px] font-[500] px-[5%]">
+              สรุปคำสั่งซื้อ
+            </span>
+          </div>
+          <div className="my-[40px] px-[20px]">
+            <div className="flex justify-between">
+              <span>รวมค่าอาหาร</span> <span>฿{billDetail[0].last_price}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>ส่วนลด</span> <span>฿ </span>
+            </div>
+            <div className="flex justify-between">
+              <span>ค่าส่ง</span>
+              <span></span>
+            </div>
+          </div>
+          <div>
+            เพิ่มเติม
+            <div onClick={() => {}}>ดู</div>
+            {memuList != undefined && (
+              <div>
+                {memuList?.map((order) => {
+                  return <div>{order.cart_id}</div>;
+                })}
+              </div>
+            )}
+          </div>
         </div>
-
-        <div className="my-[40px] px-[20px]">
-          <div className="flex justify-between">
-            <span>รวมค่าอาหาร</span> <span>฿ {totalprice}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>ส่วนลด</span> <span>฿ </span>
-          </div>
-          <div className="flex justify-between">
-            <span>ค่าส่ง</span>
-            <span></span>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -8,11 +8,11 @@ const exec = async (req, res) => {
   let responseData = {};
   try {
     let data = req.body;
-    let param = [data.user_id];
+    console.log(data, "DATA");
+    let param = [data.bill_id];
     console.log(param);
-    let sql = `select * from bills b where user_id =$1 and bill_status != 'success';`;
-    let response = await pool.query(sql, param);
-    // console.log(response);
+    let sql_getCart = `select * from cart c where bill_id = $1;`;
+    let response = await pool.query(sql_getCart, param);
     responseData.success = true;
     responseData.data = response.rows;
     // console.log(responseData.data);

@@ -14,8 +14,8 @@ const exec = async (req, res) => {
     let cart_uuid = uuid();
     //SQL
     let sql_cart = `INSERT INTO public.cart
-(cart_id, menu_id, price, create_date, create_by, amount, bill_id)
-VALUES($1, $2, $3, now(), $4, $5, $6);`;
+(cart_id, menu_id, price, create_date, create_by, amount, bill_id,menu_name)
+VALUES($1, $2, $3, now(), $4, $5, $6,$7);`;
     //PARAM
 
     for (let i = 0; i < cart.length; i++) {
@@ -26,6 +26,7 @@ VALUES($1, $2, $3, now(), $4, $5, $6);`;
         bill.user_id,
         cart[i].amount,
         bill_uuid,
+        cart[i].menu_name,
       ];
       let response_cart = await pool.query(sql_cart, param_cart);
       console.log(param_cart);

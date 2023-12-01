@@ -12,10 +12,11 @@ const exec = async (req, res) => {
     let sql = `select * from bills b where user_id =$1 and bill_status != 'success';`;
     let param = [bill.user_id];
     let responseUser = await pool.query(sql, param);
-    if (responseUser.rowCount < 1) {
+    console.log(responseUser.rowCount, "ROWCOUNT");
+    if (responseUser.rowCount >= 1) {
       responseData.success = false;
       responseData.data = "คุณมีคำสั่งซื้อที่กำลังดำเนินการอยู่";
-    } else if (!responseUser.rowCount < 1) {
+    } else if (responseUser.rowCount < 1) {
       // console.log(data);
       //UUID
       let bill_uuid = uuid();
@@ -61,8 +62,8 @@ VALUES($1, $2, $3, now(), $4, $5, $6);`;
       console.log(param);
 
       //RESPONSE IF SUCCESS
-      // responseData.success = true;
-      // responseData.data = response.rows;
+      responseData.success = true;
+      responseData.data = response.rows;
       // console.log(responseData.data);
       user.query("COMMIT");
     }
