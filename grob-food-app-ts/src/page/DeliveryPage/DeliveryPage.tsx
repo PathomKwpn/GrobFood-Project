@@ -73,7 +73,7 @@ const DeliveryPage = () => {
 
   //CART
   return (
-    <div className="bg-slate-500 min-h-[100vh]">
+    <div className="bg-slate-100 min-h-[100vh] flex flex-col  items-center">
       <nav className="flex fixed z-[1000] justify-center items-center h-[48px] md:h-[88px]  top-0 bg-white shadow-sm w-full">
         <div className="w-[100%] px-[12px] md:px-[36px]">
           <div className="flex justify-between">
@@ -112,7 +112,7 @@ const DeliveryPage = () => {
           </div>
         </div>
       </nav>
-      <header className="w-full flex h-[400px] flex-col justify-center items-center mt-[100px]">
+      <header className="w-full flex h-[400px] flex-col justify-center items-center mt-[30px] md:mt-[80px]">
         <img
           className="max-w-[300px] bg-cover bmax-h-[300px]"
           src={gifDriver}
@@ -123,34 +123,50 @@ const DeliveryPage = () => {
         </p>
       </header>
       {billDetail.length != 0 && (
-        <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+        <div className="h-[auto] mt-[20px]  md:w-[50%] bg-white rounded-md w-[95%] max-w-[300px] mx-[10px] shadow-sm">
           <div className="border-b-[1px] py-[16px]">
             <span className="text-[24px] font-[500] px-[5%]">
               สรุปคำสั่งซื้อ
             </span>
           </div>
-          <div className="my-[40px] px-[20px]">
-            <div className="flex justify-between">
-              <span>รวมค่าอาหาร</span> <span>฿{billDetail[0].last_price}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>ส่วนลด</span> <span>฿ </span>
-            </div>
-            <div className="flex justify-between">
-              <span>ค่าส่ง</span>
-              <span></span>
-            </div>
-          </div>
-          <div>
-            เพิ่มเติม
-            <div onClick={() => {}}>ดู</div>
+          <div className="flex justify-center flex-col items-center w-full">
+            <div className="my-[16px] font-bold text-[18px]">รายการอาหาร</div>
             {memuList != undefined && (
-              <div>
+              <div className="w-full px-[16px]">
                 {memuList?.map((order) => {
-                  return <div>{order.cart_id}</div>;
+                  return (
+                    <div
+                      key={order.menu_id}
+                      className="flex justify-between w-[100%]"
+                    >
+                      <span>{order.amount}x </span>
+                      <span className="text-[#5a5a5a]">{order.menu_name}</span>
+                      <span>{order.price}</span>
+                    </div>
+                  );
                 })}
               </div>
             )}
+          </div>
+          <div className="my-[40px] px-[20px]">
+            <div className="flex justify-between">
+              <span>รวมค่าอาหาร</span> <span>฿{billDetail[0].total_price}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>ส่วนลด</span>
+              <span>฿{billDetail[0].discount}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>ค่าส่ง</span>
+              <span>฿{billDetail[0].shipping_cost}</span>
+            </div>
+            <div className="flex justify-between mt-[16px]">
+              <span className="text-[24px] font-bold">รวมทั้งหมด</span>{" "}
+              <span className="flex justify-center items-center">
+                ฿{billDetail[0].last_price}
+              </span>
+            </div>
           </div>
         </div>
       )}

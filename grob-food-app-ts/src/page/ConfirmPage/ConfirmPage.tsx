@@ -161,10 +161,10 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
       if (discount > 100) {
         discount = 100;
       }
-      lastprice = totalprice - discount;
+      lastprice = totalprice - discount + deliveryCost;
     } else {
       discount = Number(discount_value);
-      lastprice = totalprice - discount;
+      lastprice = totalprice - discount + deliveryCost;
     }
   }
 
@@ -614,6 +614,7 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
                     user_longitude,
                     notetoDriver,
                     addressDetail,
+                    discount,
                   },
                   user_cart,
                 ];
