@@ -26,6 +26,9 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
   const [noLocationPopup, setNoLocationPopup] = useState<"open" | "close">(
     "close"
   );
+  const [ConfirmBillState, setConfirmBillState] = useState<
+    "pass" | "cancel" | "none"
+  >("none");
   //COUPON
   const [couponList, setCouponList] = useState([]);
   const [couponSelected, setCouponSelected] = useState<boolean>(false);
@@ -99,9 +102,12 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/addbill`, data);
     if (response.data.success) {
       console.log("create already");
+      setConfirmBillState("pass");
+      nevigate("/deliverypage");
     } else {
       console.log("Error");
       alert("คุณมีคำสั่งซื้อที่กำลังดำเนินการอยู่");
+      setConfirmBillState("cancel");
     }
   };
 
@@ -618,7 +624,6 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
                   },
                   user_cart,
                 ];
-                nevigate("/deliverypage");
                 addBill(data);
               } else {
                 let countdown = 2;

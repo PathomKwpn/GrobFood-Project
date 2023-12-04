@@ -8,9 +8,13 @@ const exec = async (req, res) => {
   let responseData = {};
   try {
     let data = req.body;
-
+    let param = [data.driver_id, data.bill_id];
+    console.log(param);
     let sql = `select * from bills  where bill_status = 'Find Driver';`;
-    let response = await pool.query(sql);
+    let sql_updateBill = `UPDATE public.bills
+SET bill_status='Find Driver Success',driver_id=$1
+WHERE bill_id=$2;`;
+    let response = await pool.query(sql_updateBill, param);
     // console.log(response);
     responseData.success = true;
     responseData.data = response.rows;

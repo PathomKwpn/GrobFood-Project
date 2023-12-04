@@ -8,9 +8,9 @@ const exec = async (req, res) => {
   let responseData = {};
   try {
     let data = req.body;
-
-    let sql = `select * from bills  where bill_status = 'Find Driver';`;
-    let response = await pool.query(sql);
+    let param = [data.driver_id];
+    let sql = `select * from bills  where driver_id = $1;`;
+    let response = await pool.query(sql, param);
     // console.log(response);
     responseData.success = true;
     responseData.data = response.rows;
