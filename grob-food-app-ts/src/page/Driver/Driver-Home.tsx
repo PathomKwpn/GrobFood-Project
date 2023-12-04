@@ -14,9 +14,6 @@ const DriverHome = () => {
   const driver_id = user_info.id;
   const sendDriver_id = { driver_id: driver_id };
   //STATE
-  const [statepage, setStatePage] = useState<"allworkList" | "yourworkList">(
-    "allworkList"
-  );
   //ORDER LIST
   const [orderList, setOrderList] = useState([]);
   const [driverWorkList, setDriverWorkList] = useState([]);
@@ -48,6 +45,8 @@ const DriverHome = () => {
     );
 
     if (response.data.success) {
+      console.log(response.data.data);
+
       setDriverWorkList(response.data.data);
       console.log("get driver work list accept success");
     } else {
