@@ -17,6 +17,7 @@ const DriverHome = () => {
   //ORDER LIST
   const [orderList, setOrderList] = useState([]);
   const [driverWorkList, setDriverWorkList] = useState([]);
+  const [DriverBillStatus, setDriverBillStatus] = useState("");
   const getOrderFindDriver = async () => {
     const response = await axios.get(`${GROBFOOD_USER_URL}/getorderfinddriver`);
 
@@ -46,7 +47,7 @@ const DriverHome = () => {
 
     if (response.data.success) {
       console.log(response.data.data);
-
+      setDriverBillStatus(response.data.data[0].bill_status);
       setDriverWorkList(response.data.data);
       console.log("get driver work list accept success");
     } else {
@@ -71,13 +72,14 @@ const DriverHome = () => {
   //   getOrderFindDriver();
   // });
   return (
-    <div>
+    <div className=" bg-slate-200 min-h-[100vh]">
       <NavbarDriver />
       <Container
         orderList={orderList}
         driverWorkList={driverWorkList}
         driverAcceptWork={driverAcceptWork}
         driver_id={driver_id}
+        DriverBillStatus={DriverBillStatus}
       />
     </div>
   );

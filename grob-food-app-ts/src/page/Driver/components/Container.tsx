@@ -1,9 +1,16 @@
 // import axios from "axios";
 // import React, { useEffect } from "react";
 // import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
+
 import { Button } from "@mui/material";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import MopedIcon from "@mui/icons-material/Moped";
+
 import { useState } from "react";
 import { useToken } from "../../../util/token/token";
+import axios from "axios";
+import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
 interface orderListProps {
   addres_detail: string | null;
   bill_date: string;
@@ -56,6 +63,7 @@ type DriverContainerProps = {
   driverWorkList: Array<driverWorkListProps>;
   driverAcceptWork: any;
   driver_id: string;
+  DriverBillStatus: string;
   //   setNoteToDriver: React.Dispatch<React.SetStateAction<string>>;
 };
 const DriverContainer = ({
@@ -63,15 +71,21 @@ const DriverContainer = ({
   driverWorkList,
   driverAcceptWork,
   driver_id,
+  DriverBillStatus,
 }: DriverContainerProps) => {
   const { updateToken } = useToken();
   const [statePage, setStatePage] = useState("รายการงาน");
-  const [menuOrderList, setMenuOrderList] = useState(
-    driverWorkList[0].menulist
-  );
-  console.log(menuOrderList);
 
+  let firstStep = `bg-[#0d990d]`;
+  let secondStep = `bg-[#acacac]`;
+  let thirdStep = `bg-[#acacac]`;
+  let fouthStep = `bg-[#acacac]`;
+  let motor1 = `visible`;
+  let motor2 = `invisible`;
+  let motor3 = `invisible`;
+  let motor4 = `invisible`;
   console.log(driverWorkList);
+
   let billDay;
   let billMonth;
   let billYear;
@@ -81,8 +95,43 @@ const DriverContainer = ({
     billMonth = createDate.getMonth();
     billYear = createDate.getFullYear();
     console.log(driverWorkList[0].menulist[0].menu_name);
-  }
 
+    if (driverWorkList[0].bill_status == "ถึงร้านอาหารแล้ว") {
+      motor1 = `invisible`;
+      motor2 = `visible`;
+      secondStep = `bg-[#0d990d]`;
+    }
+    if (driverWorkList[0].bill_status == "กำลังไปส่งอาหาร") {
+      motor1 = `invisible`;
+      motor2 = `invisible`;
+      motor3 = `visible`;
+      secondStep = `bg-[#0d990d]`;
+      thirdStep = `bg-[#0d990d]`;
+    }
+    if (driverWorkList[0].bill_status == "คำสั่งซื้อเสร็จสิ้น") {
+      motor1 = `invisible`;
+      motor2 = `invisible`;
+      motor3 = `invisible`;
+      motor4 = `visible`;
+      secondStep = `bg-[#0d990d]`;
+      thirdStep = `bg-[#0d990d]`;
+      fouthStep = `bg-[#0d990d]`;
+    }
+  }
+  const updateBillStatus = async (data: any) => {
+    const response = await axios.post(
+      `${GROBFOOD_USER_URL}/getdriverworklist`,
+      data
+    );
+
+    if (response.data.success) {
+      console.log(response.data.data);
+
+      console.log("get driver work list accept success");
+    } else {
+      console.log("ERROR");
+    }
+  };
   return (
     <div className="px-[5px]">
       <Button
@@ -105,6 +154,7 @@ const DriverContainer = ({
       >
         งานของคุณ
       </Button>
+
       <header className="text-[32px] font-bold flex justify-center my-[24px]">
         {statePage}
       </header>
@@ -172,9 +222,9 @@ const DriverContainer = ({
                     <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
                       {item.paymethod}
                     </div>
-                    <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px]">
-                      <span>เปิด :{item.user_latitude}</span>
-                      <span>ปิด :{item.user_longitude}</span>
+                    <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] text-center flex flex-col items-center justify-center mb-[4px]">
+                      <span>latitude :{item.user_latitude}</span>
+                      <span>longitude :{item.user_longitude}</span>
                     </div>
                     <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
                       {regisDay}/{regisMonth}/{regisYear}
@@ -187,38 +237,183 @@ const DriverContainer = ({
         </div>
       )}
       {statePage == "งานของคุณ" && (
-        <div className="flex justify-center">
-          <div className="w-[800px] bg-slate-200">
-            <header>
-              <p>
-                {billDay} / {billMonth} / {billYear}
+        <div className="flex justify-center w-full md:max-w-[600px] m-auto">
+          <div className="w-full bg-white rounded-xl">
+            <header className="flex flex-col justify-center items-center w-full mt-[52px]">
+              <p className="flex items-center justify-center">
+                วันที่ : {billDay} / {billMonth} / {billYear}
               </p>
-              <p>{driverWorkList[0].restaurant_name}</p>
-              <p>
+              <p className="text-[20px] md:text-[24px] font-bold text-center my-[6px]">
+                {driverWorkList[0].restaurant_name}
+              </p>
+              <p className="text-[12px] flex items-center md:text-[14px]">
+                <LocationOnIcon className="text-[#da7929]" />
                 {driverWorkList[0].restaurant_latitude},
                 {driverWorkList[0].restaurant_longitude}
               </p>
             </header>
 
-            <div>
-              <p>รายการอาหาร</p>
-              {menuOrderList.map((list) => (
-                <div className="user">
-                  {list.amount}x{list.menu_name}
-                  {list.price}
-                </div>
-              ))}
+            <div className="flex flex-col items-center justify-center mt-[48px]">
+              <ReceiptIcon className="text-[36px]" />
+              <p className="text-[18px] font-bold my-[12px]">รายการอาหาร</p>
+              <div className="w-[90%]">
+                {driverWorkList[0].menulist?.map((list) => (
+                  <div className="w-full flex flex-row justify-between">
+                    <span className="font-bold">{list.amount}x</span>
+                    <span>{list.menu_name}</span>
+                    <span>{list.price}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div>
-              <header>สรุปคำสั่งซื้อ</header>
-              <div>
-                <div>รวมค่าอาหา {driverWorkList[0].total_price}</div>
-                <div>ค่าส่ง {driverWorkList[0].shipping_cost}</div>
-                <div>ส่วนลด {driverWorkList[0].discount}</div>
-                <div>รวมทั้งหมด {driverWorkList[0].last_price}</div>
-                <div>รูปแบบการจ่ายเงิน {driverWorkList[0].paymethod}</div>
+            <div className="flex flex-col items-center justify-center my-[24px]">
+              <header className="text-[18px] font-bold my-[12px]">
+                สรุปคำสั่งซื้อ
+              </header>
+              <div className="w-[90%]">
+                <div className="flex justify-between">
+                  <span className="font-bold">รวมค่าอาหาร </span>
+                  {driverWorkList[0].total_price}
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-bold">ค่าส่ง </span>
+                  {driverWorkList[0].shipping_cost}
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-bold">ส่วนลด </span>
+                  {driverWorkList[0].discount}
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-bold">รวมทั้งหมด </span>
+                  {driverWorkList[0].last_price}
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-bold">รูปแบบการจ่ายเงิน </span>
+                  {driverWorkList[0].paymethod}
+                </div>
               </div>
+            </div>
+            <div className="flex flex-col items-center justify-center my-[24px]">
+              <header className="text-[18px] font-bold my-[32px]">สถานะ</header>
+              <div className="w-[90%] flex justify-between">
+                <div className="flex justify-end items-center w-[25%]">
+                  <div
+                    className={
+                      "flex justify-center items-center w-[20px] h-[20px]  rounded-xl " +
+                      firstStep
+                    }
+                  >
+                    <MopedIcon className={"mt-[-40px] " + motor1} />
+                  </div>
+                  <div
+                    className={
+                      "w-[30%] md:w-[40%] rounded-l-xl  h-[10px] " + secondStep
+                    }
+                  ></div>
+                </div>
+
+                <div className="flex justify-center items-center w-[25%]">
+                  <div
+                    className={"w-[50%] rounded-r-xl h-[10px] " + secondStep}
+                  ></div>
+                  <div
+                    className={
+                      "flex justify-center items-center w-[20px] h-[20px]  rounded-xl " +
+                      secondStep
+                    }
+                  >
+                    <MopedIcon className={"mt-[-40px] " + motor2} />
+                  </div>
+                  <div
+                    className={"w-[50%] rounded-l-xl h-[10px] " + thirdStep}
+                  ></div>
+                </div>
+                <div className="flex justify-center items-center w-[25%]">
+                  <div
+                    className={"w-[50%] rounded-r-xl h-[10px] " + thirdStep}
+                  ></div>
+                  <div
+                    className={
+                      "flex justify-center items-center w-[20px] h-[20px]  rounded-xl " +
+                      thirdStep
+                    }
+                  >
+                    <MopedIcon className={"mt-[-40px] " + motor3} />
+                  </div>
+                  <div
+                    className={"w-[50%] rounded-l-xl h-[10px] " + fouthStep}
+                  ></div>
+                </div>
+                <div className="flex justify-start items-center w-[25%]">
+                  <div
+                    className={
+                      "w-[30%] md:w-[40%] rounded-r-xl h-[10px] " + fouthStep
+                    }
+                  ></div>
+                  <div
+                    className={
+                      "flex justify-center items-center w-[20px] h-[20px]  rounded-xl " +
+                      fouthStep
+                    }
+                  >
+                    <MopedIcon className={"mt-[-40px] " + motor4} />
+                  </div>
+                </div>
+              </div>
+              <div className="w-[90%] flex justify-between mt-[16px]">
+                <div className="flex justify-between items-start w-[25%]">
+                  <span className="w-full font-bold flex justify-center items-center text-center text-[12px]">
+                    รับคำสั่งซื้อ
+                  </span>
+                </div>
+                <div className="flex justify-between w-[25%]">
+                  <span className="w-full font-bold flex justify-center items-center text-center text-[12px]">
+                    ถึงร้านอาหารแล้ว
+                  </span>
+                </div>
+                <div className="flex justify-between w-[25%]">
+                  <span className="w-full font-bold flex justify-center items-center text-center text-[12px]">
+                    กำลังไปส่งอาหาร
+                  </span>
+                </div>
+                <div className="flex justify-between w-[25%]">
+                  <span className="w-full font-bold flex justify-center items-center text-center text-[12px]">
+                    คำสั่งซื้อเสร็จสิ้น
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="w-full flex justify-center">
+              <Button
+                variant="contained"
+                className="bg-[green] md:min-w-[80px] max-w-[400px] focus:bg-[green] hover:bg-[green] z-0 my-[5px]"
+                onClick={() => {
+                  console.log(DriverBillStatus);
+                  let data;
+                  if (DriverBillStatus == "Find Driver success") {
+                    data = {
+                      bill_id: driverWorkList[0].bill_id,
+                      newBillStatus: "ถึงร้านอาหารแล้ว",
+                    };
+                  }
+                  if (DriverBillStatus == "ถึงร้านอาหารแล้ว") {
+                    data = {
+                      bill_id: driverWorkList[0].bill_id,
+                      newBillStatus: "กำลังไปส่งอาหาร",
+                    };
+                  }
+                  if (DriverBillStatus == "กำลังไปส่งอาหาร") {
+                    data = {
+                      bill_id: driverWorkList[0].bill_id,
+                      newBillStatus: "คำสั่งซื้อเสร็จสิ้น",
+                    };
+                  }
+                  console.log(data);
+                }}
+              >
+                เสร็จสิ้นขั้นตอนนี้?
+              </Button>
             </div>
           </div>
           {/* <div className="bg-white w-[600px] h-[800px] overflow-scroll border-[1px] border-[#01B14F]">
