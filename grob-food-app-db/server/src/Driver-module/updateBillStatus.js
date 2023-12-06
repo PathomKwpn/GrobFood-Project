@@ -8,7 +8,7 @@ const exec = async (req, res) => {
   let responseData = {};
   try {
     let data = req.body;
-    let param = [data.bill_id, data.newStatus];
+    let param = [data.bill_id, data.newBillStatus];
     console.log(param);
     let sql = `select * from bills  where bill_status = 'Find Driver';`;
     let sql_updateBill = `UPDATE public.bills

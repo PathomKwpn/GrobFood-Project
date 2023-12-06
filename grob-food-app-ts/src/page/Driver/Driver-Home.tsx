@@ -18,6 +18,9 @@ const DriverHome = () => {
   const [orderList, setOrderList] = useState([]);
   const [driverWorkList, setDriverWorkList] = useState([]);
   const [DriverBillStatus, setDriverBillStatus] = useState("");
+  const [endOrderState, setEndOrderState] = useState<true | false>(false);
+  const [haveOrder, setHaveOrder] = useState<true | false>(false);
+  const [alertHaveOrder, setAlertHaveOrder] = useState<true | false>(false);
   const getOrderFindDriver = async () => {
     const response = await axios.get(`${GROBFOOD_USER_URL}/getorderfinddriver`);
 
@@ -36,6 +39,8 @@ const DriverHome = () => {
     if (response.data.success) {
       console.log("accept success");
     } else {
+      console.log(response.data.data);
+      setAlertHaveOrder(true);
       console.log("ERROR");
     }
   };
@@ -46,12 +51,20 @@ const DriverHome = () => {
     );
 
     if (response.data.success) {
-      console.log(response.data.data);
+      console.log("GET DRIVER WORKLIST");
+
+      setHaveOrder(true);
       setDriverBillStatus(response.data.data[0].bill_status);
+
       setDriverWorkList(response.data.data);
-      console.log("get driver work list accept success");
+      if (response.data.data[0].bill_status == "คำสั่งซื้อเสร็จสิ้น") {
+        setEndOrderState(true);
+      } else {
+        setEndOrderState(false);
+      }
     } else {
-      console.log("ERROR");
+      setHaveOrder(false);
+      console.log("คุณไม่มีงานที่กำลังทำอยู่");
     }
   };
   useEffect(() => {
@@ -71,15 +84,24 @@ const DriverHome = () => {
   // useEffect(() => {
   //   getOrderFindDriver();
   // });
+  console.log(driverWorkList);
+
+  console.log(DriverBillStatus, "FIST");
   return (
     <div className=" bg-slate-200 min-h-[100vh]">
       <NavbarDriver />
       <Container
         orderList={orderList}
+        sendDriver_id={sendDriver_id}
         driverWorkList={driverWorkList}
         driverAcceptWork={driverAcceptWork}
         driver_id={driver_id}
         DriverBillStatus={DriverBillStatus}
+        endOrderState={endOrderState}
+        alertHaveOrder={alertHaveOrder}
+        haveOrder={haveOrder}
+        setAlertHaveOrder={setAlertHaveOrder}
+        getDriverWorkList={getDriverWorkList}
       />
     </div>
   );

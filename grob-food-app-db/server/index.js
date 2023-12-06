@@ -39,6 +39,7 @@ const getCartList = require("./src/Cart&bill-module/getCart");
 const getOrderFindDriver = require("./src/Driver-module/getOrderFindDriver");
 const driverAcceptWork = require("./src/Driver-module/driverAcceptWork");
 const driverWorkList = require("./src/Driver-module/getDriverWorkList");
+const updateBillStatus = require("./src/Driver-module/updateBillStatus");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -201,4 +202,8 @@ app.post("/driveracceptwork", async (req, res) => {
 //DRIVER WORK LIST
 app.post("/getdriverworklist", async (req, res) => {
   driverWorkList(req, res);
+});
+
+app.post("/updatebillstatus", async (req, res) => {
+  updateBillStatus(req, res);
 });
