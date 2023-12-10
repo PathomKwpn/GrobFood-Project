@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
-import RestaurantCard from "./Restaurant-Card/RestaurantCard";
+
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
@@ -28,7 +28,7 @@ const OwnerContainer = () => {
   const [createState, setCreateState] = useState(false);
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   //OWNER
-  const getOwner = localStorage.getItem("user");
+  const getOwner: any = localStorage.getItem("user");
   const ownerInfo = JSON.parse(getOwner);
   const owner_id = ownerInfo.id;
   const dataOwner: any = {
@@ -69,9 +69,9 @@ const OwnerContainer = () => {
     onLogin(dataOwner);
   }, []);
 
-  const haddleSubmit = (event: any) => {
-    event.preventDefault();
-  };
+  // const haddleSubmit = (event: any) => {
+  //   event.preventDefault();
+  // };
 
   const addStoreBtn = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/addstore`, data);
@@ -85,8 +85,8 @@ const OwnerContainer = () => {
   };
 
   //INPUT
-  const [file, setFile] = useState({});
-  const [fileName, setFileName] = useState("");
+  // const [file, setFile] = useState({});
+  // const [fileName, setFileName] = useState("");
   const [restaurant_name, setRestaurant_name] = useState("");
   const [address, setRestaurant_address] = useState("");
   const [restaurant_catagory, setRestaurant_catagory] = useState("");
@@ -97,17 +97,17 @@ const OwnerContainer = () => {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   //IMAGE UPLOAD
-  const handleUploadImage = (e) => {
+  const handleUploadImage = (e: any) => {
     const file = e.target.files[0];
     if (file) {
     } else {
     }
 
-    const reader = new FileReader();
+    const reader: any = new FileReader();
     reader.readAsDataURL(file);
 
     reader.onloadend = () => {
-      setFile(file);
+      // setFile(file);
       setLastnameImage(file.type.split("/").pop());
       setImageBase64(reader.result);
       setImagePreviewUrl(reader.result);

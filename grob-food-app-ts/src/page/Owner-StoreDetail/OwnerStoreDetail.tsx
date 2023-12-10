@@ -1,10 +1,9 @@
-import React from "react";
 import NavbarAuth from "../Owner-Home/NavbarAuth/NavbarAuth";
 import StoreDetail from "./OwnerStoreDetailPages/StoreDetail";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import Login from "../Login-pages/Login";
-const OwnerStoreDetail = ({ clearToken, token, user }) => {
+const OwnerStoreDetail = ({ clearToken, token, user }: any) => {
   const nevigate = useNavigate();
   const getOwner = localStorage.getItem("user");
   if (!getOwner) {

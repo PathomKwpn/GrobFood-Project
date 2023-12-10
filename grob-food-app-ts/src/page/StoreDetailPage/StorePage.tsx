@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import AddIcon from "@mui/icons-material/Add";
@@ -10,9 +9,31 @@ import axios from "axios";
 import Login from "../Login-pages/Login";
 import Footer from "../Footer/Footer";
 import { Alert, AlertTitle, Button } from "@mui/material";
-const StorePage = ({ clearToken, createCart }) => {
+
+interface storeDetail {
+  close_time: string;
+  latitude: string;
+  longitude: string;
+  menu_id: string;
+  menu_image_url: string;
+  menu_name: string;
+  open_time: string;
+  price: string;
+  restaurant_catagory: string;
+  restaurant_id: string;
+  restaurant_name: string;
+  restaurant_topic_name: string;
+  restaurants_image_url: string;
+  score: string;
+}
+
+interface storeTopic {
+  restaurant_topic_id: string;
+  restaurant_topic_name: string;
+}
+const StorePage = ({ createCart }: any) => {
   //CHECK LOGIN
-  const getOwner = localStorage.getItem("user");
+  const getOwner: any = localStorage.getItem("user");
   const user_info = JSON.parse(getOwner);
 
   const user_id = user_info.id;
@@ -22,8 +43,8 @@ const StorePage = ({ clearToken, createCart }) => {
   }
   const { resid } = useParams();
   const restaurant_id = { restaurant_id: resid };
-  const [storeDetail, setStoreDetail] = useState([]);
-  const [storeTopic, setStoreTopic] = useState([]);
+  const [storeDetail, setStoreDetail] = useState<Array<storeDetail>>([]);
+  const [storeTopic, setStoreTopic] = useState<Array<storeTopic>>([]);
   const [addmenuStateCheck, setAddmenuStateCheck] = useState(false);
   const [changeStore, setChangeStore] = useState(false);
   const [doubleMenu, setDoubleMenu] = useState(false);
@@ -49,7 +70,7 @@ const StorePage = ({ clearToken, createCart }) => {
       console.log("err");
     }
   };
-  const getLoaction = localStorage.getItem("location");
+  const getLoaction: any = localStorage.getItem("location");
   let user_location = JSON.parse(getLoaction);
   useEffect(() => {
     getStoreDetailAPI();
@@ -59,10 +80,10 @@ const StorePage = ({ clearToken, createCart }) => {
     }
   }, []);
   function getDistanceBetweenPointsNew(
-    latitude1,
-    longitude1,
-    latitude2,
-    longitude2,
+    latitude1: any,
+    longitude1: any,
+    latitude2: any,
+    longitude2: any,
     unit = "kilometers"
   ) {
     const theta = longitude1 - longitude2;
@@ -79,17 +100,17 @@ const StorePage = ({ clearToken, createCart }) => {
     }
     return distance.toFixed(1);
   }
-  function deg2rad(deg) {
+  function deg2rad(deg: any) {
     return deg * (Math.PI / 180);
   }
-  function rad2deg(rad) {
+  function rad2deg(rad: any) {
     return rad * (180 / Math.PI);
   }
   let haveLocation = false;
-  let distance;
+  let distance: any;
   let time;
   let timeMin;
-  console.log(storeDetail);
+  console.log(storeTopic);
 
   if (storeDetail.length != 0 && userLatitude != "") {
     haveLocation = true;
@@ -104,7 +125,7 @@ const StorePage = ({ clearToken, createCart }) => {
   }
   return (
     <div className=" bg-[#F7F7F7]">
-      <Navbarauth clearToken={clearToken} />
+      <Navbarauth />
       {doubleMenu == true && (
         <div className=" fixed top-[10%] md:w-[400px] w-[250px]  left-[50%] translate-x-[-50%] rounded-md shadow-md">
           <Alert className="md:text-[20px]" severity="error">
@@ -291,7 +312,7 @@ const StorePage = ({ clearToken, createCart }) => {
                                           //ถ้าเหมือน
                                           let result = user_cart.find(
                                             //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
-                                            (list) => {
+                                            (list: any) => {
                                               return (
                                                 list.menu_id == item.menu_id
                                               );

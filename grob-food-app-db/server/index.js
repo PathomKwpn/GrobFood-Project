@@ -30,6 +30,7 @@ const getAllStoreList = require("./src/Front-store-module/getAllStoreList");
 const getStoreDetail = require("./src/Front-store-module/getStoreDetail");
 const getStoreAddres = require("./src/Front-store-module/getStoreAddress");
 const getStoreList = require("./src/Admin-module/getStoreList");
+
 const getCouponList = require("./src/Admin-module/getCouponList");
 const addBill = require("./src/Cart&bill-module/addBill");
 const addCart = require("./src/Cart&bill-module/addCart");
@@ -39,7 +40,12 @@ const getCartList = require("./src/Cart&bill-module/getCart");
 const getOrderFindDriver = require("./src/Driver-module/getOrderFindDriver");
 const driverAcceptWork = require("./src/Driver-module/driverAcceptWork");
 const driverWorkList = require("./src/Driver-module/getDriverWorkList");
+const getDriverHistoryList = require("./src/Driver-module/getDriverHistoryList");
+const getdriverProfile = require("./src/Driver-module/getDriverProfile");
+const setNewDriverProfile = require("./src/Driver-module/setNewDriverProfile");
 const updateBillStatus = require("./src/Driver-module/updateBillStatus");
+const getStoreOrderList = require("./src/Store-module/getOrderList");
+const getStoreOrderDetail = require("./src/Store-module/getOrderDetail");
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(cors());
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
@@ -206,4 +212,26 @@ app.post("/getdriverworklist", async (req, res) => {
 
 app.post("/updatebillstatus", async (req, res) => {
   updateBillStatus(req, res);
+});
+
+app.post("/getdriverhistorylist", async (req, res) => {
+  getDriverHistoryList(req, res);
+});
+app.post("/getdriverprofile", async (req, res) => {
+  getdriverProfile(req, res);
+});
+
+//SET NEW DRIVER PROFILE
+app.post("/setnewdriverprofile", async (req, res) => {
+  setNewDriverProfile(req, res);
+});
+
+//GET STOREORDERLIST
+app.post("/getStoreOrderList", async (req, res) => {
+  getStoreOrderList(req, res);
+});
+
+//GET STOREORDERDETAIL
+app.post("/getStoreOrderDetail", async (req, res) => {
+  getStoreOrderDetail(req, res);
 });

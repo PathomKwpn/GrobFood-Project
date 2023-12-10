@@ -17,6 +17,11 @@ import { useNavigate } from "react-router-dom";
 type ConfirmPageProps = {
   saveLocation: any;
 };
+
+interface storeLocation {
+  latitude: any;
+  longitude: any;
+}
 const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
   const nevigate = useNavigate();
   const getOwner = localStorage.getItem("user");
@@ -26,9 +31,9 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
   const [noLocationPopup, setNoLocationPopup] = useState<"open" | "close">(
     "close"
   );
-  const [ConfirmBillState, setConfirmBillState] = useState<
-    "pass" | "cancel" | "none"
-  >("none");
+  // const [ConfirmBillState, setConfirmBillState] = useState<
+  //   "pass" | "cancel" | "none"
+  // >("none");
   //COUPON
   const [couponList, setCouponList] = useState([]);
   const [couponSelected, setCouponSelected] = useState<boolean>(false);
@@ -43,7 +48,7 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
   const [paymethod, setPaymethod] = useState("เงินสด");
   const [notetoDriver, setNoteToDriver] = useState("");
   const cart: any = localStorage.getItem("cart");
-  const [storeLocation, setStoreLocation] = useState({});
+  const [storeLocation, setStoreLocation] = useState<Array<storeLocation>>([]);
   const { createCarttoLocalStorage } = useToken();
   let user_cart = JSON.parse(cart);
   const restaurant_id = { restaurant_id: user_cart[0].restaurant_id };
@@ -53,7 +58,7 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
   for (let i = 0; i < user_cart.length; i++) {
     totalprice += Number(user_cart[i].menu_totalprice);
   }
-  const getLoaction = localStorage.getItem("location");
+  const getLoaction: any = localStorage.getItem("location");
   let user_location = JSON.parse(getLoaction);
   const user_info = JSON.parse(getOwner);
   const user_id = user_info.id;
@@ -81,7 +86,7 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
     );
     if (response.data.success) {
       setStoreLocation(response.data.data);
-      console.log(storeLocation);
+      console.log(response.data.data);
 
       console.log(response.data.data, "address");
       console.log("Update already");
@@ -102,14 +107,14 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/addbill`, data);
     if (response.data.success) {
       console.log("create already");
-      setConfirmBillState("pass");
+
       nevigate("/deliverypage");
     } else {
       console.log("Error");
       alert("คุณมีคำสั่งซื้อที่กำลังดำเนินการอยู่");
-      setConfirmBillState("cancel");
     }
   };
+  console.log(storeLocation);
 
   function getDistanceBetweenPointsNew(
     latitude1: any,
@@ -144,8 +149,9 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
     getCouponList();
   }, []);
   console.log(couponList);
+  console.log(storeLocation);
 
-  if (storeLocation.length != null && user_location != null) {
+  if (storeLocation.length != 0 && user_location != null) {
     console.log(user_location);
     let distance;
     distance = getDistanceBetweenPointsNew(
@@ -154,7 +160,7 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
       user_location.latitude,
       user_location.longitude
     );
-    deliveryCost = distance * 10;
+    deliveryCost = Number(distance) * 10;
   } else {
     deliveryCost = 0;
   }

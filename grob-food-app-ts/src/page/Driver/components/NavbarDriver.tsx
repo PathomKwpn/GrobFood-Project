@@ -38,16 +38,26 @@ const NavbarDriver = () => {
                 </Link>
               </div>
               {profileState == true && (
-                <div className="flex justify-center  border min-w-[100px] md:min-w-[150px] bg-white border-[#e1e1e1] mx-[6px] rounded-[4px] shadow-sm absolute top-[50px] md:top-[70px]">
+                <div className="flex justify-center  border min-w-[100px] md:min-w-[150px] bg-white border-[#e1e1e1] mx-[6px] rounded-[4px] shadow-sm absolute top-[50px] md:top-[70px] z-[80]">
                   <ul className="flex flex-col justify-center w-full">
-                    <li className="text-[14px] py-[4px] border-b-[1px] w-full flex justify-center items-center">
+                    <li
+                      className="text-[14px] py-[4px] border-b-[1px] w-full flex justify-center items-center cursor-pointer"
+                      onClick={() => {
+                        nevigate("/driverprofile");
+                      }}
+                    >
                       ข้อมูลส่วนตัว <Person2Icon />
                     </li>
-                    <li className="text-[14px] py-[4px] border-b-[1px] w-full flex justify-center items-center">
+                    <li
+                      className="text-[14px] py-[4px] border-b-[1px] w-full flex justify-center items-center cursor-pointer"
+                      onClick={() => {
+                        nevigate("/driverhistory");
+                      }}
+                    >
                       ประวัติงาน <ListIcon />
                     </li>
                     <li
-                      className="text-[14px] py-[4px] border-b-[1px] w-full flex justify-center items-center"
+                      className="text-[14px] py-[4px] border-b-[1px] w-full flex justify-center items-center  cursor-pointer"
                       onClick={() => {
                         clearToken();
                         nevigate("/login");

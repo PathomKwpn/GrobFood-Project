@@ -1,12 +1,12 @@
 import { Button, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
 import axios from "axios";
 
 const Container = () => {
   const [state, setState] = useState("detail");
   //GET USER ID FROM LOCALSTORAGE
-  const getUser = localStorage.getItem("user");
+  const getUser: any = localStorage.getItem("user");
   const user_info = JSON.parse(getUser);
   const user_id = user_info.id;
   const user_idObject: any = {

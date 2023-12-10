@@ -9,7 +9,7 @@ const exec = async (req, res) => {
     let data = req.body;
     let bill = data[0];
     let cart = data[1];
-    let sql = `select * from bills b where user_id =$1 and bill_status != 'success';`;
+    let sql = `select * from bills b where user_id =$1 and bill_status != 'order success';`;
     let param = [bill.user_id];
     let responseUser = await pool.query(sql, param);
     // console.log(responseUser.rowCount, "ROWCOUNT");

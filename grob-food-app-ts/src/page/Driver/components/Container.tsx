@@ -72,6 +72,7 @@ type DriverContainerProps = {
   haveOrder: boolean;
   getDriverWorkList: any;
   sendDriver_id: any;
+  getOrderFindDriver: any;
   setAlertHaveOrder: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const DriverContainer = ({
@@ -85,6 +86,7 @@ const DriverContainer = ({
   getDriverWorkList,
   sendDriver_id,
   setAlertHaveOrder,
+  getOrderFindDriver,
 }: DriverContainerProps) => {
   const { updateToken } = useToken();
   const [statePage, setStatePage] = useState("รายการงาน");
@@ -144,7 +146,7 @@ const DriverContainer = ({
   };
 
   return (
-    <div className="px-[5px]">
+    <div className="px-[5px] mt-[110px] md:mt-[20px]">
       <div className="w-full flex justify-center gap-3 mt-[24px]">
         <Button
           variant="contained"
@@ -176,110 +178,119 @@ const DriverContainer = ({
       <header className="text-[32px] font-bold flex justify-center my-[24px]">
         {statePage}
       </header>
-      <div className="bg-[#009C49] w-[100px] flex justify-center items-center py-[8px] rounded-md mb-[12px] mx-[auto]">
-        <span className="text-[white] font-bold">REFRESH</span>
-        <RefreshIcon className="text-[white] font-bold" />
-      </div>
-      {statePage == "รายการงาน" && (
-        <div className="flex justify-center">
-          <div className="bg-white w-[600px] h-[800px] overflow-scroll border-[1px] border-[#01B14F]">
-            <div className="max-w-[800px]">
-              <div className="w-full ">
-                <div className=" w-full bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">
-                  <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
-                    รับงาน
-                  </div>
-                  <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
-                    สถานะงาน
-                  </div>
-                  <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
-                    ยอดรวม
-                  </div>
-                  <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
-                    รูปแบบ
-                  </div>
-                  <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
-                    ที่อยู่ลูกค้า
-                  </div>
-                  <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
-                    วันที่
-                  </div>
-                </div>
-              </div>
-              {alertHaveOrder == true && (
-                <div className="w-[300px] md:w-[500px] md:top-[180px] absolute top-[120px] translate-x-[-50%] left-[50%] ">
-                  <div
-                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                    role="alert"
-                  >
-                    <strong className="font-bold">คำเตือน! </strong>
-                    <span className="block sm:inline">
-                      คุณมีรายการออเดอร์ที่ยังค้างอยู่.
-                    </span>
-                    <span
-                      className="absolute top-0 bottom-0 right-0 px-4 py-3"
-                      onClick={() => {
-                        setAlertHaveOrder(false);
-                      }}
-                    >
-                      <svg
-                        className="fill-current h-6 w-6 text-red-500"
-                        role="button"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                      >
-                        <title>Close</title>
-                        <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              )}
-              {orderList?.map((item: any) => {
-                let createDate = new Date(item.bill_date);
-                let regisDay = createDate.getDate();
-                let regisMonth = createDate.getMonth();
-                let regisYear = createDate.getFullYear();
-                return (
-                  <div
-                    className=" flex flex-nowrap items-center justify-items-center gap-1 "
-                    key={item.bill_id}
-                  >
-                    <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
-                      <Button
-                        variant="contained"
-                        className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
-                        onClick={() => {
-                          const data: any = {
-                            driver_id: driver_id,
-                            bill_id: item.bill_id,
-                          };
 
-                          driverAcceptWork(data);
+      {statePage == "รายการงาน" && (
+        <div>
+          <div
+            className="bg-[#009C49] hover:bg-[rgba(0,156,73,0.78)] w-[100px] flex justify-center items-center py-[8px] rounded-md mb-[12px] mx-[auto]  cursor-pointer"
+            onClick={() => {
+              getOrderFindDriver();
+            }}
+          >
+            <span className="text-[white] font-bold">REFRESH</span>
+            <RefreshIcon className="text-[white] font-bold" />
+          </div>
+
+          <div className="flex justify-center">
+            <div className="bg-white w-[600px] h-[800px] overflow-scroll border-[1px] border-[#01B14F]">
+              <div className="max-w-[800px]">
+                <div className="w-full ">
+                  <div className=" w-full bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      รับงาน
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      สถานะงาน
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      ยอดรวม
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      รูปแบบ
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      ที่อยู่ลูกค้า
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      วันที่
+                    </div>
+                  </div>
+                </div>
+                {alertHaveOrder == true && (
+                  <div className="w-[300px] md:w-[500px] md:top-[180px] absolute top-[120px] translate-x-[-50%] left-[50%] ">
+                    <div
+                      className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                      role="alert"
+                    >
+                      <strong className="font-bold">คำเตือน! </strong>
+                      <span className="block sm:inline">
+                        คุณมีรายการออเดอร์ที่ยังค้างอยู่.
+                      </span>
+                      <span
+                        className="absolute top-0 bottom-0 right-0 px-4 py-3"
+                        onClick={() => {
+                          setAlertHaveOrder(false);
                         }}
                       >
-                        รับงาน
-                      </Button>
-                    </div>
-                    <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] px-[5px] flex items-center justify-center mb-[4px] ">
-                      {item.bill_status}
-                    </div>
-                    <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
-                      {item.last_price}
-                    </div>
-                    <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
-                      {item.paymethod}
-                    </div>
-                    <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] text-center flex flex-col items-center justify-center mb-[4px]">
-                      <span>latitude :{item.user_latitude}</span>
-                      <span>longitude :{item.user_longitude}</span>
-                    </div>
-                    <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
-                      {regisDay}/{regisMonth}/{regisYear}
+                        <svg
+                          className="fill-current h-6 w-6 text-red-500"
+                          role="button"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                        >
+                          <title>Close</title>
+                          <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                        </svg>
+                      </span>
                     </div>
                   </div>
-                );
-              })}
+                )}
+                {orderList?.map((item: any) => {
+                  let createDate = new Date(item.bill_date);
+                  let regisDay = createDate.getDate();
+                  let regisMonth = createDate.getMonth();
+                  let regisYear = createDate.getFullYear();
+                  return (
+                    <div
+                      className=" flex flex-nowrap items-center justify-items-center gap-1 "
+                      key={item.bill_id}
+                    >
+                      <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
+                        <Button
+                          variant="contained"
+                          className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
+                          onClick={() => {
+                            const data: any = {
+                              driver_id: driver_id,
+                              bill_id: item.bill_id,
+                            };
+
+                            driverAcceptWork(data);
+                          }}
+                        >
+                          รับงาน
+                        </Button>
+                      </div>
+                      <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] px-[5px] flex items-center justify-center mb-[4px] ">
+                        {item.bill_status}
+                      </div>
+                      <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
+                        {item.last_price}
+                      </div>
+                      <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
+                        {item.paymethod}
+                      </div>
+                      <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] text-center flex flex-col items-center justify-center mb-[4px]">
+                        <span>latitude :{item.user_latitude}</span>
+                        <span>longitude :{item.user_longitude}</span>
+                      </div>
+                      <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
+                        {regisDay}/{regisMonth}/{regisYear}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

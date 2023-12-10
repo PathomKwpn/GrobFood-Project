@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToken } from "../../../../util/token/token";
 
 //ICON
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Alert, Button } from "@mui/material";
 
-import Cart from "../../../Cart/Cart";
 const Navbarauth = () => {
   const nevigate = useNavigate();
 
@@ -73,7 +72,7 @@ const Navbarauth = () => {
                   </Alert>
                 )}
                 <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
-                  {user_cart.map((item) => {
+                  {user_cart.map((item: any) => {
                     return (
                       <div>
                         <div className="flex min-h-[80px] border-b-[1px] py-[10px]">
@@ -83,7 +82,7 @@ const Navbarauth = () => {
                               onClick={() => {
                                 let result = user_cart.find(
                                   //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
-                                  (list) => {
+                                  (list: any) => {
                                     return list.menu_id == item.menu_id;
                                   }
                                 );
@@ -113,7 +112,7 @@ const Navbarauth = () => {
                               onClick={() => {
                                 let result = user_cart.find(
                                   //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
-                                  (list) => {
+                                  (list: any) => {
                                     return list.menu_id == item.menu_id;
                                   }
                                 );

@@ -9,6 +9,8 @@ import OwnerHome from "./page/Owner-Home/Owner-Home";
 import RegisterPage from "./page/Register-pages/Register";
 import LoginPage from "./page/Login-pages/Login";
 import OwnerStoreDetail from "./page/Owner-StoreDetail/OwnerStoreDetail";
+import OwnerStoreOrderList from "./page/Owner-Home/OwnerStoreOrderList";
+import OwernerStoreOrderDetail from "./page/Owner-Home/OwernerStoreOrderDetail";
 import UserProfile from "./page/UserProfile/UserProfile";
 import StoreListHome from "./page/StoreList-page/StoreList-Home";
 import StorePage from "./page/StoreDetailPage/StorePage";
@@ -17,7 +19,10 @@ import AdminPage from "./page/Admin/AdminPage";
 import RegisterAdmin from "./page/Admin/RegisterAdmin";
 import LoginAdmin from "./page/Admin/LoginAdmin";
 import DriverHome from "./page/Driver/Driver-Home";
+import DriverHistory from "./page/Driver/Driver-History";
+import DriverProfile from "./page/Driver/Driver-Profile";
 import DeliveryPage from "./page/DeliveryPage/DeliveryPage";
+
 import { useToken } from "./util/token/token";
 
 const theme = createTheme({
@@ -83,6 +88,21 @@ function App() {
         <OwnerStoreDetail clearToken={clearToken} token={token} user={user} />
       ),
     },
+
+    {
+      path: "/ownerstoreorderlist",
+      element: (
+        <OwnerStoreOrderList
+          clearToken={clearToken}
+          token={token}
+          user={user}
+        />
+      ),
+    },
+    {
+      path: "/ownerstoreorderlist/:billID",
+      element: <OwernerStoreOrderDetail clearToken={clearToken} />,
+    },
     {
       path: "/allstore",
       element: <StoreListHome clearToken={clearToken} />,
@@ -123,8 +143,16 @@ function App() {
       element: <DriverHome />,
     },
     {
+      path: "/driverhistory",
+      element: <DriverHistory />,
+    },
+    {
       path: "/deliverypage",
       element: <DeliveryPage />,
+    },
+    {
+      path: "/driverprofile",
+      element: <DriverProfile />,
     },
   ]);
   // if (!token) {

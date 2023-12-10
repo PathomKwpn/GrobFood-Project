@@ -1,16 +1,46 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
-import CloseIcon from "@mui/icons-material/Close";
+// import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+// import CloseIcon from "@mui/icons-material/Close";
 import { Link, useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useToken } from "../../util/token/token";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import { Alert, Button, MenuList } from "@mui/material";
+// import AddIcon from "@mui/icons-material/Add";
+// import RemoveIcon from "@mui/icons-material/Remove";
+// import { Alert, Button, MenuList } from "@mui/material";
 import gifDriver from "../../../public/image/grab-driver/giphy.gif";
 import axios from "axios";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
+
+interface menuList {
+  amount: number;
+  bill_id: string;
+  cart_id: string;
+  create_by: string;
+  create_date: string;
+  menu_id: string;
+  menu_name: string;
+  price: string;
+}
+interface billDetail {
+  addres_detail: string;
+  bill_date: string;
+  bill_id: string;
+  bill_status: string;
+  coupon_id: string;
+  create_date: string;
+  discount: string;
+  driver_id: string;
+  last_price: string;
+  note_to_driver: string;
+  paymethod: string;
+  restaurant_id: string;
+  shipping_cost: string;
+  total_price: string;
+  user_id: string;
+  user_latitude: string;
+  user_longitude: string;
+}
 const DeliveryPage = () => {
   const nevigate = useNavigate();
 
@@ -25,10 +55,10 @@ const DeliveryPage = () => {
   let user_cart = JSON.parse(cart);
 
   //POPUP STATE
-  const [alertNoMenu, setAlertNoMenu] = useState<"active" | "close">("close");
-  const [cartState, setCartState] = useState<"open" | "close">("close");
-  const [memuList, setMenuList] = useState();
-  const [billDetail, setBillDetail] = useState([]);
+  // const [alertNoMenu, setAlertNoMenu] = useState<"active" | "close">("close");
+  // const [cartState, setCartState] = useState<"open" | "close">("close");
+  const [memuList, setMenuList] = useState<Array<menuList>>();
+  const [billDetail, setBillDetail] = useState<Array<billDetail>>([]);
   const { updateToken, clearToken } = useToken();
   const getBillmenuList = async (data: any) => {
     const response = await axios.post(
@@ -38,8 +68,6 @@ const DeliveryPage = () => {
     if (response.data.success) {
       setMenuList(response.data.data);
       console.log("get cart already");
-      console.log(response.data.data);
-      console.log(memuList);
     } else {
       console.log("Error");
     }
@@ -49,9 +77,8 @@ const DeliveryPage = () => {
     if (response.data.success) {
       setBillDetail(response.data.data);
       console.log(billDetail);
-      console.log(response.data.data);
+
       let getBilmenu = { bill_id: response.data.data[0].bill_id };
-      console.log(getBilmenu);
 
       getBillmenuList(getBilmenu);
     } else {
@@ -68,7 +95,7 @@ const DeliveryPage = () => {
     console.log(user_id);
     getUserBill(user_id);
   }, []);
-  console.log(billDetail[0]);
+  console.log(billDetail);
   console.log(memuList);
 
   //CART

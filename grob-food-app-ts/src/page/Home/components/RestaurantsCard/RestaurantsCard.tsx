@@ -1,4 +1,3 @@
-import React from "react";
 import StarIcon from "@mui/icons-material/Star";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 const RestaurantsCard = () => {

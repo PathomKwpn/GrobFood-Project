@@ -1,4 +1,3 @@
-import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -15,7 +14,7 @@ export default function RestaurantCard({
   ResDetail,
   ResImage,
   ResOwner_id,
-}) {
+}: any) {
   const nevigate = useNavigate();
   const PreviewImage = ({ data }: any) => (
     <CardMedia

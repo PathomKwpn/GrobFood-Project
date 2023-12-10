@@ -57,12 +57,28 @@ const AdminPage = () => {
   const [min_totalprice, setMinTotalPrice] = useState<number>();
   const [max_discount, setMaxDiscount] = useState<number>();
 
-  const handleFilter = (e) => {
+  const handleFilter = (e: any) => {
     const value = e.target.value;
     console.log(value);
 
-    const filtered = storeList.filter((store) =>
-      store.restaurant_name.includes(value)
+    const filtered = storeList.filter(
+      (store: {
+        address: string;
+        close_time: string;
+        latitude: string;
+        longitude: string;
+        open_time: string;
+        owner_id: string;
+        regis_date: string;
+        restaurant_catagory: string;
+        restaurant_credit: 0;
+        restaurant_id: string;
+        restaurant_name: string;
+        score: string;
+        status: string;
+        update_by: string;
+        update_date: string;
+      }) => store.restaurant_name.includes(value)
     );
 
     setFilteredStore(filtered);
@@ -70,12 +86,24 @@ const AdminPage = () => {
   const handleChange = (event: any) => {
     setDiscountType(event.target.value);
   };
-  const handleFilterCoupon = (e) => {
+  const handleFilterCoupon = (e: any) => {
     const value = e.target.value;
     console.log(value);
 
-    const filtered = couponList.filter((store) =>
-      store.coupon_name.includes(value)
+    const filtered = couponList.filter(
+      (coupon: {
+        coupon_id: string;
+        coupon_name: string;
+        create_date: string;
+        discount_type: string;
+        discount_value: string;
+        expire_date: string;
+        expire_timestamp: number;
+        max_discount: string;
+        min_totalprice: string;
+        start_date: string;
+        status: null;
+      }) => coupon.coupon_name.includes(value)
     );
 
     setFilterCoupon(filtered);
@@ -142,6 +170,8 @@ const AdminPage = () => {
     getStoreList();
     getCouponList();
   }, []);
+  console.log(storeList);
+
   return (
     <div className=" bg-[#01B14F] w-full min-h-[100vh] h-[auto]">
       <NavbarAdmin />
@@ -608,7 +638,6 @@ const AdminPage = () => {
                   } else {
                     couponStatus = "ใช้งานได้";
                   }
-                  let time = item.expire_date;
 
                   //StartDate
                   let startDay = startDate.getDate();

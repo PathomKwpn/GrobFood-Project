@@ -14,7 +14,7 @@ import Alert from "@mui/material/Alert";
 import FilledInput from "@mui/material/FilledInput";
 import { Link, useNavigate } from "react-router-dom";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
-const LoginAdmin = ({ setUser, setToken, createCart }) => {
+const LoginAdmin = ({ setUser, setToken, createCart }: any) => {
   const [admin_username, setAdmin_Username] = useState<string>("");
   const [admin_password, setAdmin_Password] = useState<string>("");
   const [loginStatus, setLoginStatus] = useState(false);

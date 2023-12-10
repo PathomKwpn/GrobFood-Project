@@ -35,7 +35,8 @@ const DriverHome = () => {
       `${GROBFOOD_USER_URL}/driveracceptwork`,
       data
     );
-
+    getDriverWorkList(sendDriver_id);
+    getOrderFindDriver;
     if (response.data.success) {
       console.log("accept success");
     } else {
@@ -102,6 +103,7 @@ const DriverHome = () => {
         haveOrder={haveOrder}
         setAlertHaveOrder={setAlertHaveOrder}
         getDriverWorkList={getDriverWorkList}
+        getOrderFindDriver={getOrderFindDriver}
       />
     </div>
   );
