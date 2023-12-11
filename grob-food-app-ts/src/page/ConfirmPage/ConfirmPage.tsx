@@ -49,9 +49,13 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
   const [notetoDriver, setNoteToDriver] = useState("");
   const cart: any = localStorage.getItem("cart");
   const [storeLocation, setStoreLocation] = useState<Array<storeLocation>>([]);
-  const { createCarttoLocalStorage } = useToken();
+  const { createCarttoLocalStorage, clearCart } = useToken();
   let user_cart = JSON.parse(cart);
-  const restaurant_id = { restaurant_id: user_cart[0].restaurant_id };
+
+  let restaurant_id: any;
+  if (user_cart.length != 0) {
+    restaurant_id = { restaurant_id: user_cart[0].restaurant_id };
+  }
   let totalprice = 0;
   let deliveryCost = 0;
   let lastprice = 0;
@@ -183,15 +187,17 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
   return (
     <div className=" bg-slate-100 flex flex-col items-center">
       <Navbarauth />
-      <div className="bg-white w-full pb-[20px]">
-        <div className="mt-[70px] md:mt-[100px] text-[24px] md:text-[36px]  font-[600] px-[20px] md:px-[120px] lg:px-[240px] xl:px-[25%]">
-          ขั้นตอนสุดท้าย - เช็คเอ้าท์
-        </div>
-        <span className="text-[18px] md:text-[24px] font-[500] px-[20px] md:px-[120px] lg:px-[240px] xl:px-[25%] flex">
-          {user_cart[0].restaurant_name}
-        </span>
-      </div>
-      {/* <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+      {user_cart.length != 0 && (
+        <div>
+          <div className="bg-white w-full pb-[20px]">
+            <div className="mt-[70px] md:mt-[100px] text-[24px] md:text-[36px]  font-[600] px-[20px] md:px-[120px] lg:px-[240px] xl:px-[25%]">
+              ขั้นตอนสุดท้าย - เช็คเอ้าท์
+            </div>
+            <span className="text-[18px] md:text-[24px] font-[500] px-[20px] md:px-[120px] lg:px-[240px] xl:px-[25%] flex">
+              {user_cart[0].restaurant_name}
+            </span>
+          </div>
+          {/* <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
         <div className="border-b-[1px] py-[16px]">
           <span className="text-[24px] font-[500] px-[5%]">ที่อยู่</span>
         </div>
@@ -253,20 +259,20 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
           </p>
         </div>
       )} */}
-      <Location
-        setNoteToDriver={setNoteToDriver}
-        setAddressDetail={setAddressDetail}
-        getUserlocation={getUserlocation}
-        noLocationPopup={noLocationPopup}
-      />
-      <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
-        <div className="border-b-[1px] py-[16px]">
-          <span className="text-[24px] font-[500] px-[5%]">
-            รายการคูปองส่วนลด
-          </span>
-        </div>
-        <div className="flex flex-col justify-center content-center items-center w-[full] mt-[30px] mb-[20px]">
-          {/* <select
+          <Location
+            setNoteToDriver={setNoteToDriver}
+            setAddressDetail={setAddressDetail}
+            getUserlocation={getUserlocation}
+            noLocationPopup={noLocationPopup}
+          />
+          <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+            <div className="border-b-[1px] py-[16px]">
+              <span className="text-[24px] font-[500] px-[5%]">
+                รายการคูปองส่วนลด
+              </span>
+            </div>
+            <div className="flex flex-col justify-center content-center items-center w-[full] mt-[30px] mb-[20px]">
+              {/* <select
             id="paymethod"
             className="border-[2px] p-[10px] rounded-lg w-[90%]"
             onChange={handleChange}
@@ -276,218 +282,221 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
               return <option value="เงินสด">{item.coupon_name}</option>;
             })}
           </select> */}
-          <div className="flex flex-row flex-wrap p-[24px] justify-center">
-            {couponList?.map(
-              (item: {
-                coupon_id: string;
-                coupon_name: string;
-                create_date: string;
-                discount_type: string;
-                discount_value: string;
-                expire_date: string;
-                max_discount: string;
-                min_totalprice: string;
-                start_date: string;
-                status: null | string;
-              }) => {
-                let type = "บาท";
-                if (item.discount_type == "percent") {
-                  type = "%";
-                } else {
-                  type = "บาท";
-                }
-                return (
-                  <div className="flex flex-row w-[200px] h-[70px] shadow-md rounded-md mx-[16px] my-[8px]">
+              <div className="flex flex-row flex-wrap p-[24px] justify-center">
+                {couponList?.map(
+                  (item: {
+                    coupon_id: string;
+                    coupon_name: string;
+                    create_date: string;
+                    discount_type: string;
+                    discount_value: string;
+                    expire_date: string;
+                    max_discount: string;
+                    min_totalprice: string;
+                    start_date: string;
+                    status: null | string;
+                  }) => {
+                    let type = "บาท";
+                    if (item.discount_type == "percent") {
+                      type = "%";
+                    } else {
+                      type = "บาท";
+                    }
+                    return (
+                      <div className="flex flex-row w-[200px] h-[70px] shadow-md rounded-md mx-[16px] my-[8px]">
+                        <div className="flex bg-[#01B14F] justify-center flex-col rounded-md w-full border-[1px] border-[green]">
+                          <div className="bg-[#01B14F] text-white flex text-[18px] rounded-md font-bold justify-center">
+                            {item.coupon_name}
+                          </div>
+                          <div className="bg-white">
+                            <div className="bg-[white] text-black flex justify-center text-[14px] font-[500]">
+                              ส่วนลด {item.discount_value} {type}
+                            </div>
+                            <div className="bg-[white] text-[#b4b4b4] flex justify-center text-[10px]">
+                              ขั้นต่ำ {item.min_totalprice} บาท
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] font-[500] text-[16px] rounded-md"
+                          onClick={() => {
+                            let startTimestamp = +new Date(item.start_date);
+                            let expireTimestamp = +new Date(item.expire_date);
+                            // console.log(expireTimestamp, "EXPIRE");
+                            let nowTimestamp = +new Date();
+                            // console.log(nowTimestamp, "NOW");
+                            if (
+                              nowTimestamp > expireTimestamp ||
+                              nowTimestamp < startTimestamp
+                            ) {
+                              alert("ไม่อยู่ในระยะเวลาใช้งานคูปอง");
+                              console.log("ไม่อยู่ในระยะเวลาใช้งานคูปอง");
+                            } else {
+                              setCouponName(item.coupon_name);
+                              setDiscountValue(item.discount_value);
+                              setDiscountType(item.discount_type);
+                              setMin_totalprice(item.min_totalprice);
+                              setDiscountValueType(type);
+                              setCoupon_id(item.coupon_id);
+                              setCouponSelected(true);
+                            }
+                          }}
+                        >
+                          ใช้
+                        </div>
+                      </div>
+                    );
+                  }
+                )}
+              </div>
+              <label className="w-[90%] mb-[16px] bg-slate-0 shadow-sm rounded-md border-2 flex flex-col justify-center items-center">
+                <div className="w-full flex justify-center items-center my-[10px] text-[18px] font-[500]">
+                  คูปองที่คุณเลือกใช้
+                </div>
+                {couponSelected == false && (
+                  <div className="flex flex-row  h-[70px] shadow-md rounded-md mx-[16px] my-[16px] max-w-[240px]">
+                    <div className="flex bg-[#01B14F] justify-center flex-col w-full border-[1px] border-[green]">
+                      <div className="bg-[#01B14F] px-[16px] text-white flex text-[18px] font-bold justify-center">
+                        ไม่ได้เลือก
+                      </div>
+                    </div>
+                    <div className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-md"></div>
+                  </div>
+                )}
+                {couponSelected == true && (
+                  <div className="flex flex-row  h-[70px] shadow-md rounded-md mx-[16px] my-[16px] max-w-[240px]">
                     <div className="flex bg-[#01B14F] justify-center flex-col rounded-md w-full border-[1px] border-[green]">
                       <div className="bg-[#01B14F] text-white flex text-[18px] rounded-md font-bold justify-center">
-                        {item.coupon_name}
+                        {coupon_name}
                       </div>
                       <div className="bg-white">
-                        <div className="bg-[white] text-black flex justify-center text-[14px] font-[500]">
-                          ส่วนลด {item.discount_value} {type}
+                        <div className="bg-[white] text-black flex justify-center text-[14px]">
+                          ส่วนลด {discount_value} {discount_value_type}
                         </div>
                         <div className="bg-[white] text-[#b4b4b4] flex justify-center text-[10px]">
-                          ขั้นต่ำ {item.min_totalprice} บาท
+                          ขั้นต่ำ {min_totalprice} บาท
                         </div>
                       </div>
                     </div>
-                    <div
-                      className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] font-[500] text-[16px] rounded-md"
-                      onClick={() => {
-                        let startTimestamp = +new Date(item.start_date);
-                        let expireTimestamp = +new Date(item.expire_date);
-                        // console.log(expireTimestamp, "EXPIRE");
-                        let nowTimestamp = +new Date();
-                        // console.log(nowTimestamp, "NOW");
-                        if (
-                          nowTimestamp > expireTimestamp ||
-                          nowTimestamp < startTimestamp
-                        ) {
-                          alert("ไม่อยู่ในระยะเวลาใช้งานคูปอง");
-                          console.log("ไม่อยู่ในระยะเวลาใช้งานคูปอง");
-                        } else {
-                          setCouponName(item.coupon_name);
-                          setDiscountValue(item.discount_value);
-                          setDiscountType(item.discount_type);
-                          setMin_totalprice(item.min_totalprice);
-                          setDiscountValueType(type);
-                          setCoupon_id(item.coupon_id);
-                          setCouponSelected(true);
-                        }
-                      }}
-                    >
-                      ใช้
-                    </div>
+                    <div className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-md"></div>
                   </div>
-                );
-              }
-            )}
-          </div>
-          <label className="w-[90%] mb-[16px] bg-slate-0 shadow-sm rounded-md border-2 flex flex-col justify-center items-center">
-            <div className="w-full flex justify-center items-center my-[10px] text-[18px] font-[500]">
-              คูปองที่คุณเลือกใช้
+                )}
+              </label>
             </div>
-            {couponSelected == false && (
-              <div className="flex flex-row  h-[70px] shadow-md rounded-md mx-[16px] my-[16px] max-w-[240px]">
-                <div className="flex bg-[#01B14F] justify-center flex-col w-full border-[1px] border-[green]">
-                  <div className="bg-[#01B14F] px-[16px] text-white flex text-[18px] font-bold justify-center">
-                    ไม่ได้เลือก
-                  </div>
-                </div>
-                <div className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-md"></div>
-              </div>
-            )}
-            {couponSelected == true && (
-              <div className="flex flex-row  h-[70px] shadow-md rounded-md mx-[16px] my-[16px] max-w-[240px]">
-                <div className="flex bg-[#01B14F] justify-center flex-col rounded-md w-full border-[1px] border-[green]">
-                  <div className="bg-[#01B14F] text-white flex text-[18px] rounded-md font-bold justify-center">
-                    {coupon_name}
-                  </div>
-                  <div className="bg-white">
-                    <div className="bg-[white] text-black flex justify-center text-[14px]">
-                      ส่วนลด {discount_value} {discount_value_type}
-                    </div>
-                    <div className="bg-[white] text-[#b4b4b4] flex justify-center text-[10px]">
-                      ขั้นต่ำ {min_totalprice} บาท
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-[#01B14F] w-[70px] flex justify-center items-center text-[white] text-[16px] rounded-md"></div>
-              </div>
-            )}
-          </label>
-        </div>
-      </div>
-      <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
-        <div className="border-b-[1px] py-[16px]">
-          <span className="text-[24px] font-[500] px-[5%]">สรุปคำสั่งซื้อ</span>
-        </div>
-        <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
-          {user_cart?.map(
-            (item: {
-              menu_id: string;
-              amount: number;
-              menu_image_url: string;
-              menu_name: string;
-              menu_price: string;
-              menu_totalprice: number;
-              restaurant_id: string;
-              restaurant_name: string;
-            }) => {
-              return (
-                <div>
-                  <div className="flex min-h-[80px] border-b-[1px] py-[10px]">
-                    <div className="w-[20%] flex justify-center items-center">
-                      <RemoveIcon
-                        className="text-[16px] md:text-[24px] text-[#00A5CF]"
-                        onClick={() => {
-                          let result = user_cart.find(
-                            //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
-                            (list: {
-                              menu_id: string;
-                              amount: number;
-                              menu_image_url: string;
-                              menu_name: string;
-                              menu_price: string;
-                              menu_totalprice: number;
-                              restaurant_id: string;
-                              restaurant_name: string;
-                            }) => {
-                              return list.menu_id == item.menu_id;
-                            }
-                          );
-                          if (result != undefined) {
-                            if (item.amount > 0) {
-                              item.amount--;
-                              item.menu_totalprice =
-                                Number(item.menu_price) * Number(item.amount);
+          </div>
+          <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+            <div className="border-b-[1px] py-[16px]">
+              <span className="text-[24px] font-[500] px-[5%]">
+                สรุปคำสั่งซื้อ
+              </span>
+            </div>
+            <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
+              {user_cart?.map(
+                (item: {
+                  menu_id: string;
+                  amount: number;
+                  menu_image_url: string;
+                  menu_name: string;
+                  menu_price: string;
+                  menu_totalprice: number;
+                  restaurant_id: string;
+                  restaurant_name: string;
+                }) => {
+                  return (
+                    <div>
+                      <div className="flex min-h-[80px] border-b-[1px] py-[10px]">
+                        <div className="w-[20%] flex justify-center items-center">
+                          <RemoveIcon
+                            className="text-[16px] md:text-[24px] text-[#00A5CF]"
+                            onClick={() => {
+                              let result = user_cart.find(
+                                //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
+                                (list: {
+                                  menu_id: string;
+                                  amount: number;
+                                  menu_image_url: string;
+                                  menu_name: string;
+                                  menu_price: string;
+                                  menu_totalprice: number;
+                                  restaurant_id: string;
+                                  restaurant_name: string;
+                                }) => {
+                                  return list.menu_id == item.menu_id;
+                                }
+                              );
+                              if (result != undefined) {
+                                if (item.amount > 0) {
+                                  item.amount--;
+                                  item.menu_totalprice =
+                                    Number(item.menu_price) *
+                                    Number(item.amount);
 
-                              let newCart = user_cart;
+                                  let newCart = user_cart;
 
-                              window.localStorage.removeItem("cart");
-                              createCarttoLocalStorage(newCart);
-                            } else {
-                              console.log("show");
-                            }
-                          }
-                          console.log(user_cart);
-                        }}
-                      />
-                      <span className="mx-[5px] md:mx-[10px]">
-                        {item.amount}
-                      </span>
-                      <AddIcon
-                        className="text-[16px] md:text-[24px] text-[#00A5CF]"
-                        onClick={() => {
-                          let result = user_cart.find(
-                            //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
-                            (list: {
-                              menu_id: string;
-                              amount: number;
-                              menu_image_url: string;
-                              menu_name: string;
-                              menu_price: string;
-                              menu_totalprice: number;
-                              restaurant_id: string;
-                              restaurant_name: string;
-                            }) => {
-                              return list.menu_id == item.menu_id;
-                            }
-                          );
-                          if (result != undefined) {
-                            item.amount++;
-                            item.menu_totalprice =
-                              Number(item.menu_price) * Number(item.amount);
+                                  window.localStorage.removeItem("cart");
+                                  createCarttoLocalStorage(newCart);
+                                } else {
+                                  console.log("show");
+                                }
+                              }
+                              console.log(user_cart);
+                            }}
+                          />
+                          <span className="mx-[5px] md:mx-[10px]">
+                            {item.amount}
+                          </span>
+                          <AddIcon
+                            className="text-[16px] md:text-[24px] text-[#00A5CF]"
+                            onClick={() => {
+                              let result = user_cart.find(
+                                //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
+                                (list: {
+                                  menu_id: string;
+                                  amount: number;
+                                  menu_image_url: string;
+                                  menu_name: string;
+                                  menu_price: string;
+                                  menu_totalprice: number;
+                                  restaurant_id: string;
+                                  restaurant_name: string;
+                                }) => {
+                                  return list.menu_id == item.menu_id;
+                                }
+                              );
+                              if (result != undefined) {
+                                item.amount++;
+                                item.menu_totalprice =
+                                  Number(item.menu_price) * Number(item.amount);
 
-                            let newCart = user_cart;
+                                let newCart = user_cart;
 
-                            window.localStorage.removeItem("cart");
-                            createCarttoLocalStorage(newCart);
-                          }
-                        }}
-                      />
-                    </div>
-                    <div className="hidden md:flex">
-                      <img
-                        className="p-[10px] max-w-[130px] max-h-[130px] bg-cover"
-                        src={`data:image/png;base64,${item.menu_image_url}`}
-                        alt="menu-image"
-                      />
-                    </div>
+                                window.localStorage.removeItem("cart");
+                                createCarttoLocalStorage(newCart);
+                              }
+                            }}
+                          />
+                        </div>
+                        <div className="hidden md:flex">
+                          <img
+                            className="p-[10px] max-w-[130px] max-h-[130px] bg-cover"
+                            src={`data:image/png;base64,${item.menu_image_url}`}
+                            alt="menu-image"
+                          />
+                        </div>
 
-                    <div className="flex-1 px-[10px] md:px-[20px] font-[500]">
-                      {item.menu_name}
+                        <div className="flex-1 px-[10px] md:px-[20px] font-[500]">
+                          {item.menu_name}
+                        </div>
+                        <div className="w-[20%] flex justify-center">
+                          {item.menu_totalprice}
+                        </div>
+                      </div>
                     </div>
-                    <div className="w-[20%] flex justify-center">
-                      {item.menu_totalprice}
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-          )}
-        </div>
-        {/* <div className="flex flex-col  mt-[20px] max-w-[700px] bg-white px-[20px] mb-[16px]">
+                  );
+                }
+              )}
+            </div>
+            {/* <div className="flex flex-col  mt-[20px] max-w-[700px] bg-white px-[20px] mb-[16px]">
           {user_cart.map((item) => {
             let deleteItemIcon = "hide";
             return (
@@ -567,91 +576,103 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
             );
           })}
         </div> */}
-        <div className="my-[40px] px-[20px]">
-          <div className="flex justify-between">
-            <span>รวมค่าอาหาร</span> <span>฿ {totalprice}</span>
+            <div className="my-[40px] px-[20px]">
+              <div className="flex justify-between">
+                <span>รวมค่าอาหาร</span> <span>฿ {totalprice}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>ส่วนลด</span> <span>฿ {discount}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>ค่าส่ง</span>
+                <span>{deliveryCost}</span>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-between">
-            <span>ส่วนลด</span> <span>฿ {discount}</span>
+          <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%] mb-[150px]">
+            <div className="border-b-[1px] py-[16px]">
+              <span className="text-[24px] font-[500] px-[5%]">
+                รายละเอียดการชำระเงิน
+              </span>
+            </div>
+            <div className="flex flex-col justify-center content-center items-center w-[full] mt-[30px] mb-[20px]">
+              <label className="w-[90%] mb-[16px]">วิธีชำระเงิน</label>
+              <select
+                id="paymethod"
+                className="border-[2px] p-[10px] rounded-lg w-[90%]"
+                onChange={handleChange}
+                defaultValue={"เงินสด"}
+              >
+                <option value="เงินสด">เงินสด</option>
+                <option value="โอนจ่าย">โอนจ่าย</option>
+              </select>
+            </div>
           </div>
-          <div className="flex justify-between">
-            <span>ค่าส่ง</span>
-            <span>{deliveryCost}</span>
+          <div className="fixed bottom-0 flex justify-center w-full min-h-[100px] items-center bg-white px-[12px]">
+            <div className="flex justify-between items-center my-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+              <div>
+                <div className="text-[18px] font-[300]">รวมทั้งหมด</div>
+                <div className="text-[24px] font-[500]">฿{lastprice}</div>
+              </div>
+              <Button
+                variant="contained"
+                className="bg-[#01B14F] w-full h-[48px] rounded-md focus:bg-[#01B14F] hover:bg-[#01B14F] max-w-[150px] md:max-w-[200px]"
+                onClick={() => {
+                  if (user_location != null) {
+                    let restaurant_id = user_cart[0].restaurant_id;
+                    let user_latitude = user_location.latitude;
+                    let user_longitude = user_location.longitude;
+                    const data = [
+                      {
+                        totalprice,
+                        lastprice,
+                        user_id,
+                        coupon_id,
+                        restaurant_id,
+                        paymethod,
+                        deliveryCost,
+                        user_latitude,
+                        user_longitude,
+                        notetoDriver,
+                        addressDetail,
+                        discount,
+                      },
+                      user_cart,
+                    ];
+                    addBill(data);
+                    console.log("clearCart");
+
+                    clearCart();
+                  } else {
+                    let countdown = 2;
+                    setNoLocationPopup("open");
+                    let timer = setInterval(() => {
+                      countdown--;
+                      console.log(countdown);
+
+                      if (countdown == 0) {
+                        setNoLocationPopup("close");
+                        clearInterval(timer);
+                      }
+                    }, 1000);
+
+                    console.log("NEED LOCATION");
+                  }
+                }}
+              >
+                ยืนยันรายการสั่งซื้อ
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%] mb-[150px]">
-        <div className="border-b-[1px] py-[16px]">
-          <span className="text-[24px] font-[500] px-[5%]">
-            รายละเอียดการชำระเงิน
+      )}
+      {user_cart.length == 0 && (
+        <div className="pt-[200px] bg-white w-full pb-[20px] text-center">
+          <span className="text-[32px] font-bold">
+            คุณยังไม่มีสินค้าในตะกร้า
           </span>
         </div>
-        <div className="flex flex-col justify-center content-center items-center w-[full] mt-[30px] mb-[20px]">
-          <label className="w-[90%] mb-[16px]">วิธีชำระเงิน</label>
-          <select
-            id="paymethod"
-            className="border-[2px] p-[10px] rounded-lg w-[90%]"
-            onChange={handleChange}
-            defaultValue={"เงินสด"}
-          >
-            <option value="เงินสด">เงินสด</option>
-            <option value="โอนจ่าย">โอนจ่าย</option>
-          </select>
-        </div>
-      </div>
-      <div className="fixed bottom-0 flex justify-center w-full min-h-[100px] items-center bg-white px-[12px]">
-        <div className="flex justify-between items-center my-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
-          <div>
-            <div className="text-[18px] font-[300]">รวมทั้งหมด</div>
-            <div className="text-[24px] font-[500]">฿{lastprice}</div>
-          </div>
-          <Button
-            variant="contained"
-            className="bg-[#01B14F] w-full h-[48px] rounded-md focus:bg-[#01B14F] hover:bg-[#01B14F] max-w-[150px] md:max-w-[200px]"
-            onClick={() => {
-              if (user_location != null) {
-                let restaurant_id = user_cart[0].restaurant_id;
-                let user_latitude = user_location.latitude;
-                let user_longitude = user_location.longitude;
-                const data = [
-                  {
-                    totalprice,
-                    lastprice,
-                    user_id,
-                    coupon_id,
-                    restaurant_id,
-                    paymethod,
-                    deliveryCost,
-                    user_latitude,
-                    user_longitude,
-                    notetoDriver,
-                    addressDetail,
-                    discount,
-                  },
-                  user_cart,
-                ];
-                addBill(data);
-              } else {
-                let countdown = 2;
-                setNoLocationPopup("open");
-                let timer = setInterval(() => {
-                  countdown--;
-                  console.log(countdown);
-
-                  if (countdown == 0) {
-                    setNoLocationPopup("close");
-                    clearInterval(timer);
-                  }
-                }, 1000);
-
-                console.log("NEED LOCATION");
-              }
-            }}
-          >
-            ยืนยันรายการสั่งซื้อ
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

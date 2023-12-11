@@ -145,6 +145,8 @@ const DriverContainer = ({
     }
   };
 
+  console.log(orderList);
+
   return (
     <div className="px-[5px] mt-[110px] md:mt-[20px]">
       <div className="w-full flex justify-center gap-3 mt-[24px]">
@@ -203,6 +205,9 @@ const DriverContainer = ({
                       สถานะงาน
                     </div>
                     <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                      ชื่อร้าน
+                    </div>
+                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
                       ยอดรวม
                     </div>
                     <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
@@ -258,7 +263,7 @@ const DriverContainer = ({
                       <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
                         <Button
                           variant="contained"
-                          className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
+                          className="bg-[#009C49] md:min-w-[80px] max-w-[400px] focus:bg-[#009C49] hover:bg-[#5ee69d] z-0 my-[5px]"
                           onClick={() => {
                             const data: any = {
                               driver_id: driver_id,
@@ -273,6 +278,9 @@ const DriverContainer = ({
                       </div>
                       <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] px-[5px] flex items-center justify-center mb-[4px] ">
                         {item.bill_status}
+                      </div>
+                      <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] font-[600] px-[5px] flex items-center text-center justify-center mb-[4px] ">
+                        {item.restaurant_name}
                       </div>
                       <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">
                         {item.last_price}

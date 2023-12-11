@@ -9,6 +9,8 @@ import { useToken } from "../../util/token/token";
 // import RemoveIcon from "@mui/icons-material/Remove";
 // import { Alert, Button, MenuList } from "@mui/material";
 import gifDriver from "../../../public/image/grab-driver/giphy.gif";
+import ComingDriver from "../../../public/image/grab-driver/Coming.png";
+import DriverResAlready from "../../../public/image/grab-driver/GoRestaurant.png";
 import axios from "axios";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
 
@@ -43,22 +45,25 @@ interface billDetail {
 }
 const DeliveryPage = () => {
   const nevigate = useNavigate();
-
+  const [driverStatusPic, setDriverStatusPic] = useState(gifDriver);
   //GET USER FROM LOCALSTORAGE
   const user_name: any = localStorage.getItem("user");
   let user_info = JSON.parse(user_name);
   let user_id = { user_id: user_info.id };
-  console.log(user_id);
 
   //GET CART FROM LOCALSTORAGE
   const cart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(cart);
 
+  const [deliveryStatus, setDeliveryStatus] = useState(
+    "กำลำตรวจสอบคำสั่งซื้อของคุณ"
+  );
   //POPUP STATE
   // const [alertNoMenu, setAlertNoMenu] = useState<"active" | "close">("close");
   // const [cartState, setCartState] = useState<"open" | "close">("close");
   const [memuList, setMenuList] = useState<Array<menuList>>();
   const [billDetail, setBillDetail] = useState<Array<billDetail>>([]);
+  const [haveBill, setHaverBill] = useState(false);
   const { updateToken, clearToken } = useToken();
   const getBillmenuList = async (data: any) => {
     const response = await axios.post(
@@ -67,40 +72,63 @@ const DeliveryPage = () => {
     );
     if (response.data.success) {
       setMenuList(response.data.data);
-      console.log("get cart already");
     } else {
       console.log("Error");
     }
   };
-  const getUserBill = async (data: any) => {
+  const getUserBill = async (data: any, timer: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/getuserbill`, data);
-    if (response.data.success) {
+    if (response.data.success && response.data.data.length != 0) {
+      setHaverBill(true);
       setBillDetail(response.data.data);
-      console.log(billDetail);
-
       let getBilmenu = { bill_id: response.data.data[0].bill_id };
-
+      if (user_name) {
+        if (response.data.data[0].bill_status == "order success") {
+          console.log("succcess");
+        } else if (response.data.data[0].bill_status == "Find Driver") {
+          setDeliveryStatus("เรากำลังหาคนขับให้คุณ");
+          setDriverStatusPic(gifDriver);
+          console.log("หาคนขับ");
+        } else if (response.data.data[0].bill_status == "ถึงร้านอาหารแล้ว") {
+          setDeliveryStatus("คนขับถึงร้านอาหารแล้ว");
+          setDriverStatusPic(DriverResAlready);
+          console.log("คนขับถึงร้านอาหารแล้ว");
+        } else if (response.data.data[0].bill_status == "กำลังไปส่งอาหาร") {
+          console.log("คนขับถึงกำลังมาส่งอาหารให้คุณ");
+          setDeliveryStatus("คนขับถึงกำลังมาส่งอาหารให้คุณ");
+          setDriverStatusPic(ComingDriver);
+        } else if (response.data.data[0].bill_status == "คำสั่งซื้อเสร็จสิ้น") {
+          setDeliveryStatus("คำสั่งซื้อเสร็จสิ้น");
+          console.log("เสร็จแล้ว ล้างtimer");
+          console.log("success แล้วเด้อ");
+        } else if (response.data.data[0].bill_status == "order success") {
+          setDeliveryStatus("ขอบคุณสำหรับคำสั่งซื้อ");
+          clearInterval(timer);
+          console.log("เสร็จแล้ว ล้างtimer");
+          console.log("success แล้วเด้อ");
+        }
+      }
       getBillmenuList(getBilmenu);
     } else {
       console.log("Error");
+      clearInterval(timer);
+      setHaverBill(false);
     }
   };
-
+  useEffect(() => {
+    let timer = setInterval(() => {
+      getUserBill(user_id, timer);
+    }, 5000);
+  }, []);
   //CALC TOTALPRICE
   let totalprice = 0;
   for (let i = 0; i < user_cart.length; i++) {
     totalprice += Number(user_cart[i].menu_totalprice);
   }
-  useEffect(() => {
-    console.log(user_id);
-    getUserBill(user_id);
-  }, []);
-  console.log(billDetail);
-  console.log(memuList);
 
   //CART
   return (
-    <div className="bg-slate-100 min-h-[100vh] flex flex-col  items-center">
+    <div className="bg-[#01B14F] min-h-[100vh] flex flex-col  items-center">
       <nav className="flex fixed z-[1000] justify-center items-center h-[48px] md:h-[88px]  top-0 bg-white shadow-sm w-full">
         <div className="w-[100%] px-[12px] md:px-[36px]">
           <div className="flex justify-between">
@@ -139,17 +167,26 @@ const DeliveryPage = () => {
           </div>
         </div>
       </nav>
-      <header className="w-full flex h-[400px] flex-col justify-center items-center mt-[30px] md:mt-[80px]">
-        <img
-          className="max-w-[300px] bg-cover bmax-h-[300px]"
-          src={gifDriver}
-          alt="driver-dance"
-        />
-        <p className="text-[26px] font-bold my-[10px]">
-          เรากำลังหาคนขับให้คุณ..
-        </p>
-      </header>
-      {billDetail.length != 0 && (
+      {haveBill == true && (
+        <header className="w-full flex h-[400px] flex-col justify-center items-center mt-[30px] md:mt-[80px]">
+          <img
+            className="max-w-[300px] bg-cover bmax-h-[300px]"
+            src={driverStatusPic}
+            alt="driver-dance"
+          />
+          <p className="text-[32px] font-bold my-[10px] text-[white]">
+            {deliveryStatus}..
+          </p>
+        </header>
+      )}
+      {haveBill == false && (
+        <header className="w-full flex h-[400px] flex-col justify-center items-center mt-[30px] md:mt-[80px]">
+          <p className="text-[32px] font-bold my-[10px] text-[white]">
+            {deliveryStatus}..
+          </p>
+        </header>
+      )}
+      {billDetail.length != 0 && haveBill == true && (
         <div className="h-[auto] mt-[20px]  md:w-[50%] bg-white rounded-md w-[95%] max-w-[300px] mx-[10px] shadow-sm">
           <div className="border-b-[1px] py-[16px]">
             <span className="text-[24px] font-[500] px-[5%]">

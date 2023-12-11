@@ -11,6 +11,16 @@ const exec = async (req, res) => {
 
     let sql = `select * from bills  where bill_status = 'Find Driver';`;
     let response = await pool.query(sql);
+    let sql_getRestaurantAddress = `select restaurant_name,latitude,longitude from restaurants  where restaurant_id = $1 `;
+    for (let i = 0; i < response.rows.length; i++) {
+      let param2 = [response.rows[i].restaurant_id];
+      let response_getRes = await pool.query(sql_getRestaurantAddress, param2);
+      console.log(response_getRes.rows[0]);
+      response.rows[i].restaurant_name =
+        response_getRes.rows[0].restaurant_name;
+      response.rows[i].restaurant_latitude = response_getRes.rows[0].latitude;
+      response.rows[i].restaurant_longitude = response_getRes.rows[0].longitude;
+    }
     // console.log(response);
     responseData.success = true;
     responseData.data = response.rows;

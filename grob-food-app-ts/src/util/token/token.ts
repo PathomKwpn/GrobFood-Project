@@ -29,7 +29,7 @@ function useToken() {
     let userCart = JSON.parse(cartString);
     let userLocation = JSON.parse(locationString);
     if (userToken) {
-      let decode = jwt_decode(userToken);
+      let decode: any = jwt_decode(userToken);
       let currentTiem = Math.floor(new Date().getTime() / 1000);
 
       if (decode.exp - currentTiem <= 0) {
@@ -70,6 +70,9 @@ function useToken() {
     setCart("");
     setLocation("");
   };
+  const clearCart = () => {
+    createCarttoLocalStorage([]);
+  };
 
   const [token, setToken] = useState(getToken().userToken);
   const [user, setUser] = useState(getToken().userData);
@@ -81,6 +84,7 @@ function useToken() {
     cart,
     location,
     updateToken,
+    clearCart,
     saveTokentoLocalStorage,
     createCarttoLocalStorage,
     saveUsertoLacalStorage,

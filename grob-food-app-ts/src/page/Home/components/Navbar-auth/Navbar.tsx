@@ -1,23 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToken } from "../../../../util/token/token";
 
 //ICON
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Alert, Button } from "@mui/material";
+import axios from "axios";
+import { GROBFOOD_USER_URL } from "../../../../util/constants/constant";
 
 const Navbarauth = () => {
   const nevigate = useNavigate();
-
+  const [haveBill, setHaverBill] = useState(false);
   //GET USER FROM LOCALSTORAGE
   const user_name: any = localStorage.getItem("user");
   let user_firstname = JSON.parse(user_name);
+
+  let user_id = { user_id: user_firstname.id };
   //GET CART FROM LOCALSTORAGE
   const cart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(cart);
@@ -41,6 +46,24 @@ const Navbarauth = () => {
     let user_cart = JSON.parse(cart);
     setCartList(user_cart);
   };
+
+  const getUserBill = async (data: any) => {
+    const response = await axios.post(`${GROBFOOD_USER_URL}/getuserbill`, data);
+    console.log(response.data.data);
+
+    if (response.data.success && response.data.data.length != 0) {
+      setHaverBill(true);
+      console.log(response.data.data.length);
+    } else {
+      console.log("Error");
+      console.log("ผู้ใช้ยังไม่ได้สั่งสินค้า");
+
+      setHaverBill(false);
+    }
+  };
+  useEffect(() => {
+    getUserBill(user_id);
+  });
   return (
     <>
       <div className="flex fixed z-[1000] justify-center items-center h-[48px] md:h-[88px]  top-0 bg-white shadow-sm w-full">
@@ -199,6 +222,23 @@ const Navbarauth = () => {
               {/* <div className="flex relative cursor-pointer justify-center items-center text-[6px] font-semibold text-[#676767] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] md:px-[10px]">
                 <NotificationsActiveIcon />
               </div> */}
+
+              <div
+                className="flex relative cursor-pointer justify-center items-center text-[6px] font-semibold text-[#676767] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] md:px-[10px]"
+                onClick={() => {
+                  nevigate("/deliverypage");
+                  updateToken();
+                }}
+              >
+                <ListAltIcon className="text-[#676767] text-[20px]" />
+
+                {haveBill == true && (
+                  <div className=" absolute text-[14px] right-[-40%] top-[10%] m-0 p-0 translate-x-[-50%] translate-y-[-50%]  w-[20px] h-[20px] flex justify-center items-center rounded-[50%]">
+                    <NotificationImportantIcon className="text-[#eb4848]" />
+                  </div>
+                )}
+              </div>
+
               <div
                 className="flex relative cursor-pointer justify-center items-center text-[6px] font-semibold text-[#676767] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] md:px-[10px]"
                 onClick={() => {
