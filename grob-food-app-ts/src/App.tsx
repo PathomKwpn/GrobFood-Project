@@ -13,6 +13,10 @@ import OwnerStoreOrderList from "./page/Owner-Home/OwnerStoreOrderList";
 import OwernerStoreOrderDetail from "./page/Owner-Home/OwernerStoreOrderDetail";
 import UserProfile from "./page/UserProfile/UserProfile";
 import StoreListHome from "./page/StoreList-page/StoreList-Home";
+import StoreCoffeeOrTeaList from "./page/StoreList-page/StoreList-CoffeeAndTea";
+import StoreChicken from "./page/StoreList-page/StoreList-chicken";
+import StoreSeafood from "./page/StoreList-page/StoreList-Seafood";
+import StoreNoodle from "./page/StoreList-page/StoreList-Noodle";
 import StorePage from "./page/StoreDetailPage/StorePage";
 import ConfirmPage from "./page/ConfirmPage/ConfirmPage";
 import AdminPage from "./page/Admin/AdminPage";
@@ -74,9 +78,7 @@ function App() {
     },
     {
       path: "/userprofile",
-      element: (
-        <UserProfile clearToken={clearToken} token={token} user={user} />
-      ),
+      element: <UserProfile />,
     },
     {
       path: "/ownerhome",
@@ -105,7 +107,23 @@ function App() {
     },
     {
       path: "/allstore",
-      element: <StoreListHome clearToken={clearToken} />,
+      element: <StoreListHome />,
+    },
+    {
+      path: "/coffee&tea",
+      element: <StoreCoffeeOrTeaList />,
+    },
+    {
+      path: "/chicken",
+      element: <StoreChicken />,
+    },
+    {
+      path: "/seafood",
+      element: <StoreSeafood />,
+    },
+    {
+      path: "/noodle",
+      element: <StoreNoodle />,
     },
     {
       path: "/allstore/:resid",
@@ -155,25 +173,7 @@ function App() {
       element: <DriverProfile />,
     },
   ]);
-  // if (!token) {
-  //   console.log("not have token");
-  //   return setTokenStatus(false);
-  // } else {
-  //   console.log("have token");
-  //   return setTokenStatus(true);
-  // }
-  // if (!token) {
-  //   console.log("token", token);
 
-  //   return (
-  //     <Home
-  //       clearToken={clearToken}
-  //       token={token}
-  //       user={user}
-  //       // tokenstatus={tokenStatus}
-  //     />
-  //   );
-  // }
   return (
     <ThemeProvider theme={theme}>
       <div>

@@ -185,87 +185,27 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
   }
 
   return (
-    <div className=" bg-slate-100 flex flex-col items-center">
+    <div className=" bg-slate-100 flex flex-col items-center justify-center">
       <Navbarauth />
       {user_cart.length != 0 && (
-        <div>
+        <div className=" flex flex-col items-center justify-center">
           <div className="bg-white w-full pb-[20px]">
-            <div className="mt-[70px] md:mt-[100px] text-[24px] md:text-[36px]  font-[600] px-[20px] md:px-[120px] lg:px-[240px] xl:px-[25%]">
+            <div className="mt-[70px] md:mt-[100px] text-[24px] md:text-[36px]  font-[600] px-[20px] md:px-[120px] lg:px-[240px] xl:px-[10%]">
               ขั้นตอนสุดท้าย - เช็คเอ้าท์
             </div>
-            <span className="text-[18px] md:text-[24px] font-[500] px-[20px] md:px-[120px] lg:px-[240px] xl:px-[25%] flex">
+            <span className="text-[18px] md:text-[24px] font-[500] px-[20px] md:px-[120px] lg:px-[240px] xl:px-[10%] flex">
               {user_cart[0].restaurant_name}
             </span>
           </div>
-          {/* <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
-        <div className="border-b-[1px] py-[16px]">
-          <span className="text-[24px] font-[500] px-[5%]">ที่อยู่</span>
-        </div>
-        <div className="mt-[20px] flex justify-center items-center w-full ">
-          <div className="mb-[12px] flex px-[10px] w-[80%]">
-            <span className=" mr-[14px] flex justify-center items-center">
-              <FmdGoodIcon className="text-[32px] text-[#ac3131]" />
-            </span>
 
-            <input
-              type="text"
-              className=" w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[24px] py-[6px] text-[14px] text-[#7a7a7a]"
-              placeholder="ระบุตำแหน่งของคุณ"
-              value={getLoaction ? getLoaction : ""}
-            />
-            <span className="ml-[14px] flex justify-center items-center">
-              <MyLocationIcon
-                className="text-[24px] text-[#ff9457]"
-                onClick={() => {
-                  getUserlocation();
-                }}
-              />
-            </span>
-          </div>
-        </div>
-        <div className="w-full flex justify-center my-[16px]">
-          <div className="w-[80%]">
-            <div className="mb-[12px] text-[#7a7a7a]">รายละเอียดที่อยู่</div>
-            <input
-              type="text"
-              className=" w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[24px] py-[6px] text-[14px] text-[#7a7a7a]"
-              placeholder="เช่น ชั้น หมายเลขอาคาร"
-              onChange={(e) => {
-                setAddressDetail(e.target.value);
-              }}
-            />
-            <div className="mb-[12px] text-[#7a7a7a] my-[12px]">
-              หมายเหตุถึงคนขับ
-            </div>
-            <input
-              type="text"
-              className=" w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[24px] py-[6px] text-[14px] text-[#7a7a7a]"
-              placeholder="เช่น เจอกันที่ล็อบบี้"
-              onChange={(e) => {
-                setNoteToDriver(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      {noLocationPopup == "open" && (
-        <div
-          className=" fixed top-[10%]  bg-red-100 border-l-4 border-red-500 text-red-700 p-4"
-          role="alert"
-        >
-          <p className="font-bold md:text-[24px]">โปรดระบุตำแหน่งของคุณ</p>
-          <p className="md:text-[18px]">
-            กรุณาระบุตำแหน่งของคุณเพื่อให้คนขับทราบ.
-          </p>
-        </div>
-      )} */}
           <Location
             setNoteToDriver={setNoteToDriver}
             setAddressDetail={setAddressDetail}
             getUserlocation={getUserlocation}
             noLocationPopup={noLocationPopup}
           />
-          <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+
+          <div className="h-[auto] mt-[20px] max-w-[700px] bg-white rounded-md w-[95%]">
             <div className="border-b-[1px] py-[16px]">
               <span className="text-[24px] font-[500] px-[5%]">
                 รายการคูปองส่วนลด
@@ -384,7 +324,7 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
               </label>
             </div>
           </div>
-          <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+          <div className="h-[auto] mt-[20px] max-w-[700px] bg-white rounded-md w-[95%]">
             <div className="border-b-[1px] py-[16px]">
               <span className="text-[24px] font-[500] px-[5%]">
                 สรุปคำสั่งซื้อ
@@ -589,7 +529,7 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
               </div>
             </div>
           </div>
-          <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%] mb-[150px]">
+          <div className="h-[auto] mt-[20px] max-w-[700px] bg-white rounded-md w-[95%] mb-[150px]">
             <div className="border-b-[1px] py-[16px]">
               <span className="text-[24px] font-[500] px-[5%]">
                 รายละเอียดการชำระเงิน

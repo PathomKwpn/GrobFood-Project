@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
 import Button from "@mui/material/Button";
 
@@ -12,8 +12,35 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import Box from "@mui/material/Box";
 
+interface storeDetail {
+  address: string;
+  close_time: string;
+  create_by: string;
+  create_date: string;
+  image_type: string;
+  latitude: string;
+  longitude: string;
+  open_time: string;
+  owner_firstname: string;
+  owner_id: string;
+  owner_lastname: string;
+  owner_password: string;
+  owner_phone: string;
+  owner_username: string;
+  regis_date: string;
+  restaurant_catagory: string;
+  restaurant_credit: number;
+  restaurant_id: string;
+  restaurant_name: string;
+  restaurants_id: string;
+  restaurants_image_id: string;
+  restaurants_image_url: string;
+  score: string;
+  status: string;
+  update_by: string;
+  update_date: string;
+}
 const StoreDetail = () => {
   const [page, setPage] = useState("detail");
   const [state, setState] = useState("detail");
@@ -22,9 +49,9 @@ const StoreDetail = () => {
   const [onMenus, setOnMenus] = useState("contrast-50 text-[#676767]");
 
   //STORE CONTAIN
-  const [storeDetail, setStoreDetail] = useState<object>({});
+  const [storeDetail, setStoreDetail] = useState<storeDetail>();
   //OWNER
-  const getOwner = localStorage.getItem("user");
+  const getOwner: any = localStorage.getItem("user");
   const ownerInfo = JSON.parse(getOwner);
   const owner_id = ownerInfo.id;
   const dataOwner: any = {
@@ -38,8 +65,6 @@ const StoreDetail = () => {
     if (response.data.success) {
       setStoreDetail(response.data.data[0]);
       setRestaurantID(response.data.data[0].restaurant_id);
-
-      console.log(storeDetail);
     } else {
       console.log("err");
     }
@@ -48,7 +73,6 @@ const StoreDetail = () => {
   const setNewStoreDetail = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/updatestore`, data);
     if (response.data.success) {
-      console.log(response.data.success, "new");
       getStoreDetail(dataOwner);
       console.log("Update already");
     } else {
@@ -72,7 +96,6 @@ const StoreDetail = () => {
   useEffect(() => {
     getStoreDetail(dataOwner);
   }, []);
-  console.log(storeDetail);
 
   // console.log(resTopicArray);
   // const arrayDataItems = resTopicArray.map((course) => <li>{course}</li>);
@@ -121,7 +144,7 @@ const StoreDetail = () => {
                 </div>
                 {state == "detail" && (
                   <div className="border-[#0DA152] border-2 rounded-md px-[14px] py-[8.5px] h-[40px] flex items-center">
-                    {storeDetail.restaurant_name}
+                    {storeDetail?.restaurant_name}
                   </div>
                 )}
                 {state == "edit" && (
@@ -144,7 +167,7 @@ const StoreDetail = () => {
                 </div>
                 {state == "detail" && (
                   <div className="border-[#0DA152] border-2 rounded-md px-[14px] py-[8.5px] h-[40px] flex items-center">
-                    {storeDetail.address}
+                    {storeDetail?.address}
                   </div>
                 )}
                 {state == "edit" && (
@@ -167,7 +190,7 @@ const StoreDetail = () => {
                 </div>
                 {state == "detail" && (
                   <div className="border-[#0DA152] border-2 rounded-md px-[14px] py-[8.5px] h-[40px] flex items-center">
-                    {storeDetail.latitude}
+                    {storeDetail?.latitude}
                   </div>
                 )}
                 {state == "edit" && (
@@ -190,7 +213,7 @@ const StoreDetail = () => {
                 </div>
                 {state == "detail" && (
                   <div className="border-[#0DA152] border-2 rounded-md px-[14px] py-[8.5px] h-[40px] flex items-center">
-                    {storeDetail.longitude}
+                    {storeDetail?.longitude}
                   </div>
                 )}
                 {state == "edit" && (
@@ -213,7 +236,7 @@ const StoreDetail = () => {
                 </div>
                 {state == "detail" && (
                   <div className="border-[#0DA152] border-2 rounded-md px-[14px] py-[8.5px] h-[40px] flex items-center">
-                    {storeDetail.restaurant_catagory}
+                    {storeDetail?.restaurant_catagory}
                   </div>
                 )}
                 {state == "edit" && (
@@ -278,7 +301,7 @@ const StoreDetail = () => {
                 </div>
                 {state == "detail" && (
                   <div className="border-[#0DA152] border-2 rounded-md px-[14px] py-[8.5px] h-[40px] flex items-center">
-                    {storeDetail.open_time} น.
+                    {storeDetail?.open_time} น.
                   </div>
                 )}
                 {state == "edit" && (
@@ -306,7 +329,7 @@ const StoreDetail = () => {
                 </div>
                 {state == "detail" && (
                   <div className="border-[#0DA152] border-2 rounded-md px-[14px] py-[8.5px] h-[40px] flex items-center">
-                    {storeDetail.close_time} น.
+                    {storeDetail?.close_time} น.
                   </div>
                 )}
                 {state == "edit" && (
@@ -329,7 +352,7 @@ const StoreDetail = () => {
                 )}
               </div>
               <div className="text-[12px] text-[#999999]">
-                อัปเดทข้อมูลล่าสุด : <span>{storeDetail.update_date}</span>
+                อัปเดทข้อมูลล่าสุด : <span>{storeDetail?.update_date}</span>
               </div>
             </div>
           </div>

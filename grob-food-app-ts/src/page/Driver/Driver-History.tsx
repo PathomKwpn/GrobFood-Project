@@ -22,7 +22,6 @@ const DriverHistory = () => {
 
     if (response.data.success) {
       setDriverHistoryList(response.data.data);
-      console.log(response.data.data);
     } else {
       console.log("ERROR");
     }
@@ -41,22 +40,22 @@ const DriverHistory = () => {
           <div className="max-w-[800px]">
             <div className="w-full ">
               <div className=" w-full bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">
-                <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                <div className=" bg-[#009C49] text-[white] rounded-sm min-w-[100px] flex justify-center items-center h-[100%]">
                   วันที่บิล
                 </div>
-                <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                <div className=" bg-[#009C49] text-[white] rounded-sm min-w-[100px] flex justify-center items-center h-[100%]">
                   ชื่อร้าน
                 </div>
-                <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                <div className=" bg-[#009C49] text-[white] rounded-sm min-w-[100px] flex justify-center items-center h-[100%]">
                   ยอดรวม
                 </div>
-                <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                <div className=" bg-[#009C49] text-[white] rounded-sm min-w-[100px] flex justify-center items-center h-[100%]">
                   รูปแบบ
                 </div>
-                <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                <div className=" bg-[#009C49] text-[white] rounded-sm min-w-[100px] flex justify-center items-center h-[100%]">
                   ที่อยู่ลูกค้า
                 </div>
-                <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                <div className=" bg-[#009C49] text-[white] rounded-sm min-w-[100px] flex justify-center items-center h-[100%]">
                   เบอร์โทร
                 </div>
               </div>
@@ -75,7 +74,7 @@ const DriverHistory = () => {
                   <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
                     {regisDay}/{regisMonth}/{regisYear}
                   </div>
-                  <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] px-[5px] flex items-center justify-center mb-[4px] text-center ">
+                  <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] px-[5px] flex items-center justify-center mb-[4px] text-center font-bold">
                     {item.restaurant_name}
                   </div>
                   <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">

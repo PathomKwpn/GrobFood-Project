@@ -5,11 +5,11 @@ const exec = async (req, res) => {
   let user = await pool.connect();
   await user.query("BEGIN");
   let responseData = {};
-  // console.log(req.body);
+
   try {
     let data = req.body;
     let cart = data;
-    // console.log(data);
+
     //UUID
     let cart_uuid = uuid();
     //SQL
@@ -17,7 +17,6 @@ const exec = async (req, res) => {
 (cart_id, menu_id, price, create_date, create_by, amount, bill_id,menu_name)
 VALUES($1, $2, $3, now(), $4, $5, $6,$7);`;
     //PARAM
-
     for (let i = 0; i < cart.length; i++) {
       let param_cart = [
         cart_uuid,
@@ -29,15 +28,9 @@ VALUES($1, $2, $3, now(), $4, $5, $6,$7);`;
         cart[i].menu_name,
       ];
       let response_cart = await pool.query(sql_cart, param_cart);
-      console.log(param_cart);
     }
     let response = await pool.query(sql_bill, param);
-    // console.log(param);
 
-    //RESPONSE IF SUCCESS
-    // responseData.success = true;
-    // responseData.data = response.rows;
-    // console.log(responseData.data);
     user.query("COMMIT");
   } catch (error) {
     user.query("ROLLBACK");

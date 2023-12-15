@@ -13,7 +13,7 @@ const OwnerHome = ({ clearToken }: any) => {
   const sendOwner_id = { owner_id: owner_id };
 
   return (
-    <div className="bg-[#d6d6d6] h-[auto] min-h-[100vh] md:h-[100vh]">
+    <div className=" bg-[#01B14F] h-[auto] min-h-[100vh] md:h-[100vh]">
       <NavbarOwnerAuth clearToken={clearToken} sendOwner_id={sendOwner_id} />
       <OwnerContainer />
     </div>

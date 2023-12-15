@@ -1,6 +1,7 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Catagory = () => {
+  const nevigate = useNavigate();
   return (
     <div className="mt-[40px] px-[5%] max-w-[1300px] mx-[auto] mb-[120px]">
       <div className="text-[20px] md:text-[24px] xl:text-[36px] font-semibold mb-[15px]">
@@ -8,105 +9,65 @@ const Catagory = () => {
       </div>
       <div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6">
-          <div className="w-full px-[5%] h-[auto] ">
-            <div className="bg-cover mb-[10px]">
+          <div className="w-full px-[5%] h-full ">
+            <div
+              className="bg-cover mb-[10px]"
+              onClick={() => {
+                nevigate("/seafood");
+              }}
+            >
               <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
+                className="bg-cover w-full rounded-md h-[80px] md:h-[120px] lg:h-[160px] shadow-md"
+                src="../public/image/catagory-image/seafood.webp"
                 alt=""
               />
             </div>
-            <div>อาหารทะเล</div>
+            <div className="font-bold">อาหารทะเล</div>
+          </div>
+          <div className="w-full px-[5%] h-full">
+            <div
+              className="bg-cover mb-[10px]"
+              onClick={() => {
+                nevigate("/chicken");
+              }}
+            >
+              <img
+                className="bg-cover w-full rounded-md h-[80px] md:h-[120px] lg:h-[160px] shadow-md"
+                src="../public/image/catagory-image/chicken.jpeg"
+                alt=""
+              />
+            </div>
+            <div className="font-bold">ไก่ทอด</div>
           </div>
           <div className="w-full px-[5%] h-[auto]">
-            <div className="bg-cover mb-[10px]">
+            <div
+              className="bg-cover mb-[10px]"
+              onClick={() => {
+                nevigate("/coffee&tea");
+              }}
+            >
               <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
+                className="bg-cover w-full rounded-md h-[80px] md:h-[120px] lg:h-[160px] shadow-md"
+                src="../public/image/catagory-image/ชานมไข่มุก.webp"
                 alt=""
               />
             </div>
-            <div>อาหารทะเล</div>
+            <div className="font-bold">ชา กาแฟ</div>
           </div>
           <div className="w-full px-[5%] h-[auto]">
-            <div className="bg-cover mb-[10px]">
+            <div
+              className="bg-cover mb-[10px]"
+              onClick={() => {
+                nevigate("/noodle");
+              }}
+            >
               <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
+                className="bg-cover w-full rounded-md h-[80px] md:h-[120px] lg:h-[160px] shadow-md"
+                src="../public/image/catagory-image/noodle.jpg"
                 alt=""
               />
             </div>
-            <div>อาหารทะเล</div>
-          </div>
-          <div className="w-full px-[5%] h-[auto]">
-            <div className="bg-cover mb-[10px]">
-              <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
-                alt=""
-              />
-            </div>
-            <div>อาหารทะเล</div>
-          </div>
-          <div className="w-full px-[5%] h-[auto]">
-            <div className="bg-cover mb-[10px]">
-              <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
-                alt=""
-              />
-            </div>
-            <div>อาหารทะเล</div>
-          </div>
-          <div className="w-full px-[5%] h-[auto]">
-            <div className="bg-cover mb-[10px]">
-              <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
-                alt=""
-              />
-            </div>
-            <div>อาหารทะเล</div>
-          </div>
-          <div className="w-full px-[5%] h-[auto]">
-            <div className="bg-cover mb-[10px]">
-              <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
-                alt=""
-              />
-            </div>
-            <div>อาหารทะเล</div>
-          </div>
-          <div className="w-full px-[5%] h-[auto]">
-            <div className="bg-cover mb-[10px]">
-              <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
-                alt=""
-              />
-            </div>
-            <div>อาหารทะเล</div>
-          </div>
-          <div className="w-full px-[5%] h-[auto]">
-            <div className="bg-cover mb-[10px]">
-              <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
-                alt=""
-              />
-            </div>
-            <div>อาหารทะเล</div>
-          </div>
-          <div className="w-full px-[5%] h-[auto]">
-            <div className="bg-cover mb-[10px]">
-              <img
-                className="bg-cover rounded-md"
-                src="https://d1sag4ddilekf6.cloudfront.net/compressed_webp/cuisine/151/icons/upload-photo-icon_7af9b7d28d1347849d62774f1751599f_1549032669892550258.webp"
-                alt=""
-              />
-            </div>
-            <div>อาหารทะเล</div>
+            <div className="font-bold">อาหารเส้น</div>
           </div>
         </div>
       </div>

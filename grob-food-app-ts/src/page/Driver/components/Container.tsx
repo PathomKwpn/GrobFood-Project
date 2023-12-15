@@ -139,7 +139,6 @@ const DriverContainer = ({
 
     if (response.data.success) {
       getDriverWorkList(sendDriver_id);
-      console.log(response.data.data);
     } else {
       console.log("ERROR");
     }
@@ -198,25 +197,25 @@ const DriverContainer = ({
               <div className="max-w-[800px]">
                 <div className="w-full ">
                   <div className=" w-full bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       รับงาน
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       สถานะงาน
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       ชื่อร้าน
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       ยอดรวม
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       รูปแบบ
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       ที่อยู่ลูกค้า
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       วันที่
                     </div>
                   </div>
@@ -271,6 +270,7 @@ const DriverContainer = ({
                             };
 
                             driverAcceptWork(data);
+                            setStatePage("งานของคุณ");
                           }}
                         >
                           รับงาน

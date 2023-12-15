@@ -126,7 +126,7 @@ const OwnerContainer = () => {
   );
   const deleteStore = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/deletestore`, data);
-    console.log("response", response);
+
     if (response.data.success) {
       console.log("Delete Successfull");
       onLogin(dataOwner);
@@ -137,7 +137,7 @@ const OwnerContainer = () => {
   return (
     <div>
       <div className="flex flex-col justify-center items-center mt-[60px]">
-        <div className="text-[32px] font-bold text-[#484848] mb-[30px]">
+        <div className="text-[32px] font-bold text-[white] md:text-[40px] mb-[30px]">
           Your Restaurants
         </div>
         {createState == true && (

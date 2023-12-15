@@ -3,8 +3,8 @@ const common = require("../common/commonService");
 const { uuid } = require("uuidv4");
 
 const exec = async (req, res) => {
-  let store = await pool.connect();
-  await store.query("BEGIN");
+  let driver = await pool.connect();
+  await driver.query("BEGIN");
   let responseData = {};
   try {
     let data = req.body;
@@ -25,14 +25,14 @@ const exec = async (req, res) => {
     responseData.success = true;
     responseData.data = response.rows;
     // console.log(responseData.data);
-    store.query("COMMIT");
+    driver.query("COMMIT");
   } catch (error) {
-    store.query("ROLLBACK");
+    driver.query("ROLLBACK");
     responseData.success = false;
     responseData.data = "something error try again!";
     console.log(error);
   } finally {
-    store.release();
+    driver.release();
   }
 
   res.status(200).send(responseData);

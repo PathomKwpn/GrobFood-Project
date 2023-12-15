@@ -1,14 +1,14 @@
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useEffect, useState } from "react";
-const Cart = ({ createCarttoLocalStorage, cart }) => {
+
+const Cart = ({ createCarttoLocalStorage, cart }: any) => {
   const localcart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(localcart);
   console.log(cart, "CART");
 
   return (
     <div className="flex flex-col overflow-scroll max-h-[75vh] mt-[20px]">
-      {cart?.map((item) => {
+      {cart?.map((item: any) => {
         return (
           <div>
             <div className="flex min-h-[80px] border-b-[1px] py-[10px]">
@@ -18,7 +18,7 @@ const Cart = ({ createCarttoLocalStorage, cart }) => {
                   onClick={() => {
                     let result = user_cart.find(
                       //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
-                      (list) => {
+                      (list: any) => {
                         return list.menu_id == item.menu_id;
                       }
                     );
@@ -45,7 +45,7 @@ const Cart = ({ createCarttoLocalStorage, cart }) => {
                   onClick={() => {
                     let result = user_cart.find(
                       //เช็คหาดูว่ามีสินค้านี้อยู่ในตะกร้าอยู่แล้วหรือไม่
-                      (list) => {
+                      (list: any) => {
                         return list.menu_id == item.menu_id;
                       }
                     );

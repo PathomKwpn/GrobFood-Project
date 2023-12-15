@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GROBFOOD_USER_URL } from "../../util/constants/constant";
 import { useEffect, useState } from "react";
 //ICON
@@ -9,7 +9,7 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import Login from "../Login-pages/Login";
 import NavbarOwnerAuth from "./NavbarAuth/NavbarAuth";
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 interface menuList {
   price: string;
   amount: number;
@@ -45,10 +45,10 @@ const OwernerStoreOrderDetail = ({ clearToken }: any) => {
   if (!getOwner) {
     return <Login />;
   }
+  const nevigate = useNavigate();
   //PARAM
   const { billID } = useParams();
   const order_billID = { bill_id: billID };
-  console.log(order_billID);
 
   const [storeOrderDetail, setStoreOrderDetail] = useState<
     Array<storeOrderDetail>
@@ -59,7 +59,6 @@ const OwernerStoreOrderDetail = ({ clearToken }: any) => {
       data
     );
     if (response.data.success) {
-      console.log(response.data.data);
       setStoreOrderDetail(response.data.data);
     } else {
       console.log("GET STOREORDER ERROR");
@@ -81,9 +80,18 @@ const OwernerStoreOrderDetail = ({ clearToken }: any) => {
   const owner_id = owner_info.id;
   const sendOwner_id = { owner_id: owner_id };
   return (
-    <div className=" bg-slate-100 min-h-[100vh]">
+    <div className=" bg-[#01B14F] min-h-[100vh]">
       <NavbarOwnerAuth clearToken={clearToken} sendOwner_id={sendOwner_id} />
-      <header className="text-[32px] font-bold w-full flex justify-center my-[24px]">
+      <div
+        className="mt-[24px] underline md:px-[24px] px-[8px] text-white"
+        onClick={() => {
+          nevigate("/ownerhome");
+        }}
+      >
+        <ArrowBackIcon className="text-[18px] text-white" />
+        กลับไปหน้าหลัก
+      </div>
+      <header className="text-[32px] lg:text-[42px] text-[white] font-bold w-full flex justify-center my-[24px]">
         ข้อมูลออเดอร์
       </header>
       {storeOrderDetail.length != 0 && (

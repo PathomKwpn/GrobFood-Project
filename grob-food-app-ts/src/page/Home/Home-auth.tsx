@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Catagory,
   DetailQuestion,
@@ -8,7 +7,7 @@ import {
 } from "../../page/Home/components/";
 import Login from "../Login-pages/Login";
 import Footer from "../Footer/Footer";
-const Home = ({ saveLocation }) => {
+const Home = ({ saveLocation }: any) => {
   const getOwner = localStorage.getItem("user");
   if (!getOwner) {
     return <Login />;

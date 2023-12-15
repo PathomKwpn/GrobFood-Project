@@ -1,30 +1,59 @@
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useEffect, useState } from "react";
-import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
 import StarIcon from "@mui/icons-material/Star";
 import SearchIcon from "@mui/icons-material/Search";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import axios from "axios";
-import { useToken } from "../../../util/token/token";
 import { Link, useNavigate } from "react-router-dom";
+import { useToken } from "../../../util/token/token";
+
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-const StoreList_container = () => {
+interface allstoreListProps {
+  close_time: string;
+  latitude: string;
+  longitude: string;
+  open_time: string;
+  restaurant_catagory: string;
+  restaurant_id: string;
+  restaurant_name: string;
+  restaurants_image_url: string;
+  score: string;
+}
+interface StoreCatagoryProps {
+  allstoreList: Array<allstoreListProps>;
+  filteredUsers: Array<allstoreListProps>;
+  setFilteredUsers: React.Dispatch<
+    React.SetStateAction<Array<allstoreListProps> | undefined>
+  >;
+}
+const StoreListCatagory = ({
+  allstoreList,
+  filteredUsers,
+  setFilteredUsers,
+}: StoreCatagoryProps) => {
   const nevigate = useNavigate();
   const { updateToken } = useToken();
-  const [allstoreList, setAllStoreList] = useState([]);
-  const [resMenus, setResMenus] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState(allstoreList);
   const [userLatitude, setUserLatitude] = useState("");
   const [userLongitude, setUserLongitude] = useState("");
   const handleFilter = (e: any) => {
     const value = e.target.value;
+
     const filtered = allstoreList.filter((store: any) =>
       store.restaurant_name.includes(value)
     );
 
     setFilteredUsers(filtered);
   };
+  let restaurant_catagory;
+  if (allstoreList[0].restaurant_catagory == "อาหารทะเล") {
+    restaurant_catagory = "/seafood";
+  } else if (allstoreList[0].restaurant_catagory == "ไก่ทอด") {
+    restaurant_catagory = "/chicken";
+  } else if (allstoreList[0].restaurant_catagory == "อาหารเส้น") {
+    restaurant_catagory = "/noodle";
+  } else if (allstoreList[0].restaurant_catagory == "ชา กาแฟ") {
+    restaurant_catagory = "/coffee&tea";
+  }
   function getDistanceBetweenPointsNew(
     latitude1: string,
     longitude1: string,
@@ -52,32 +81,11 @@ const StoreList_container = () => {
   function rad2deg(rad: any) {
     return rad * (180 / Math.PI);
   }
-  const getStore = async () => {
-    console.log();
-    const response = await axios.post(`${GROBFOOD_USER_URL}/getallstorelist`);
-    if (response.data.success) {
-      setResMenus(response.data.data[0]);
-      console.log(resMenus, "res");
-      setAllStoreList(response.data.data);
 
-      setFilteredUsers(response.data.data);
-    } else {
-      console.log("err");
-    }
-  };
   const getLoaction: any = localStorage.getItem("location");
   let user_location = JSON.parse(getLoaction);
 
-  // const getUserlocation = () => {
-  //   navigator.geolocation.getCurrentPosition(function (position) {
-  //     console.log("Latitude is :", position.coords.latitude);
-  //     setUserLatitude(position.coords.latitude);
-  //     console.log("Longitude is :", position.coords.longitude);
-  //     setUserLongitude(position.coords.longitude);
-  //   });
-  // };
   useEffect(() => {
-    getStore();
     if (user_location) {
       setUserLatitude(user_location.latitude);
       setUserLongitude(user_location.longitude);
@@ -93,12 +101,12 @@ const StoreList_container = () => {
             type="text"
             placeholder="ค้นหาร้านอาหาร"
             onChange={handleFilter}
-            className=" bg-[#F7F7F7] ml-[10px]"
+            className=" bg-[#F7F7F7] ml-[10px] focus:outline-0 cursor-pointer"
           />
         </div>
-        {/* <div className="flex flex-row gap-5 my-[26px] ">
+        {/* <div className="flex flex-row justify-center gap-5 my-[26px] ">
           <div
-            className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75"
+            className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center "
             onClick={() => {
               updateToken();
               nevigate("/seafood");
@@ -111,7 +119,7 @@ const StoreList_container = () => {
             />
           </div>
           <div
-            className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75"
+            className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center "
             onClick={() => {
               updateToken();
               nevigate("/chicken");
@@ -124,7 +132,7 @@ const StoreList_container = () => {
             />
           </div>
           <div
-            className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75"
+            className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center "
             onClick={() => {
               updateToken();
               nevigate("/coffee&tea");
@@ -137,7 +145,7 @@ const StoreList_container = () => {
             />
           </div>
           <div
-            className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75"
+            className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center "
             onClick={() => {
               updateToken();
               nevigate("/noodle");
@@ -150,6 +158,7 @@ const StoreList_container = () => {
             />
           </div>
         </div> */}
+
         <Swiper
           className="w-full justify-center items-center"
           breakpoints={{
@@ -248,7 +257,15 @@ const StoreList_container = () => {
           </Link>
           <ArrowForwardIosIcon className="text-[16px]" />{" "}
           <Link to={"/allstore"}>
-            <span className="text-[black]">ร้านทั้งหมด</span>
+            <span className="text-[#4ca3b3] cursor-pointer">
+              ร้านทั้งหมด <ArrowForwardIosIcon className="text-[16px]" />
+            </span>
+          </Link>
+          <Link to={`${restaurant_catagory}`}>
+            <span className="text-[black] cursor-pointer">
+              {allstoreList[0].restaurant_catagory}
+              <ArrowForwardIosIcon className="text-[16px]" />
+            </span>
           </Link>
         </div>
         <div className="mb-[20px] text-[20px] font-[500] md:text-[36px] md:pl-[24px] lg:px-[30px] xl:px-[120px]">
@@ -345,4 +362,4 @@ const StoreList_container = () => {
   );
 };
 
-export default StoreList_container;
+export default StoreListCatagory;

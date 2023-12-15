@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FacebookIcon from "@mui/icons-material/Facebook";

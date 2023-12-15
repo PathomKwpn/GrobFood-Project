@@ -53,17 +53,13 @@ const StorePage = ({ createCart }: any) => {
   const cart: any = localStorage.getItem("cart");
   let user_cart = JSON.parse(cart);
   const getStoreDetailAPI = async () => {
-    console.log();
     const response = await axios.post(
       `${GROBFOOD_USER_URL}/getstoredetail`,
       restaurant_id
     );
     if (response.data.success) {
-      console.log(response.data.data);
-
       setStoreDetail(response.data.data);
       setStoreTopic(response.data.topic);
-      console.log(storeDetail);
 
       console.log("api success");
     } else {
@@ -110,7 +106,6 @@ const StorePage = ({ createCart }: any) => {
   let distance: any;
   let time;
   let timeMin;
-  console.log(storeTopic);
 
   if (storeDetail.length != 0 && userLatitude != "") {
     haveLocation = true;

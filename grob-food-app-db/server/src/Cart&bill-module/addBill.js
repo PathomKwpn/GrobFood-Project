@@ -9,7 +9,7 @@ const exec = async (req, res) => {
     let data = req.body;
     let bill = data[0];
     let cart = data[1];
-    let sql = `select * from bills b where user_id =$1 and bill_status != 'order success';`;
+    let sql = `select * from bills b where user_id =$1 and (bill_status != 'order success' or vote_status = 'none');`;
     let param = [bill.user_id];
     let responseUser = await pool.query(sql, param);
     // console.log(responseUser.rowCount, "ROWCOUNT");
@@ -44,7 +44,6 @@ VALUES($1, $2, $3, now(), $4, $5, $6,$7);`;
         bill.notetoDriver,
         bill.discount,
       ];
-      console.log(param_bill, "PARAMBILL");
       for (let i = 0; i < cart.length; i++) {
         let cart_uuid = uuid();
         let param_cart = [
@@ -57,11 +56,8 @@ VALUES($1, $2, $3, now(), $4, $5, $6,$7);`;
           cart[i].menu_name,
         ];
         let response_cart = await pool.query(sql_cart, param_cart);
-        console.log(param_cart);
       }
-      console.log(bill);
       let response = await pool.query(sql_bill, param_bill);
-      console.log(param);
 
       //RESPONSE IF SUCCESS
       responseData.success = true;

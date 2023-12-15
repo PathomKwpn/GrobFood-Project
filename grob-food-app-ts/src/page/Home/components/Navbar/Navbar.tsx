@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
-import { Link, useNavigate } from "react-router-dom";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-const Navbar = ({ clearToken, token, user }) => {
+import { Link } from "react-router-dom";
+
+const Navbar = ({ token, user }: any) => {
   console.log(user, token, "userTOKEN");
-  const nevigate = useNavigate();
+
   return (
     <>
       <div className="flex justify-center items-center h-[48px] md:h-[88px] sticky bg-white shadow-sm">

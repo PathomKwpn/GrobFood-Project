@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -17,7 +17,7 @@ import { GROBFOOD_USER_URL } from "../../util/constants/constant";
 const LoginAdmin = ({ setUser, setToken, createCart }: any) => {
   const [admin_username, setAdmin_Username] = useState<string>("");
   const [admin_password, setAdmin_Password] = useState<string>("");
-  const [loginStatus, setLoginStatus] = useState(false);
+
   const navigate = useNavigate();
   const DEFAULT_ALERT = {
     title: "",
@@ -33,10 +33,6 @@ const LoginAdmin = ({ setUser, setToken, createCart }: any) => {
   const haddleSubmit = (event: any) => {
     event.preventDefault();
   };
-
-  useEffect(() => {
-    console.log("LOGINN!!!");
-  }, [loginStatus]);
 
   const onLogin = async (data: any) => {
     console.log(data);

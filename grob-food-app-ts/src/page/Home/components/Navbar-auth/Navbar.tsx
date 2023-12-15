@@ -49,11 +49,9 @@ const Navbarauth = () => {
 
   const getUserBill = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/getuserbill`, data);
-    console.log(response.data.data);
 
     if (response.data.success && response.data.data.length != 0) {
       setHaverBill(true);
-      console.log(response.data.data.length);
     } else {
       console.log("Error");
       console.log("ผู้ใช้ยังไม่ได้สั่งสินค้า");

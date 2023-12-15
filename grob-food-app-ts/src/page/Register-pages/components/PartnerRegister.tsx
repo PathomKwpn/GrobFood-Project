@@ -25,7 +25,7 @@ const PartnerRegister = () => {
     data: "",
     type: "info",
   };
-  const [alertStatus, setAlertStatus] = useState(DEFAULT_ALERT);
+  const [alertStatus, setAlertStatus] = useState<any>(DEFAULT_ALERT);
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -40,7 +40,6 @@ const PartnerRegister = () => {
       `${GROBFOOD_USER_URL}/owner-register`,
       data
     );
-    console.log(response.data);
 
     if (
       owner_username == "" ||
@@ -55,7 +54,6 @@ const PartnerRegister = () => {
         type: "warning",
       });
     } else if (response.data.success) {
-      console.log(response.data.success, "hello");
       setOwner_FirstName("");
       setOwner_LastName("");
       setOwner_Username("");

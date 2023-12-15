@@ -7,7 +7,6 @@ const exec = async (req, res) => {
   let responseData = {};
   try {
     let data = req.body;
-    console.log(data);
     let newStatus;
     if (data.status == "Allow") {
       newStatus = "Not allowed";
@@ -19,11 +18,8 @@ SET  status=$1
 WHERE restaurant_id=$2;`;
     let param = [newStatus, data.restaurant_id];
     let response = await pool.query(sql, param);
-    console.log(response);
-
     responseData.success = true;
     responseData.data = response.rows;
-    console.log(responseData.data);
     store.query("COMMIT");
   } catch (error) {
     store.query("ROLLBACK");

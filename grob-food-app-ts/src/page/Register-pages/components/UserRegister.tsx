@@ -26,7 +26,7 @@ const UserRegister = () => {
     data: "",
     type: "info",
   };
-  const [alertStatus, setAlertStatus] = useState(DEFAULT_ALERT);
+  const [alertStatus, setAlertStatus] = useState<any>(DEFAULT_ALERT);
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -38,7 +38,7 @@ const UserRegister = () => {
 
   const submitRegister = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/register`, data);
-    console.log(response.data);
+
     if (
       user_username == "" ||
       user_firstname == "" ||
@@ -52,7 +52,6 @@ const UserRegister = () => {
         type: "warning",
       });
     } else if (response.data.success) {
-      console.log(response.data.success, "hello");
       setUser_FirstName("");
       setUser_LastName("");
       setUser_AgeStr("");

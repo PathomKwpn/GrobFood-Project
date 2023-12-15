@@ -8,11 +8,11 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { GROBFOOD_USER_URL } from "../../../util/constants/constant";
 import DeleteIcon from "@mui/icons-material/Delete";
-const MenuList = ({ restaurant_id }) => {
+const MenuList = ({ restaurant_id }: any) => {
   //OWNER
   const getOwner: any = localStorage.getItem("user");
   const ownerInfo = JSON.parse(getOwner);
@@ -24,7 +24,7 @@ const MenuList = ({ restaurant_id }) => {
   const [addMenuState, setAddMenuState] = useState(false);
   const [addTopicState, setAddTopicState] = useState(false);
   //SHOW DATA
-  const [showTopic, setShowTopic] = useState("Topic");
+
   const [resTopic, setResTopic] = useState("");
   //GET TOPIC
   const [resTopicArray, setResTopicArray] = useState([]);
@@ -36,7 +36,7 @@ const MenuList = ({ restaurant_id }) => {
   const [restaurant_topic_id, setRestaurant_topic_id] = useState("");
   const [imageBase64, setImageBase64] = useState("");
   const [lastnameImage, setLastnameImage] = useState("");
-  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const handleChange = (event: any) => {
     setMenu_Catagory(event.target.value);
   };
@@ -47,7 +47,7 @@ const MenuList = ({ restaurant_id }) => {
     } else {
     }
     console.log(file);
-    const reader = new FileReader();
+    const reader: any = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setLastnameImage(file.type.split("/").pop());
@@ -64,13 +64,10 @@ const MenuList = ({ restaurant_id }) => {
     };
     console.log(topic_id, "topic");
     getMenus(topic_id);
-    console.log(response);
-    console.log(response.data.data);
   };
   const addNewTopic = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/addtopic`, data);
     if (response.data.success) {
-      console.log(response.data.success, "new");
       console.log("Add new topic already");
       getStoreTopic(dataOwner);
     } else {
@@ -94,11 +91,8 @@ const MenuList = ({ restaurant_id }) => {
   }, []);
 
   const getMenus = async (data: any) => {
-    console.log(data);
     const response = await axios.post(`${GROBFOOD_USER_URL}/getmenu`, data);
     if (response.data.success) {
-      console.log(response.data);
-      console.log(restaurant_topic_id, "before getMenus");
       setResMenus(response.data.data);
     } else {
       console.log("err");
@@ -151,6 +145,7 @@ const MenuList = ({ restaurant_id }) => {
           </div>
           <div className="flex w-[100%] justify-center">
             <Button
+              key={"Confirm"}
               variant="contained"
               className="bg-[#01B14F] md:min-w-[100px] max-w-[200px] focus:bg-[#01b14f] hover:bg-[#01B14F] mx-[10px]"
               onClick={() => {
@@ -162,6 +157,7 @@ const MenuList = ({ restaurant_id }) => {
               ยืนยัน
             </Button>
             <Button
+              key={"Cancel"}
               variant="contained"
               onClick={() => {
                 setAddTopicState(false);
@@ -179,7 +175,6 @@ const MenuList = ({ restaurant_id }) => {
           className="bg-[#01B14F] md:min-w-[200px] max-w-[400px] focus:bg-[#01b14f] hover:bg-[#01B14F] z-0"
           onClick={() => {
             setAddTopicState(true);
-            console.log(restaurant_id);
           }}
         >
           เพิ่มหมวดหมู่
@@ -346,30 +341,36 @@ const MenuList = ({ restaurant_id }) => {
           </div>
         )}
         <div className="flex flex-row flex-wrap justify-center bg-slate-300">
-          {resTopicArray?.map((item) => {
-            return (
-              <Button
-                variant="contained"
-                className="bg-[#205f3c] md:min-w-[80px] max-w-[400px] focus:bg-[#01B14F] hover:bg-[#01B14F] z-0 my-[10px] mr-[10px]"
-                onClick={() => {
-                  const data = {
-                    restaurant_topic_id: item.restaurant_topic_id,
-                  };
-                  console.log(data);
-                  const newData = data.restaurant_topic_id;
-                  console.log(newData, "newData  ");
-                  setRestaurant_topic_id(item.restaurant_topic_id);
-                  setResTopic(item.restaurant_topic_id);
-                  console.log(restaurant_topic_id);
-                  console.log(resTopic);
+          {resTopicArray?.map(
+            (item: {
+              restaurant_topic_id: string;
+              restaurant_topic_name: string;
+            }) => {
+              return (
+                <Button
+                  key={item.restaurant_topic_id}
+                  variant="contained"
+                  className="bg-[#205f3c] md:min-w-[80px] max-w-[400px] focus:bg-[#01B14F] hover:bg-[#01B14F] z-0 my-[10px] mr-[10px]"
+                  onClick={() => {
+                    const data = {
+                      restaurant_topic_id: item.restaurant_topic_id,
+                    };
+                    console.log(data);
+                    const newData = data.restaurant_topic_id;
+                    console.log(newData, "newData  ");
+                    setRestaurant_topic_id(item.restaurant_topic_id);
+                    setResTopic(item.restaurant_topic_id);
+                    console.log(restaurant_topic_id);
+                    console.log(resTopic);
 
-                  getMenus(data);
-                }}
-              >
-                {item.restaurant_topic_name}
-              </Button>
-            );
-          })}
+                    getMenus(data);
+                  }}
+                >
+                  {item.restaurant_topic_name}
+                </Button>
+              );
+            }
+          )}
         </div>
         <div>
           <div className="w-full">
@@ -404,43 +405,52 @@ const MenuList = ({ restaurant_id }) => {
               </Button>
             </div>
           </div>
-          {resMenus?.map((item) => {
-            return (
-              <div className=" grid grid-cols-5 gap-1 items-center justify-items-center mx-[10px]">
-                <div className="w-full bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] rounded-l-lg overflow-hidden">
-                  <img
-                    className="p-[10px] max-w-[100px] max-h-[100px] bg-cover"
-                    src={`data:image/png;base64,${item.menu_image_url}`}
-                    alt="menu-image"
-                  />
+          {resMenus?.map(
+            (item: {
+              menu_image_url: string;
+              menu_name: string;
+              price: string;
+              food_catagory: string;
+              menu_image_id: string;
+              menu_id: string;
+            }) => {
+              return (
+                <div className=" grid grid-cols-5 gap-1 items-center justify-items-center mx-[10px]">
+                  <div className="w-full bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] rounded-l-lg overflow-hidden">
+                    <img
+                      className="p-[10px] max-w-[100px] max-h-[100px] bg-cover"
+                      src={`data:image/png;base64,${item.menu_image_url}`}
+                      alt="menu-image"
+                    />
+                  </div>
+                  <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] ">
+                    {item.menu_name}
+                  </div>
+                  <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px]">
+                    {item.price}
+                  </div>
+                  <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] rounded-r-lg">
+                    {item.food_catagory}
+                  </div>
+                  <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex flex-col items-center justify-center mb-[4px] rounded-r-lg overflow-hidden">
+                    <Button
+                      variant="contained"
+                      className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
+                      onClick={() => {
+                        const data = {
+                          menu_image_id: item.menu_image_id,
+                          menu_id: item.menu_id,
+                        };
+                        deleteMenu(data);
+                      }}
+                    >
+                      ลบ
+                    </Button>
+                  </div>
                 </div>
-                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] ">
-                  {item.menu_name}
-                </div>
-                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px]">
-                  {item.price}
-                </div>
-                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex items-center justify-center mb-[4px] rounded-r-lg">
-                  {item.food_catagory}
-                </div>
-                <div className="w-full h-[100px] bg-slate-200 mx-[3px] flex flex-col items-center justify-center mb-[4px] rounded-r-lg overflow-hidden">
-                  <Button
-                    variant="contained"
-                    className="bg-[#c43232] md:min-w-[80px] max-w-[400px] focus:bg-[red] hover:bg-[#d14f4f] z-0 my-[5px]"
-                    onClick={() => {
-                      const data = {
-                        menu_image_id: item.menu_image_id,
-                        menu_id: item.menu_id,
-                      };
-                      deleteMenu(data);
-                    }}
-                  >
-                    ลบ
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
+              );
+            }
+          )}
           {restaurant_topic_id !== "" && (
             <div className="flex justify-center">
               <Button

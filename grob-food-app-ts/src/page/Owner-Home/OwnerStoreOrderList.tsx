@@ -6,7 +6,7 @@ import NavbarOwnerAuth from "./NavbarAuth/NavbarAuth";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
-
+import { useToken } from "../../util/token/token";
 interface storeOrderList {
   addres_detail: string;
   bill_date: string;
@@ -38,7 +38,7 @@ const OwnerStoreOrderList = ({ clearToken }: any) => {
   const owner_info = JSON.parse(getOwner);
   const owner_id = owner_info.id;
   const sendOwner_id = { owner_id: owner_id };
-
+  const { updateToken } = useToken();
   const [storeOrderList, setStoreOrderList] = useState<
     Array<storeOrderList> | "คุณยังไม่มีร้านค้า"
   >();
@@ -57,7 +57,7 @@ const OwnerStoreOrderList = ({ clearToken }: any) => {
     getStoreOrderList(sendOwner_id);
   }, []);
 
-  console.log(storeOrderList);
+
 
   return (
     <div>
@@ -70,6 +70,7 @@ const OwnerStoreOrderList = ({ clearToken }: any) => {
           <div
             className="bg-[#009C49] hover:bg-[rgba(0,156,73,0.78)] w-[100px] flex justify-center items-center py-[8px] rounded-md mb-[12px] mx-[auto]  cursor-pointer"
             onClick={() => {
+              updateToken();
               getStoreOrderList(sendOwner_id);
             }}
           >
@@ -78,29 +79,29 @@ const OwnerStoreOrderList = ({ clearToken }: any) => {
           </div>
 
           <div className="flex justify-center">
-            <div className="bg-white w-[600px] h-[800px] overflow-scroll border-[1px] border-[#01B14F]">
+            <div className="bg-white w-[600px] h-[800px] overflow-scroll border-[1px] border-[#01B14F] shadow-md rounded-md">
               <div className="max-w-[800px]">
                 <div className="w-full ">
                   <div className=" w-full bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       รับออเดอร์
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       วันที่บิล
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       ชื่อร้าน
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       ยอดรวม
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       รูปแบบ
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       ที่อยู่ลูกค้า
                     </div>
-                    <div className=" bg-white min-w-[100px] flex justify-center items-center h-[100%]">
+                    <div className=" bg-[#009C49] text-[white] min-w-[100px] flex justify-center items-center h-[100%]">
                       เบอร์โทร
                     </div>
                   </div>
@@ -134,7 +135,7 @@ const OwnerStoreOrderList = ({ clearToken }: any) => {
                         <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex flex-col items-center justify-center mb-[4px] overflow-hidden">
                           {regisDay}/{regisMonth}/{regisYear}
                         </div>
-                        <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] px-[5px] flex items-center justify-center mb-[4px] text-center ">
+                        <div className=" min-w-[100px] h-[100px] font-bold bg-slate-200 text-[12px] px-[5px] flex items-center justify-center mb-[4px] text-center ">
                           {item.restaurant_name}
                         </div>
                         <div className=" min-w-[100px] h-[100px] bg-slate-200 text-[12px] flex items-center justify-center mb-[4px]">

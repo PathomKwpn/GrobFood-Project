@@ -40,7 +40,6 @@ const DriverHome = () => {
     if (response.data.success) {
       console.log("accept success");
     } else {
-      console.log(response.data.data);
       setAlertHaveOrder(true);
       console.log("ERROR");
     }
@@ -85,9 +84,7 @@ const DriverHome = () => {
   // useEffect(() => {
   //   getOrderFindDriver();
   // });
-  console.log(driverWorkList);
 
-  console.log(DriverBillStatus, "FIST");
   return (
     <div className=" bg-slate-200 min-h-[100vh]">
       <NavbarDriver />

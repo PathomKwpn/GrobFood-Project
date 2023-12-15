@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Catagory,
   DetailQuestion,
@@ -7,10 +6,10 @@ import {
   Promotion,
 } from "../../page/Home/components/";
 import Footer from "../Footer/Footer";
-const Home = ({ clearToken, token, user, saveLocation }) => {
+const Home = ({ token, user, saveLocation }: any) => {
   return (
     <>
-      <Navbar clearToken={clearToken} token={token} user={user} />
+      <Navbar token={token} user={user} />
       <Header saveLocation={saveLocation} />
       <Promotion />
       <Catagory />

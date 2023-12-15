@@ -28,7 +28,7 @@ export default function RestaurantCard({
   //API DELETE STORE
   const deleteStore = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/deletestore`, data);
-    console.log("response", response);
+
     if (response.data.success) {
       console.log("Delete Successfull");
     } else {

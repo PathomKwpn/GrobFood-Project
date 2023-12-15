@@ -13,11 +13,8 @@ import { AlertTitle } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import FilledInput from "@mui/material/FilledInput";
 import { Link, useNavigate } from "react-router-dom";
-type LoingOwnerProps = {
-  setUser: React.Dispatch<React.SetStateAction<string>>;
-  setToken: React.Dispatch<React.SetStateAction<string>>;
-};
-const LoginOwner = ({ setUser, setToken }: LoingOwnerProps) => {
+
+const LoginOwner = ({ setUser, setToken }: any) => {
   const [owner_username, setOwner_Username] = useState<string>("");
   const [owner_password, setOwner_Password] = useState<string>("");
   const navigate = useNavigate();
@@ -26,7 +23,7 @@ const LoginOwner = ({ setUser, setToken }: LoingOwnerProps) => {
     data: "",
     type: "info",
   };
-  const [alertStatus, setAlertStatus] = useState(DEFAULT_ALERT);
+  const [alertStatus, setAlertStatus] = useState<any>(DEFAULT_ALERT);
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -37,11 +34,9 @@ const LoginOwner = ({ setUser, setToken }: LoingOwnerProps) => {
   };
 
   const onLogin = async (data: any) => {
-    console.log(data);
     const response = await axios.post(`${GROBFOOD_USER_URL}/ownerlogin`, data);
     console.log("response", response);
     if (response.data.success) {
-      console.log(response.data._token);
       setUser(response.data.data[0]);
       setToken(response.data._token);
       setAlertStatus({
@@ -56,7 +51,6 @@ const LoginOwner = ({ setUser, setToken }: LoingOwnerProps) => {
         data: response.data.data,
         type: "error",
       });
-      console.log();
     }
   };
   return (

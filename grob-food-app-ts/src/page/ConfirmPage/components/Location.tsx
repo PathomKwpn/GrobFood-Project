@@ -17,12 +17,12 @@ const Location = ({
   //   let user_location = JSON.parse(getLoaction);
   return (
     <>
-      <div className="h-[auto] mt-[20px] max-w-[700px] md:w-[50%] bg-white rounded-md w-[95%]">
+      <div className="h-[auto] mt-[20px] max-w-[700px]  bg-white rounded-md w-[95%]">
         <div className="border-b-[1px] py-[16px]">
           <span className="text-[24px] font-[500] px-[5%]">ที่อยู่</span>
         </div>
         <div className="mt-[20px] flex justify-center items-center w-full ">
-          <div className="mb-[12px] flex px-[10px] w-[80%]">
+          <div className="mb-[12px] flex px-[10px] w-[95%]">
             <span className=" mr-[14px] flex justify-center items-center">
               <FmdGoodIcon className="text-[32px] text-[#ac3131]" />
             </span>
@@ -59,7 +59,7 @@ const Location = ({
             </div>
             <input
               type="text"
-              className=" w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[24px] py-[6px] text-[14px] text-[#7a7a7a]"
+              className=" w-full h-[48px] border border-[#c5c5c5] outline-0 focus:border-[#1ebd60] rounded-[4px] px-[24px] py-[6px] text-[14px] text-[#7a7a7a] mb-[16px]"
               placeholder="เช่น เจอกันที่ล็อบบี้"
               onChange={(e) => {
                 setNoteToDriver(e.target.value);

@@ -26,7 +26,7 @@ const DriverRegister = () => {
     data: "",
     type: "info",
   };
-  const [alertStatus, setAlertStatus] = useState(DEFAULT_ALERT);
+  const [alertStatus, setAlertStatus] = useState<any>(DEFAULT_ALERT);
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -41,7 +41,6 @@ const DriverRegister = () => {
       `${GROBFOOD_USER_URL}/driver-register`,
       data
     );
-    console.log(response.data);
 
     if (
       driver_username == "" ||
@@ -56,7 +55,6 @@ const DriverRegister = () => {
         type: "warning",
       });
     } else if (response.data.success) {
-      console.log(response.data.success, "hello");
       setDriver_FirstName("");
       setDriver_LastName("");
       setDriver_Username("");

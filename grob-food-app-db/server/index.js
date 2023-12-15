@@ -27,10 +27,15 @@ const deleteStore = require("./src/Store-module/deleteStore");
 const updateToken = require("./src/updateToken/updateToken");
 const getUserDetail = require("./src/User-module/getUserDetail");
 const getAllStoreList = require("./src/Front-store-module/getAllStoreList");
+const getPreviewStoreList = require("./src/Front-store-module/getPreviewStoreList");
 const getStoreDetail = require("./src/Front-store-module/getStoreDetail");
 const getStoreAddres = require("./src/Front-store-module/getStoreAddress");
 const getStoreList = require("./src/Admin-module/getStoreList");
-
+const getCoffeeOrTeaStore = require("./src/Front-store-module/getCoffeeOrTeaStore");
+const getSeafoodStore = require("./src/Front-store-module/getSeafoodStore");
+const getChickenStore = require("./src/Front-store-module/getChickenStore");
+const getNoodleStore = require("./src/Front-store-module/getNoodleStore");
+const userVote = require("./src/Cart&bill-module/userVote");
 const getCouponList = require("./src/Admin-module/getCouponList");
 const addBill = require("./src/Cart&bill-module/addBill");
 const addCart = require("./src/Cart&bill-module/addCart");
@@ -153,6 +158,11 @@ app.post("/getuserdetail", async (req, res) => {
 app.post("/getallstorelist", async (req, res) => {
   getAllStoreList(req, res);
 });
+
+//GET PREVIEW STORELIST
+app.get("/getpreviewstorelist", async (req, res) => {
+  getPreviewStoreList(req, res);
+});
 //GET STORE DETAIL
 app.post("/getstoredetail", async (req, res) => {
   getStoreDetail(req, res);
@@ -164,6 +174,19 @@ app.post("/getstoreaddress", async (req, res) => {
 //GET STORE LIST
 app.get("/getstorelist", async (req, res) => {
   getStoreList(req, res);
+});
+//GET COFFEE OR TEA STORE LIST
+app.get("/getcoffeorteastore", async (req, res) => {
+  getCoffeeOrTeaStore(req, res);
+});
+app.get("/getchickenstore", async (req, res) => {
+  getChickenStore(req, res);
+});
+app.get("/getnoodlestore", async (req, res) => {
+  getNoodleStore(req, res);
+});
+app.get("/getseafoodstore", async (req, res) => {
+  getSeafoodStore(req, res);
 });
 //ADD_NEW_COUPON
 app.post("/addnewcoupon", async (req, res) => {
@@ -234,4 +257,9 @@ app.post("/getStoreOrderList", async (req, res) => {
 //GET STOREORDERDETAIL
 app.post("/getStoreOrderDetail", async (req, res) => {
   getStoreOrderDetail(req, res);
+});
+
+//VOTE
+app.post("/uservote", async (req, res) => {
+  userVote(req, res);
 });

@@ -10,12 +10,12 @@ const exec = async (req, res) => {
     let data = req.body;
     let param = [data.user_id];
     console.log(param);
-    let sql = `select * from bills b where user_id =$1 and bill_status != 'order success';`;
+    let sql = `select * from bills b where user_id =$1 and (bill_status != 'order success' or vote_status = 'none');`;
     let response = await pool.query(sql, param);
     // console.log(response);
     responseData.success = true;
     responseData.data = response.rows;
-    // console.log(responseData.data);
+
     store.query("COMMIT");
   } catch (error) {
     store.query("ROLLBACK");

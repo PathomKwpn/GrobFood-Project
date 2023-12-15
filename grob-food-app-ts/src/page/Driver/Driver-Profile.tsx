@@ -40,8 +40,6 @@ const DriverProfile = () => {
     );
 
     if (response.data.success) {
-      console.log(response.data.data);
-
       setDriver(response.data.data);
     } else {
       console.log("ERROR");
@@ -53,7 +51,6 @@ const DriverProfile = () => {
       data
     );
     if (response.data.success) {
-      console.log(response.data.success, "new");
       getDriverProfile(sendDriver_id);
       console.log("Update already");
     } else {

@@ -13,7 +13,7 @@ import { AlertTitle } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import FilledInput from "@mui/material/FilledInput";
 import { Link, useNavigate } from "react-router-dom";
-const LoginDriver = ({ setUser, setToken }) => {
+const LoginDriver = ({ setUser, setToken }: any) => {
   const [driver_username, setDriver_Username] = useState<string>("");
   const [driver_password, setDriver_Password] = useState<string>("");
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const LoginDriver = ({ setUser, setToken }) => {
     data: "",
     type: "info",
   };
-  const [alertStatus, setAlertStatus] = useState(DEFAULT_ALERT);
+  const [alertStatus, setAlertStatus] = useState<any>(DEFAULT_ALERT);
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -35,9 +35,8 @@ const LoginDriver = ({ setUser, setToken }) => {
   const onLogin = async (data: any) => {
     console.log(data);
     const response = await axios.post(`${GROBFOOD_USER_URL}/driverlogin`, data);
-    console.log("response", response);
+
     if (response.data.success) {
-      console.log(response.data._token);
       setUser(response.data.data[0]);
       setToken(response.data._token);
       setAlertStatus({
