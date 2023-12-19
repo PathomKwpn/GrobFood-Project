@@ -296,7 +296,7 @@ const DeliveryPage = () => {
                 value={voteRestaurant}
                 onChange={(event, newValue: number | null) => {
                   setVoteRestaurant(newValue);
-                  console.log(voteRestaurant);
+                  console.log(event);
                 }}
                 // onChangeActive={(event, newHover) => {
                 //   setHover(newHover);
@@ -315,7 +315,7 @@ const DeliveryPage = () => {
                 value={voteDriver}
                 onChange={(event, newValue: number | null) => {
                   setVoteDriver(newValue);
-                  console.log(voteDriver);
+                  console.log(event);
                 }}
                 // onChangeActive={(event, newHover) => {
                 //   setHover(newHover);

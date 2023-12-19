@@ -63,6 +63,8 @@ const MenuList = ({ restaurant_id }: any) => {
       restaurant_topic_id: resTopic,
     };
     console.log(topic_id, "topic");
+    console.log(response.data);
+
     getMenus(topic_id);
   };
   const addNewTopic = async (data: any) => {

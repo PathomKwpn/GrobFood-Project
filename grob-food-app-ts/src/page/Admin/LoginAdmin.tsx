@@ -24,7 +24,7 @@ const LoginAdmin = ({ setUser, setToken, createCart }: any) => {
     data: "",
     type: "info",
   };
-  const [alertStatus, setAlertStatus] = useState(DEFAULT_ALERT);
+  const [alertStatus, setAlertStatus] = useState<any>(DEFAULT_ALERT);
 
   const [showPassword, setShowPassword] = useState(false);
 

@@ -40,12 +40,6 @@ const Navbarauth = () => {
   }
 
   //CART
-  const [CartList, setCartList] = useState();
-  const getCartLocalStorage = async () => {
-    const cart: any = localStorage.getItem("cart");
-    let user_cart = JSON.parse(cart);
-    setCartList(user_cart);
-  };
 
   const getUserBill = async (data: any) => {
     const response = await axios.post(`${GROBFOOD_USER_URL}/getuserbill`, data);
@@ -241,7 +235,7 @@ const Navbarauth = () => {
                 className="flex relative cursor-pointer justify-center items-center text-[6px] font-semibold text-[#676767] border border-[#f0efef] px-[8px] mx-[6px] rounded-[4px] md:px-[10px]"
                 onClick={() => {
                   setCartState("open");
-                  getCartLocalStorage();
+
                   updateToken();
                 }}
               >

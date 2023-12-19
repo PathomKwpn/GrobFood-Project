@@ -607,10 +607,19 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
         </div>
       )}
       {user_cart.length == 0 && (
-        <div className="pt-[200px] bg-white w-full pb-[20px] text-center">
-          <span className="text-[32px] font-bold">
-            คุณยังไม่มีสินค้าในตะกร้า
+        <div className="pt-[200px] bg-[#248b53] min-h-[100vh] w-full pb-[20px] text-center flex flex-col items-center">
+          <span className="text-[32px] md:text-[48px] font-bold text-white mb-[48px]">
+            คุณมีรายการคำสั่งซื้อที่ค้างอยู่ !
           </span>
+          <Button
+            variant="contained"
+            className="bg-[#b10101] min-w-[150px] md:min-w-[150px] max-w-[400px] focus:bg-[#df4f4f] hover:bg-[#df4f4f] z-0 my-[5px] text-[18px]"
+            onClick={() => {
+              nevigate("/deliverypage");
+            }}
+          >
+            ไปดู
+          </Button>
         </div>
       )}
     </div>
