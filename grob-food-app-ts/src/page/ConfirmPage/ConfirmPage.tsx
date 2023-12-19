@@ -188,8 +188,8 @@ const ConfirmPage = ({ saveLocation }: ConfirmPageProps) => {
     <div className=" bg-slate-100 flex flex-col items-center justify-center">
       <Navbarauth />
       {user_cart.length != 0 && (
-        <div className=" flex flex-col items-center justify-center">
-          <div className="bg-white w-full pb-[20px]">
+        <div className=" flex flex-col items-center justify-center w-full">
+          <div className="bg-white w-full pb-[20px] max-w-[700px]">
             <div className="mt-[70px] md:mt-[100px] text-[24px] md:text-[36px]  font-[600] px-[20px] md:px-[120px] lg:px-[240px] xl:px-[10%]">
               ขั้นตอนสุดท้าย - เช็คเอ้าท์
             </div>

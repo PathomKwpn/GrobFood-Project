@@ -44,15 +44,18 @@ const StoreListCatagory = ({
 
     setFilteredUsers(filtered);
   };
+
   let restaurant_catagory;
-  if (allstoreList[0].restaurant_catagory == "อาหารทะเล") {
-    restaurant_catagory = "/seafood";
-  } else if (allstoreList[0].restaurant_catagory == "ไก่ทอด") {
-    restaurant_catagory = "/chicken";
-  } else if (allstoreList[0].restaurant_catagory == "อาหารเส้น") {
-    restaurant_catagory = "/noodle";
-  } else if (allstoreList[0].restaurant_catagory == "ชา กาแฟ") {
-    restaurant_catagory = "/coffee&tea";
+  if (allstoreList.length != 0) {
+    if (allstoreList[0].restaurant_catagory == "อาหารทะเล") {
+      restaurant_catagory = "/seafood";
+    } else if (allstoreList[0].restaurant_catagory == "ไก่ทอด") {
+      restaurant_catagory = "/chicken";
+    } else if (allstoreList[0].restaurant_catagory == "อาหารเส้น") {
+      restaurant_catagory = "/noodle";
+    } else if (allstoreList[0].restaurant_catagory == "ชา กาแฟ") {
+      restaurant_catagory = "/coffee&tea";
+    }
   }
   function getDistanceBetweenPointsNew(
     latitude1: string,
@@ -101,7 +104,7 @@ const StoreListCatagory = ({
             type="text"
             placeholder="ค้นหาร้านอาหาร"
             onChange={handleFilter}
-            className=" bg-[#F7F7F7] ml-[10px] focus:outline-0 cursor-pointer"
+            className=" bg-[#F7F7F7] ml-[10px] w-[95%] focus:outline-0 cursor-pointer"
           />
         </div>
         {/* <div className="flex flex-row justify-center gap-5 my-[26px] ">
@@ -294,7 +297,7 @@ const StoreListCatagory = ({
             return (
               <div
                 key={item.restaurant_id}
-                className="flex gap-1 items-center justify-items-center mb-[20px] md:mb-[40px]  md:w-[50%] lg:w-[25%] md:px-[8px] lg:items-start"
+                className="flex gap-1 items-start justify-items-center  mb-[20px] md:mb-[40px]  md:w-[50%] lg:w-[25%] md:px-[8px] lg:items-start"
               >
                 <div className="w-full h-[auto] mx-[3px] flex md:flex-col items-center mb-[4px] rounded-lg  gap-[15px]">
                   <div className=" w-[120px] md:w-full h-[120px] md:h-[180px] lg:max-h-[120px] xl:max-h-[150px] flex justify-center items-center bg-cover">

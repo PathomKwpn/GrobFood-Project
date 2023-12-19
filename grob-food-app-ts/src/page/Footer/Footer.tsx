@@ -92,13 +92,15 @@ const Footer = () => {
           </ul>
         </div>
         <div>
-          <div>
-            <div className="w-full flex justify-center">
+          <div className="flex flex-col md:flex-row justify-between">
+            <div className="w-full flex flex-col justify-center">
               <span className="text-[16px] text-[#AFB0B4] font-[300] mb-[8px]">
                 © Grab 2023
               </span>
               <div>
-                <span>เงื่อนไขในการให้บริการ *</span>
+                <span className="text-white">
+                  เงื่อนไขในการให้บริการ • นโยบายความปลอดภัย
+                </span>
               </div>
             </div>
             <div className="flex justify-center flex-wrap gap-[20px] mt-[16px]">

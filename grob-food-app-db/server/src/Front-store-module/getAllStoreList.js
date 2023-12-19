@@ -15,19 +15,18 @@ const exec = async (req, res) => {
 join restaurants_image ri on r.restaurant_id = ri.restaurants_id where status = 'Allow' ;`;
     let param = [data.owner_id];
     let response = await pool.query(sql);
-    console.log(response);
 
     response.rows.map((item) => {
       console.log(item.restaurants_image_url);
       const fileImage = common.commonService.pathFileToBaes64(
         item.restaurants_image_url
       );
-      console.log(fileImage);
+
       item.restaurants_image_url = fileImage;
     });
     responseData.success = true;
     responseData.data = response.rows;
-    console.log(responseData.data);
+
     store.query("COMMIT");
   } catch (error) {
     store.query("ROLLBACK");

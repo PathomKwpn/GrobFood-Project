@@ -193,7 +193,7 @@ const DriverContainer = ({
           </div>
 
           <div className="flex justify-center">
-            <div className="bg-white w-[600px] h-[800px] overflow-scroll border-[1px] border-[#01B14F]">
+            <div className="bg-white w-[600px] h-[800px] overflow-scroll border-[1px] border-[#01B14F] rounded-lg">
               <div className="max-w-[800px]">
                 <div className="w-full ">
                   <div className=" w-full bg-slate-100 h-[80px] flex flex-nowrap items-center justify-items-center gap-1  ">

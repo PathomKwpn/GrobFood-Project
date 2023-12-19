@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const PORT = 8081;
+const PORT = process.env.PORT || 8081;
 const cors = require("cors");
 
 const userRegister = require("./src/Register-module/userRegister");

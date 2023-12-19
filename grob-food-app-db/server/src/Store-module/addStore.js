@@ -31,8 +31,8 @@ const exec = async (req, res) => {
       // console.log(sendimg);
       // console.log(img_toserver);
       let sql = `INSERT INTO public.restaurants
-(restaurant_id, owner_id, restaurant_name, score, address, restaurant_credit, regis_date, update_date, update_by, close_time, open_time, restaurant_catagory,latitude,longitude)
-VALUES($1, $2, $3, 0, $4, 0, now(), now(), $2, $5, $6, $7, $8, $9);`;
+(restaurant_id, owner_id, restaurant_name, score, address, restaurant_credit, regis_date, update_date, update_by, close_time, open_time, restaurant_catagory,latitude,longitude,status)
+VALUES($1, $2, $3, 0, $4, 0, now(), now(), $2, $5, $6, $7, $8, $9, 'Allow');`;
       let param = [
         restaurant_uuid,
         data.owner_id,

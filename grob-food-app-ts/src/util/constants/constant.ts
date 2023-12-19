@@ -1,1 +1,1 @@
-export const GROBFOOD_USER_URL = "http://localhost:8081";
+export const GROBFOOD_USER_URL = "https://api-grobfood-project.onrender.com";

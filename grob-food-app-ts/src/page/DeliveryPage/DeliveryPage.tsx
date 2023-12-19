@@ -162,7 +162,7 @@ const DeliveryPage = () => {
 
   //CART
   return (
-    <div className="bg-[#01B14F] min-h-[100vh] flex flex-col  items-center">
+    <div className="bg-[#248b53] min-h-[100vh] flex flex-col  items-center">
       <nav className="flex fixed z-[1000] justify-center items-center h-[48px] md:h-[88px]  top-0 bg-white shadow-sm w-full">
         <div className="w-[100%] px-[12px] md:px-[36px]">
           <div className="flex justify-between">

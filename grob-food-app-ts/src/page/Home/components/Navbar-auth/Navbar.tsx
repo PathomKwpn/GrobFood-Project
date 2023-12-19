@@ -246,11 +246,13 @@ const Navbarauth = () => {
                 }}
               >
                 <ShoppingBagOutlinedIcon className="text-[#676767] text-[20px]" />
-                <div className=" absolute text-[14px] right-[-40%] top-[10%] m-0 p-0 translate-x-[-50%] translate-y-[-50%] bg-red-500 w-[20px] h-[20px] flex justify-center items-center rounded-[50%]">
-                  <span className="text-white font-[300]">
-                    {user_cart.length}
-                  </span>
-                </div>
+                {user_cart.length != 0 && (
+                  <div className=" absolute text-[14px] right-[-40%] top-[10%] m-0 p-0 translate-x-[-50%] translate-y-[-50%] bg-red-500 w-[20px] h-[20px] flex justify-center items-center rounded-[50%]">
+                    <span className="text-white font-[300]">
+                      {user_cart.length}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="flex justify-center items-center border border-[#f0efef] mx-[6px] rounded-[4px]">
                 <Link
