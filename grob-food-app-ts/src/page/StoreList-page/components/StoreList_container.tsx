@@ -189,7 +189,7 @@ const StoreList_container = () => {
               }}
             >
               <img
-                src="../public/image/catagory-image/seafood.webp"
+                src="./image/catagory-image/seafood.webp"
                 className="  bg-cover rounded-lg"
                 alt=""
               />
@@ -204,7 +204,7 @@ const StoreList_container = () => {
               }}
             >
               <img
-                src="../public/image/catagory-image/chicken.webp"
+                src="./image/catagory-image/chicken.webp"
                 className="  bg-cover rounded-lg"
                 alt=""
               />
@@ -219,7 +219,7 @@ const StoreList_container = () => {
               }}
             >
               <img
-                src="../public/image/catagory-image/ชานมไข่มุก.webp"
+                src="./image/catagory-image/ชานมไข่มุก.webp"
                 className="  bg-cover rounded-lg"
                 alt=""
               />
@@ -234,7 +234,7 @@ const StoreList_container = () => {
               }}
             >
               <img
-                src="../public/image/catagory-image/noodle.jpg"
+                src="./image/catagory-image/noodle.jpg"
                 className="  bg-cover rounded-lg"
                 alt=""
               />

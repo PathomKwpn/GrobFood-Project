@@ -18,7 +18,7 @@ const Catagory = () => {
             >
               <img
                 className="bg-cover w-full rounded-md h-[80px] md:h-[120px] lg:h-[160px] shadow-md"
-                src="../public/image/catagory-image/seafood.webp"
+                src="./image/catagory-image/seafood.webp"
                 alt=""
               />
             </div>
@@ -33,7 +33,7 @@ const Catagory = () => {
             >
               <img
                 className="bg-cover w-full rounded-md h-[80px] md:h-[120px] lg:h-[160px] shadow-md"
-                src="../public/image/catagory-image/chicken.jpeg"
+                src="./image/catagory-image/chicken.jpeg"
                 alt=""
               />
             </div>
@@ -48,7 +48,7 @@ const Catagory = () => {
             >
               <img
                 className="bg-cover w-full rounded-md h-[80px] md:h-[120px] lg:h-[160px] shadow-md"
-                src="../public/image/catagory-image/ชานมไข่มุก.webp"
+                src="./image/catagory-image/ชานมไข่มุก.webp"
                 alt=""
               />
             </div>
@@ -63,7 +63,7 @@ const Catagory = () => {
             >
               <img
                 className="bg-cover w-full rounded-md h-[80px] md:h-[120px] lg:h-[160px] shadow-md"
-                src="../public/image/catagory-image/noodle.jpg"
+                src="./image/catagory-image/noodle.jpg"
                 alt=""
               />
             </div>

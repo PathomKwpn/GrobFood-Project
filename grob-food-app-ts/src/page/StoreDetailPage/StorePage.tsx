@@ -36,11 +36,11 @@ const StorePage = ({ createCart }: any) => {
   const getOwner: any = localStorage.getItem("user");
   const user_info = JSON.parse(getOwner);
 
-  const user_id = user_info.id;
-  console.log(user_id);
   if (!getOwner) {
     return <Login />;
   }
+  const user_id = user_info?.id;
+  console.log(user_id);
   const { resid } = useParams();
   const restaurant_id = { restaurant_id: resid };
   const [storeDetail, setStoreDetail] = useState<Array<storeDetail>>([]);

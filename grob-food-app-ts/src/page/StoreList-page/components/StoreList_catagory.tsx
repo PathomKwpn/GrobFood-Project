@@ -192,14 +192,14 @@ const StoreListCatagory = ({
         >
           <SwiperSlide key={"seafood"}>
             <div
-              className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75"
+              className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75 cursor-pointer"
               onClick={() => {
                 updateToken();
                 nevigate("/seafood");
               }}
             >
               <img
-                src="./public/image/catagory-image/seafood.webp"
+                src="./image/catagory-image/seafood.webp"
                 className="  bg-cover rounded-lg"
                 alt=""
               />
@@ -207,14 +207,14 @@ const StoreListCatagory = ({
           </SwiperSlide>
           <SwiperSlide key={"chicken"}>
             <div
-              className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center bg-white brightness-75"
+              className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center  brightness-75 cursor-pointer"
               onClick={() => {
                 updateToken();
                 nevigate("/chicken");
               }}
             >
               <img
-                src="./public/image/catagory-image/chicken.webp"
+                src="./image/catagory-image/chicken.webp"
                 className="  bg-cover rounded-lg"
                 alt=""
               />
@@ -222,14 +222,14 @@ const StoreListCatagory = ({
           </SwiperSlide>
           <SwiperSlide key={"coffee&tea"}>
             <div
-              className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75"
+              className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75 cursor-pointer"
               onClick={() => {
                 updateToken();
                 nevigate("/coffee&tea");
               }}
             >
               <img
-                src="./public/image/catagory-image/ชานมไข่มุก.webp"
+                src="./image/catagory-image/ชานมไข่มุก.webp"
                 className="  bg-cover rounded-lg"
                 alt=""
               />
@@ -237,14 +237,14 @@ const StoreListCatagory = ({
           </SwiperSlide>
           <SwiperSlide key={"noodle"}>
             <div
-              className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75"
+              className="w-[135px] h-[85px] bg-[url('/image/catagory-image/ชานมไข่มุก.webp')] rounded-lg flex justify-center items-center brightness-75 cursor-pointer"
               onClick={() => {
                 updateToken();
                 nevigate("/noodle");
               }}
             >
               <img
-                src="./public/image/catagory-image/noodle.jpg"
+                src="./image/catagory-image/noodle.jpg"
                 className="  bg-cover rounded-lg"
                 alt=""
               />
